@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+.env*.local
+npm-debug.log*
+*.log
+*.tsbuildinfo
+.DS_Store
+
+# Local agent reference material; not part of the website runtime.
+codex skills/
