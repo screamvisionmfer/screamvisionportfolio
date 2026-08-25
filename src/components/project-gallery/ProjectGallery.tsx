@@ -82,6 +82,8 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   const viewportRef = useRef<HTMLElement>(null);
   const slideRefs = useRef<Array<HTMLElement | null>>([]);
   const dragStart = useRef(0);
+  const dragStartY = useRef(0);
+  const dragActive = useRef(false);
   const dragMoved = useRef(false);
   const pendingAsset = useRef<number | null>(null);
   const [active, setActive] = useState(0);
@@ -153,6 +155,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
     if (!viewport) return;
     let wheelLock = false;
     const onWheel = (event: WheelEvent) => {
+      if (window.innerWidth <= 820 && Math.abs(event.deltaY) >= Math.abs(event.deltaX)) return;
       event.preventDefault();
       if (wheelLock) return;
       const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
@@ -165,10 +168,11 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") move(1);
       if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") move(-1);
     };
-    viewport.addEventListener("wheel", onWheel, { passive: false });
+    const wheelGalleryEnabled = window.innerWidth > 820;
+    if (wheelGalleryEnabled) viewport.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("keydown", onKey);
     return () => {
-      viewport.removeEventListener("wheel", onWheel);
+      if (wheelGalleryEnabled) viewport.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKey);
     };
   }, [move]);
@@ -196,23 +200,40 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
     const media = (event.target as HTMLElement).closest<HTMLElement>("[data-asset-index]");
     pendingAsset.current = media ? Number(media.dataset.assetIndex) : null;
     dragStart.current = event.clientX;
+    dragStartY.current = event.clientY;
     dragMoved.current = false;
+    dragActive.current = true;
     setDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
   };
   const pointerMove = (event: ReactPointerEvent<HTMLElement>) => {
-    if (!dragging) return;
-    if (Math.abs(event.clientX - dragStart.current) > 4) dragMoved.current = true;
-    setDragX(event.clientX - dragStart.current);
+    if (!dragActive.current) return;
+    const distanceX = event.clientX - dragStart.current;
+    const distanceY = event.clientY - dragStartY.current;
+    if (Math.abs(distanceY) > Math.abs(distanceX) && Math.abs(distanceY) > 8) return;
+    if (Math.abs(distanceX) > 7) dragMoved.current = true;
+    setDragX(distanceX);
   };
   const pointerUp = (event: ReactPointerEvent<HTMLElement>) => {
-    if (!dragging) return;
+    if (!dragActive.current) return;
     const distance = event.clientX - dragStart.current;
+    dragActive.current = false;
     setDragging(false);
     setDragX(0);
     if (Math.abs(distance) > 55) move(distance < 0 ? 1 : -1);
-    else if (Math.abs(distance) < 9 && pendingAsset.current !== null) openAsset(pendingAsset.current);
+    else if (Math.abs(distance) < 9 && pendingAsset.current !== null) {
+      if (pendingAsset.current === active) openAsset(pendingAsset.current);
+      else setActive(pendingAsset.current);
+    }
     pendingAsset.current = null;
+  };
+
+  const pointerCancel = () => {
+    dragActive.current = false;
+    setDragging(false);
+    setDragX(0);
+    pendingAsset.current = null;
+    dragMoved.current = false;
   };
 
   const tiltInfo = (event: ReactPointerEvent<HTMLElement>) => {
@@ -256,7 +277,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       <SiteNav />
       <span className={styles.assetCounter}>{String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
 
-      <section ref={viewportRef} className={styles.viewport} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
+      <section ref={viewportRef} className={styles.viewport} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerCancel}>
         <div className={styles.track} style={{ transform: `translate3d(${trackX + dragX}px, 0, 0)` }}>
           {project.assets.map((asset, index) => (
             <article key={`${asset.type}-${asset.src}`} ref={(node) => { slideRefs.current[index] = node; }} className={`${styles.slide} ${asset.type === "canvas" ? styles.canvasSlide : ""}`} data-active={index === active}>
