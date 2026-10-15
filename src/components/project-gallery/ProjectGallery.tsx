@@ -1,5 +1,8 @@
 "use client";
 
+import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
+import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
+
 import { PortfolioImage as Image, mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
@@ -100,6 +103,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   const [arrivalDirection, setArrivalDirection] = useState<"default" | "next" | "previous">("default");
   const [zoomed, setZoomed] = useState<number | null>(null);
   const [zoomClosing, setZoomClosing] = useState(false);
+  const modal = useModalFocus<HTMLDivElement>(zoomed !== null);
   const count = project.assets.length;
   const projectIndex = projects.findIndex((item) => item.slug === project.slug);
   const previousProject = projects[(projectIndex - 1 + projects.length) % projects.length];
@@ -312,8 +316,8 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       </div>
 
       {zoomedAsset && createPortal(
-        <div className={styles.zoomOverlay} data-closing={zoomClosing} onPointerDown={(event) => event.stopPropagation()} onClick={closeZoom}>
-          <button type="button" className={styles.zoomClose} onClick={(event) => { event.stopPropagation(); closeZoom(); }}>Close ×</button>
+        <div ref={modal} role="dialog" aria-modal="true" aria-label={`${project.title} artwork`} tabIndex={-1} className={styles.zoomOverlay} data-closing={zoomClosing} onPointerDown={(event) => event.stopPropagation()} onClick={closeZoom}>
+          <ViewerClose onClose={closeZoom} />
           <div className={`${styles.zoomMedia} ${zoomedAsset.type === "canvas" ? styles.zoomCanvas : ""}`} onClick={(event) => event.stopPropagation()}>
             {zoomedAsset.type === "motion" || zoomedAsset.type === "canvas"
               ? <VideoAsset asset={zoomedAsset} active poster={project.cover} />

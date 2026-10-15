@@ -1,0 +1,4 @@
+.close { position: absolute; z-index: 10; top: max(24px, env(safe-area-inset-top)); right: max(28px, env(safe-area-inset-right)); display: inline-flex; align-items: center; justify-content: space-between; gap: 22px; min-height: 44px; padding: 0 16px; border: 1px solid #ffffff60; border-radius: 999px; background: #10110fe6; color: #f5f2ed; cursor: pointer; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; transition: background var(--ui-fast) var(--ui-ease), color var(--ui-fast) var(--ui-ease), border-color var(--ui-fast) var(--ui-ease); }
+.close span:last-child { font-size: 22px; font-weight: 400; line-height: 1; }
+@media (hover: hover) { .close:hover { background: #f5f2ed; color: #10110f; border-color: #f5f2ed; } }
+@media (max-width: 760px) { .close { top: max(16px, env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right)); } }

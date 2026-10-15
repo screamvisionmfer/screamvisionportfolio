@@ -1,5 +1,8 @@
 "use client";
 
+import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
+import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
+
 import { PortfolioImage as Image, mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import { SiteNav } from "@/components/site-nav/SiteNav";
@@ -290,15 +293,16 @@ function ArtTile({ art, index, tileKey, visible }: { art: Illustration; index: n
 }
 
 function Preview({ art, index, total, onClose, onSwitch }: { art: Illustration; index: number; total: number; onClose: () => void; onSwitch: (direction: number) => void }) {
+  const modal = useModalFocus<HTMLElement>(true);
   return (
-    <section className={styles.preview} style={{ "--preview-accent": art.accent } as CSSProperties} data-ui aria-label={`${art.title} full preview`}>
+    <section ref={modal} role="dialog" aria-modal="true" tabIndex={-1} className={styles.preview} style={{ "--preview-accent": art.accent } as CSSProperties} data-ui aria-label={`${art.title} full preview`}>
       <div className={styles.previewImage} key={art.id}><Image src={art.image} alt={art.title} fill sizes="90vw" priority draggable="false" unoptimized /></div>
       <div className={styles.previewInfo}>
         <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
         <h1>{art.title}</h1>
         <p>{art.medium} · {art.year}</p>
       </div>
-      <button className={styles.closePreview} type="button" onClick={onClose}>Close <span>×</span></button>
+      <ViewerClose onClose={onClose} />
       <div className={styles.previewControls}>
         <button type="button" onClick={() => onSwitch(-1)} aria-label="Previous illustration">←</button>
         <div><span style={{ transform: `scaleX(${(index + 1) / total})` }} /></div>

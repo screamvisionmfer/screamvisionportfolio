@@ -1,5 +1,7 @@
 "use client";
 
+import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
+
 import dynamic from "next/dynamic";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import { PortfolioImage, mediaSource } from "@/components/portfolio-image/PortfolioImage";
@@ -179,7 +181,7 @@ function CardInspection({ pack, index, onChange, onClose }: { pack: CardPack; in
   return <dialog ref={dialog} className={styles.inspection} aria-label={card.title} onCancel={(event) => { event.preventDefault(); onClose(); }} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }} onKeyDown={(event) => {
     if (["ArrowLeft", "ArrowRight"].includes(event.key)) { event.preventDefault(); move(event.key === "ArrowRight" ? 1 : -1); }
   }}>
-    <button className={styles.closeInspection} onClick={onClose}>Back to collection ×</button>
+    <ViewerClose onClose={onClose} />
     <div className={styles.inspectionArt} key={card.id}><PortfolioImage src={card.image} alt={card.title} fill sizes="(max-width: 760px) 94vw, 76vh" priority /></div>
     <div className={styles.inspectionControls}><button aria-label="Previous artwork" onClick={() => move(-1)}>←</button><span aria-live="polite">{card.title}<small>{pad(index + 1)} / {pad(pack.cards.length)}</small></span><button aria-label="Next artwork" onClick={() => move(1)}>→</button></div>
     <div className={styles.inspectionMarket}><MarketLink url={card.marketUrl ?? pack.marketUrl} /></div>

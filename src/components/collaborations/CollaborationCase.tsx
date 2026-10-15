@@ -1,5 +1,8 @@
 "use client";
 
+import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
+import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
+
 import { PortfolioImage as Image } from "@/components/portfolio-image/PortfolioImage";
 import { createPortal } from "react-dom";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState, WheelEvent as ReactWheelEvent } from "react";
@@ -43,6 +46,7 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
   const [active, setActive] = useState(0);
   const [preview, setPreview] = useState<number | null>(null);
   const [previewClosing, setPreviewClosing] = useState(false);
+  const modal = useModalFocus<HTMLDivElement>(preview !== null);
 
   const switchPreview = useCallback((direction: number) => {
     setPreview((value) => value === null ? 0 : (value + direction + collaboration.assets.length) % collaboration.assets.length);
@@ -213,8 +217,8 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
       <FullscreenButton />
 
       {preview !== null && createPortal(
-        <div className={styles.assetPreview} data-closing={previewClosing} onWheel={previewWheel} onPointerDown={previewPointerDown} onPointerMove={previewPointerMove} onPointerUp={previewPointerUp} onPointerCancel={previewPointerUp} onClick={() => { if (!gesture.current.moved) closePreview(); }}>
-          <button className={styles.previewClose} type="button" onClick={(event) => { event.stopPropagation(); closePreview(); }}>Close ×</button>
+        <div ref={modal} role="dialog" aria-modal="true" aria-label={`${collaboration.title} artwork`} tabIndex={-1} className={styles.assetPreview} data-closing={previewClosing} onWheel={previewWheel} onPointerDown={previewPointerDown} onPointerMove={previewPointerMove} onPointerUp={previewPointerUp} onPointerCancel={previewPointerUp} onClick={() => { if (!gesture.current.moved) closePreview(); }}>
+          <ViewerClose onClose={closePreview} />
           <div className={styles.previewAsset} key={collaboration.assets[preview].src} onClick={(event) => event.stopPropagation()}><CollabMedia asset={collaboration.assets[preview]} preview /></div>
           <div className={styles.previewMeta}><span>{collaboration.assets[preview].label}</span><span>{String(preview + 1).padStart(2, "0")} / {String(collaboration.assets.length).padStart(2, "0")} · Scroll or drag to browse</span></div>
         </div>,

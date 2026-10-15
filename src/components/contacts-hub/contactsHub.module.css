@@ -7,17 +7,17 @@
 .heading h1 { margin: 0; font-size: clamp(62px,8.1vw,142px); line-height: .74; letter-spacing: -.075em; text-transform: uppercase; }
 .heading p { position: absolute; right: 0; bottom: 2px; max-width: 180px; margin: 0; line-height: 1.45; text-align: left; opacity: .42; }
 .tabs { display: flex; justify-content: center; gap: clamp(18px,3vw,54px); margin: clamp(24px,4vh,42px) 0 10px; border-bottom: 1px solid rgba(255,255,255,.17); }
-.tabs button { position: relative; display: flex; align-items: center; gap: 9px; padding: 0 0 13px; color: inherit; border: 0; background: transparent; opacity: .34; cursor: pointer; transition: opacity .2s ease; }
-.tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: #fff; transform: scaleX(0); transition: transform .26s ease; }
+.tabs button { position: relative; display: flex; align-items: center; gap: 9px; padding: 0 0 13px; color: inherit; border: 0; background: transparent; opacity: .34; cursor: pointer; transition: opacity var(--ui-fast) var(--ui-ease); }
+.tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: #fff; transform: scaleX(0); transition: transform var(--ui-normal) var(--ui-ease); }
 .tabs button:hover, .tabs button[aria-selected="true"] { opacity: 1; }
 .tabs button[aria-selected="true"]::after { transform: scaleX(1); }
 .tabs button span, .tabs button small { font-size: 7px; opacity: .5; }
 .links { align-self: center; width: min(1380px,100%); margin: 0 auto; border-top: 1px solid rgba(255,255,255,.17); animation: linksIn .48s cubic-bezier(.16,1,.3,1) both; }
-.links a { display: grid; grid-template-columns: 44px minmax(0,1fr) minmax(130px,20vw) 36px; align-items: center; min-height: clamp(62px,8vh,90px); color: inherit; border-bottom: 1px solid rgba(255,255,255,.17); text-decoration: none; transition: opacity .22s ease, padding .3s cubic-bezier(.16,1,.3,1); }
+.links a { display: grid; grid-template-columns: 44px minmax(0,1fr) minmax(130px,20vw) 36px; align-items: center; min-height: clamp(62px,8vh,90px); color: inherit; border-bottom: 1px solid rgba(255,255,255,.17); text-decoration: none; transition: opacity var(--ui-fast) var(--ui-ease), padding var(--ui-normal) var(--ui-ease); }
 .links span { opacity: .3; }
 .links strong { font-size: clamp(28px,3.4vw,58px); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
 .links small { opacity: .36; }
-.links i { justify-self: end; font-style: normal; font-size: 18px; transition: transform .25s ease; }
+.links i { justify-self: end; font-style: normal; font-size: 18px; transition: transform var(--ui-normal) var(--ui-ease); }
 .links:has(a:hover) a:not(:hover) { opacity: .22; }
 .links a:hover { padding-left: 14px; }
 .links a:hover i { transform: translate(3px,-3px); }

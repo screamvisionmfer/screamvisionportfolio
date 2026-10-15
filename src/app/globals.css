@@ -1,4 +1,8 @@
 :root {
+  --ui-fast: 180ms;
+  --ui-normal: 280ms;
+  --ui-reveal: 440ms;
+  --ui-ease: cubic-bezier(.2, .8, .2, 1);
   color-scheme: light;
   font-synthesis: none;
   text-rendering: geometricPrecision;
@@ -17,5 +21,11 @@ body {
 
 button, a { color: inherit; font: inherit; }
 button { border: 0; }
+
+:where(a, button, input, [tabindex]):focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+button:disabled { cursor: default; }
+@media (prefers-reduced-motion: reduce) {
+  :root { --ui-fast: 0ms; --ui-normal: 0ms; --ui-reveal: 0ms; }
+}
 
 ::selection { background: rgba(20, 20, 12, .86); color: #fff; }

@@ -27,7 +27,7 @@
 .cardTitle p { margin: 0 0 10px; text-transform: uppercase; font-size: 8px; letter-spacing: .13em; opacity: .7; }
 .cardTitle h2 { margin: 0; max-width: 850px; font-size: clamp(32px, 3.25vw, 58px); line-height: .82; letter-spacing: -.07em; text-transform: uppercase; }
 .cardAction { position: absolute; right: 23px; bottom: 24px; display: flex; align-items: center; gap: 12px; text-transform: uppercase; font-size: 8px; font-weight: 700; letter-spacing: .09em; }
-.cardAction i { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,.58); border-radius: 50%; font-style: normal; font-size: 16px; transition: color .25s ease, background .25s ease, transform .35s ease; }
+.cardAction i { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,.58); border-radius: 50%; font-style: normal; font-size: 16px; transition: color var(--ui-normal) var(--ui-ease), background var(--ui-normal) var(--ui-ease), transform var(--ui-normal) var(--ui-ease); }
 .collabCard:hover .cardMedia img { transform: scale(1.02); }
 .collabCard:hover .cardMedia::after { transform: translateX(115%); }
 .collabCard:hover .cardAction i { color: #111; background: #fff; transform: rotate(45deg); }
@@ -44,7 +44,7 @@
 .caseInfo dl div { display: grid; grid-template-columns: 64px 1fr; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.2); text-transform: uppercase; font-size: 8px; line-height: 1.45; letter-spacing: .09em; }
 .caseInfo dt { opacity: .42; }
 .caseInfo dd { margin: 0; }
-.magicButton { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 12px 12px 15px; border: 1px solid rgba(255,255,255,.5); color: inherit; text-decoration: none; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: .08em; transition: color .25s ease, background .25s ease; }
+.magicButton { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 12px 12px 15px; border: 1px solid rgba(255,255,255,.5); color: inherit; text-decoration: none; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: .08em; transition: color var(--ui-normal) var(--ui-ease), background var(--ui-normal) var(--ui-ease); }
 .magicButton i { display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid rgba(255,255,255,.5); border-radius: 50%; font-style: normal; }
 .magicButton:hover { color: #111; background: #f4f0e9; }
 .caseViewport { position: absolute; z-index: 10; inset: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; overscroll-behavior: contain; touch-action: none; cursor: grab; scroll-snap-type: x mandatory; mask-image: linear-gradient(90deg, transparent 0, transparent 19vw, #000 32vw, #000 100%); }
@@ -75,7 +75,7 @@
 .assetPreview[data-closing="true"] .previewAsset { animation: previewMediaOut .48s cubic-bezier(.55,.05,.35,1) both; }
 .assetPreview[data-dragging="true"] .previewAsset { transition: none; }
 .previewAsset img, .previewAsset video { width: 100%; height: 100%; object-fit: contain; }
-.previewClose { position: absolute; z-index: 3; right: 28px; top: 26px; padding: 0; color: #fff; background: transparent; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: .09em; cursor: pointer; }
+
 .previewMeta { position: absolute; z-index: 3; left: 28px; right: 28px; bottom: 22px; display: flex; justify-content: space-between; text-transform: uppercase; font-size: 8px; letter-spacing: .09em; }
 .previewMeta span:last-child { opacity: .45; }
 @keyframes cardReveal { from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(22px); } to { opacity: 1; clip-path: inset(0); transform: translateY(0); } }
