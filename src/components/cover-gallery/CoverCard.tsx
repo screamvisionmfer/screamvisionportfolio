@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import { CSSProperties, useState } from "react";
+import { PortfolioImage as Image } from "@/components/portfolio-image/PortfolioImage";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { CoverItem } from "@/data/covers";
 import styles from "./coverGallery.module.css";
 
@@ -19,6 +19,18 @@ type CoverCardProps = {
 export function CoverCard({ item, index, active, positionRef, onSelect, loading, progress, showProgress }: CoverCardProps) {
   const [hasImage, setHasImage] = useState(false);
   const [motionReady, setMotionReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const sync = () => {
+      if (active && !document.hidden) void video.play().catch(() => undefined);
+      else video.pause();
+    };
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    return () => { document.removeEventListener("visibilitychange", sync); video.pause(); };
+  }, [active]);
   const initialScale = index === 0 ? 1 : Math.max(0.44, 0.68 - (index - 1) * 0.12);
   const initialStyle = {
     transform: `translate3d(calc(-50% + ${index * 31}vw), calc(-50% + ${Math.min(index, 2.5) * 12}px), ${index === 0 ? 80 : Math.max(-150, -(index - 1) * 100)}px) rotateY(${index === 0 ? 0 : index === 1 ? -24 : Math.max(-46, -24 - (index - 1) * 11)}deg) rotateZ(${Math.min(index * 0.65, 1.35)}deg) scale(${initialScale})`,
@@ -35,7 +47,7 @@ export function CoverCard({ item, index, active, positionRef, onSelect, loading,
           <div className={styles.cardFace}>
             <Image className={`${styles.coverImage} ${hasImage ? styles.coverImageLoaded : ""}`} src={item.image} alt={`${item.title} — ${item.artist}`} fill sizes="(max-width: 679px) 59vw, (max-width: 1023px) 44vw, 34vw" priority={index < 2} draggable="false" unoptimized onLoad={() => setHasImage(true)} onError={() => setHasImage(false)} />
             {active && item.motion && (
-              <video className={`${styles.motionCover} ${motionReady ? styles.motionCoverReady : ""}`} src={item.motion} muted loop autoPlay playsInline preload="metadata" poster={item.image} onCanPlay={() => setMotionReady(true)} />
+              <video ref={videoRef} className={`${styles.motionCover} ${motionReady ? styles.motionCoverReady : ""}`} src={item.motion} muted loop playsInline preload="metadata" onCanPlay={() => setMotionReady(true)} />
             )}
             <div className={`${styles.placeholder} ${styles[`motif${item.placeholder.motif[0].toUpperCase()}${item.placeholder.motif.slice(1)}`]}`} aria-hidden="true">
               <span className={styles.placeholderIndex}>{item.number}</span>

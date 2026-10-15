@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { covers } from "@/data/covers";
+import { mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import styles from "./coverGallery.module.css";
 
 type BackdropLayers = { front: number; back: number };
@@ -19,12 +20,12 @@ export function BackgroundScene({ activeIndex }: { activeIndex: number }) {
     <div className={styles.background} aria-hidden="true">
       <div
         className={`${styles.coverBackdrop} ${styles.backdropBack}`}
-        style={{ backgroundImage: `url("${covers[layers.back].image}")` }}
+        style={{ backgroundImage: `url("${mediaSource(covers[layers.back].image)}")` }}
       />
       <div
         key={layers.front}
         className={`${styles.coverBackdrop} ${styles.backdropFront}`}
-        style={{ backgroundImage: `url("${covers[layers.front].image}")` }}
+        style={{ backgroundImage: `url("${mediaSource(covers[layers.front].image)}")` }}
       />
       <div className={styles.backdropShade} />
       <div className={styles.cardGlow} />

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { PortfolioImage as Image, mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import { SiteNav } from "@/components/site-nav/SiteNav";
 import { FullscreenButton } from "@/components/fullscreen-button/FullscreenButton";
@@ -24,6 +24,8 @@ export function IllustrationWorld() {
   const planeRefs = useRef<Array<HTMLDivElement | null>>([]);
   const stageRef = useRef<HTMLElement>(null);
   const coordinateRef = useRef<HTMLElement>(null);
+  const wakeRef = useRef<() => void>(() => {});
+  const [visibleTiles, setVisibleTiles] = useState<Set<string>>(() => new Set());
   const target = useRef({ x: 0, y: 0 });
   const current = useRef({ x: 0, y: 0 });
   const velocity = useRef({ x: 0, y: 0 });
@@ -35,11 +37,28 @@ export function IllustrationWorld() {
   const [playMode, setPlayMode] = useState(true);
   const selectedArt = selected === null ? null : illustrations[selected];
 
-  useEffect(() => { motion.current.playMode = playMode; }, [playMode]);
+  useEffect(() => { motion.current.playMode = playMode; wakeRef.current(); }, [playMode]);
   useEffect(() => {
     motion.current.selected = selected !== null;
     if (selected !== null) velocity.current = { x: 0, y: 0 };
+    wakeRef.current();
   }, [selected]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      setVisibleTiles((previous) => {
+        const next = new Set(previous);
+        entries.forEach((entry) => {
+          const key = (entry.target as HTMLElement).dataset.tileKey!;
+          if (entry.isIntersecting) next.add(key);
+          else next.delete(key);
+        });
+        return next;
+      });
+    }, { root: stageRef.current, rootMargin: "220px" });
+    worldRef.current?.querySelectorAll("[data-tile-key]").forEach((tile) => observer.observe(tile));
+    return () => observer.disconnect();
+  }, []);
 
   const switchArt = useCallback((direction: number) => {
     setSelected((value) => value === null ? 0 : (value + direction + illustrations.length) % illustrations.length);
@@ -56,6 +75,7 @@ export function IllustrationWorld() {
       }
       stageRef.current?.style.setProperty("--world-width", String(worldSize.current.width));
       stageRef.current?.style.setProperty("--world-height", String(worldSize.current.height));
+      wakeRef.current();
     };
     syncWorldSize();
     window.addEventListener("resize", syncWorldSize, { passive: true });
@@ -63,11 +83,16 @@ export function IllustrationWorld() {
     let running = !document.hidden;
     let lastTime = performance.now();
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const syncReducedMotion = () => { motion.current.reduced = reduceMotion.matches; };
+    const syncReducedMotion = () => { motion.current.reduced = reduceMotion.matches; wakeRef.current(); };
     syncReducedMotion();
     reduceMotion.addEventListener("change", syncReducedMotion);
     const render = (now: number) => {
+      frame = 0;
       if (!running) return;
+      if (motion.current.selected) {
+        stageRef.current?.setAttribute("data-animation-active", "false");
+        return;
+      }
       const world = worldRef.current;
       if (world) {
         const { width, height } = worldSize.current;
@@ -110,12 +135,19 @@ export function IllustrationWorld() {
         planeRefs.current.forEach((plane, index) => {
           if (!plane) return;
           const [x, y] = positions[index];
-          plane.style.transform = `translate(calc(-50% + ${x * 100}%), calc(-50% + ${y * 100}%))`;
+          const transform = `translate(calc(-50% + ${x * 100}%), calc(-50% + ${y * 100}%))`;
+          if (plane.style.transform !== transform) plane.style.transform = transform;
         });
         world.style.transform = `translate3d(${-current.current.x}px, ${-current.current.y}px, 0)`;
-        if (coordinateRef.current) coordinateRef.current.textContent = `${Math.round(current.current.x).toString().padStart(4, "0")} / ${Math.round(current.current.y).toString().padStart(4, "0")}`;
+        const coordinates = `${Math.round(current.current.x).toString().padStart(4, "0")} / ${Math.round(current.current.y).toString().padStart(4, "0")}`;
+        if (coordinateRef.current && coordinateRef.current.textContent !== coordinates) coordinateRef.current.textContent = coordinates;
       }
-      frame = requestAnimationFrame(render);
+      const moving = (!motion.current.reduced && (motion.current.playMode || Math.hypot(velocity.current.x, velocity.current.y) > .003)) || Math.abs(target.current.x - current.current.x) > .02 || Math.abs(target.current.y - current.current.y) > .02;
+      stageRef.current?.setAttribute("data-animation-active", String(moving));
+      if (moving) frame = requestAnimationFrame(render);
+    };
+    wakeRef.current = () => {
+      if (running && frame === 0) { lastTime = performance.now(); frame = requestAnimationFrame(render); }
     };
     const syncVisibility = () => {
       running = !document.hidden;
@@ -134,6 +166,7 @@ export function IllustrationWorld() {
       window.removeEventListener("resize", syncWorldSize);
       document.removeEventListener("visibilitychange", syncVisibility);
       reduceMotion.removeEventListener("change", syncReducedMotion);
+      wakeRef.current = () => {};
     };
   }, []);
 
@@ -151,6 +184,7 @@ export function IllustrationWorld() {
       if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") target.current.x += step;
       if (event.key === "ArrowUp" || event.key.toLowerCase() === "w") target.current.y -= step;
       if (event.key === "ArrowDown" || event.key.toLowerCase() === "s") target.current.y += step;
+      wakeRef.current();
     };
     window.addEventListener("keydown", onKey);
     return () => {
@@ -167,6 +201,7 @@ export function IllustrationWorld() {
       velocity.current = { x: 0, y: 0 };
       target.current.x += event.deltaX || event.deltaY * .58;
       target.current.y += event.deltaY * .72;
+      wakeRef.current();
     };
     stage.addEventListener("wheel", onWheel, { passive: false });
     return () => stage.removeEventListener("wheel", onWheel);
@@ -199,6 +234,7 @@ export function IllustrationWorld() {
     if (Math.hypot(dx, dy) > 6) pointer.current.moved = true;
     target.current.x = pointer.current.cameraX - dx;
     target.current.y = pointer.current.cameraY - dy;
+    wakeRef.current();
   };
 
   const pointerUp = (event: ReactPointerEvent<HTMLElement>) => {
@@ -206,6 +242,7 @@ export function IllustrationWorld() {
     pointer.current.active = false;
     motion.current.dragging = false;
     setDragging(false);
+    wakeRef.current();
     if (!pointer.current.moved && pointer.current.index >= 0) {
       velocity.current = { x: 0, y: 0 };
       setSelected(pointer.current.index);
@@ -221,7 +258,8 @@ export function IllustrationWorld() {
           <div key={copy.id} ref={(node) => { planeRefs.current[copyIndex] = node; }} className={styles.plane} style={{ transform: `translate(calc(-50% + ${copy.x * 100}%), calc(-50% + ${copy.y * 100}%))` }} aria-hidden={copyIndex !== 0}>
             {planeArtIndexes[copyIndex].map((artIndex, cellIndex) => {
               const art = illustrations[artIndex];
-              return <ArtTile key={`${copy.id}-${cellIndex}-${art.id}`} art={art} index={artIndex} priority={copyIndex === 0 && cellIndex < 5} arrival={copyIndex === 0 && cellIndex >= 18 && cellIndex <= 29} />;
+              const tileKey = `${copy.id}-${cellIndex}`;
+              return <ArtTile key={tileKey} tileKey={tileKey} visible={visibleTiles.has(tileKey)} art={art} index={artIndex} />;
             })}
           </div>
         ))}
@@ -242,14 +280,10 @@ export function IllustrationWorld() {
   );
 }
 
-function ArtTile({ art, index, priority, arrival }: { art: Illustration; index: number; priority: boolean; arrival: boolean }) {
-  const arrivalStyle = arrival ? {
-    "--entry-scale": index % 3 === 0 ? 1.14 : index % 3 === 1 ? .86 : 1.08,
-    "--entry-delay": `${((index * 7) % 12) * 52}ms`,
-  } as CSSProperties : {};
+function ArtTile({ art, index, tileKey, visible }: { art: Illustration; index: number; tileKey: string; visible: boolean }) {
   return (
-    <button className={`${styles.tile} ${arrival ? styles.arrivingTile : ""}`} type="button" data-art-index={index} style={{ "--tile-accent": art.accent, ...arrivalStyle } as CSSProperties} tabIndex={-1}>
-      <Image src={art.image} alt={art.title} fill sizes="(max-width: 700px) 42vw, 22vw" priority={priority} draggable="false" />
+    <button className={styles.tile} type="button" data-art-index={index} data-tile-key={tileKey} style={{ "--tile-accent": art.accent } as CSSProperties} tabIndex={-1}>
+      {visible && <Image src={mediaSource(art.image)} alt={art.title} fill sizes="(max-width: 700px) 238px, 420px" loading="eager" draggable="false" />}
       <span><b>{String(index + 1).padStart(2, "0")}</b><strong>{art.title}</strong><i>{art.year}</i></span>
     </button>
   );

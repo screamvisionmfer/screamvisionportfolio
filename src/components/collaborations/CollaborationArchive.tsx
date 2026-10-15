@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { PortfolioImage as Image } from "@/components/portfolio-image/PortfolioImage";
 import { useRouter } from "next/navigation";
 import { CSSProperties, useState } from "react";
 import { collaborations } from "@/data/collaborations";

@@ -18,6 +18,7 @@ export function useGalleryController(
   const velocity = useRef(0);
   const dragging = useRef(false);
   const frameCallback = useRef(onFrame);
+  const wake = useRef<() => void>(() => {});
   const [activeIndex, setActiveIndex] = useState(0);
 
   frameCallback.current = onFrame;
@@ -28,6 +29,7 @@ export function useGalleryController(
     const next = clamp(index);
     target.current = next;
     velocity.current = 0;
+    wake.current();
   }, [clamp]);
 
   const nudge = useCallback((direction: number) => {
@@ -74,6 +76,7 @@ export function useGalleryController(
       wheelSpeed: 0.7,
       tolerance: 2,
       onPress: (self) => {
+        wake.current();
         if (self.event.type !== "wheel") {
           dragging.current = true;
           velocity.current = 0;
@@ -85,6 +88,7 @@ export function useGalleryController(
         }
       },
       onChange: (self) => {
+        wake.current();
         const isWheel = self.event.type === "wheel";
         const raw = Math.abs(self.deltaX) > Math.abs(self.deltaY) ? self.deltaX : self.deltaY;
         if (isWheel) {
@@ -104,6 +108,7 @@ export function useGalleryController(
         }
       },
       onRelease: () => {
+        wake.current();
         dragging.current = false;
         const displacement = dragStartX - pointerX;
         target.current = Math.abs(displacement) > 60
@@ -114,6 +119,7 @@ export function useGalleryController(
         emitRipple();
       },
       onStop: () => {
+        wake.current();
         if (!dragging.current) {
           velocity.current = 0;
           target.current = clamp(Math.round(target.current));
@@ -138,6 +144,8 @@ export function useGalleryController(
     window.addEventListener("keydown", onKeyDown);
 
     const tick = (now: number) => {
+      raf = 0;
+      if (document.hidden) return;
       const delta = lastTime ? Math.min(2, Math.max(0.5, (now - lastTime) / 16.667)) : 1;
       lastTime = now;
       if (!dragging.current) {
@@ -174,14 +182,30 @@ export function useGalleryController(
         lastActive = nearest;
         setActiveIndex(nearest);
       }
-      raf = requestAnimationFrame(tick);
+      const moving = dragging.current || Math.abs(target.current - progress.current) > .00005 || Math.abs(motionVelocity) > .00005 || Math.abs(target.current - Math.round(target.current)) > .00005;
+      root.dataset.animationActive = String(moving);
+      if (moving) raf = requestAnimationFrame(tick);
     };
+    wake.current = () => {
+      if (!raf && !document.hidden) { lastTime = 0; raf = requestAnimationFrame(tick); }
+    };
+    const syncVisibility = () => {
+      root.dataset.hidden = String(document.hidden);
+      if (document.hidden) { cancelAnimationFrame(raf); raf = 0; root.dataset.animationActive = "false"; }
+      else wake.current();
+    };
+    const resize = () => { lastRendered = Number.NaN; wake.current(); };
+    document.addEventListener("visibilitychange", syncVisibility);
+    window.addEventListener("resize", resize);
     raf = requestAnimationFrame(tick);
 
     return () => {
       observer.kill();
       cancelAnimationFrame(raf);
       window.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("visibilitychange", syncVisibility);
+      window.removeEventListener("resize", resize);
+      wake.current = () => {};
     };
   }, [clamp, count, nudge, rootRef]);
 

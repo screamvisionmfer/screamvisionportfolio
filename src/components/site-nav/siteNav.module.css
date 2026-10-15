@@ -11,7 +11,7 @@
 .logo:hover img { transform: scale(1.05); animation: logoColors 2.8s linear infinite; }
 .menuButton, .mobilePanel { display: none; }
 @keyframes logoColors { 0% { filter: sepia(1) saturate(8) hue-rotate(0deg); } 50% { filter: sepia(1) saturate(8) hue-rotate(190deg); } 100% { filter: sepia(1) saturate(8) hue-rotate(360deg); } }
-@media (max-width: 760px) {
+@media (max-width: 1000px) {
   .header { position: fixed; z-index: 4000; align-items: start; padding: max(13px, env(safe-area-inset-top)) 16px 0; }
   .header nav { display: none; }
   .logo, .logo img { width: 126px; height: 66px; }
@@ -25,7 +25,7 @@
   .mobilePanel { position: fixed; z-index: 1; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: calc(92px + env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom)); color: #f5f2ed; background: radial-gradient(circle at 78% 18%, rgba(232,85,45,.22), transparent 32%), #080908; opacity: 0; clip-path: inset(0 0 100% 0); pointer-events: none; transition: clip-path .72s cubic-bezier(.76,0,.2,1), opacity .35s ease; }
   .header[data-menu-open="true"] .mobilePanel { opacity: 1; clip-path: inset(0); pointer-events: auto; }
   .mobilePanel nav { display: flex; flex: 1; flex-direction: column; justify-content: center; gap: 0; width: 100%; padding: 0; }
-  .mobilePanel nav a { display: grid; grid-template-columns: 30px 1fr auto; align-items: baseline; min-height: 11.5svh; padding: 12px 2px; border-bottom: 1px solid rgba(255,255,255,.14); color: #f5f2ed; opacity: .48; transform: translateY(22px); transition: opacity .3s ease, transform .55s cubic-bezier(.18,.78,.16,1); }
+  .mobilePanel nav a { display: grid; grid-template-columns: 30px 1fr auto; align-items: baseline; min-height: 8.5svh; padding: 12px 2px; border-bottom: 1px solid rgba(255,255,255,.14); color: #f5f2ed; opacity: .48; transform: translateY(22px); transition: opacity .3s ease, transform .55s cubic-bezier(.18,.78,.16,1); }
   .header[data-menu-open="true"] .mobilePanel nav a { transform: translateY(0); }
   .mobilePanel nav a:nth-child(2) { transition-delay: .04s; }
   .mobilePanel nav a:nth-child(3) { transition-delay: .08s; }

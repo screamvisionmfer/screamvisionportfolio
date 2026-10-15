@@ -281,3 +281,4 @@
   .cardLoading strong { animation: none; }
   .info { transition-duration: .14s; }
 }
+.cardPosition[data-offscreen="true"] .cardFloat, .cardPosition[data-in-view="false"] .cardFloat, .gallery[data-hidden="true"] * { animation-play-state: paused !important; }

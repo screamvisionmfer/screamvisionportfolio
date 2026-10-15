@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { covers } from "@/data/covers";
-import { projects } from "@/data/projects";
+
 import { BackgroundScene } from "./BackgroundScene";
 import { CoverCard } from "./CoverCard";
 import { CoverInfo } from "./CoverInfo";
@@ -27,6 +27,14 @@ export function CoverGallery() {
   const [collapsing, setCollapsing] = useState(false);
   const [arriving, setArriving] = useState(false);
   useGalleryTilt(rootRef, cardRefs);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { (entry.target as HTMLElement).dataset.inView = String(entry.isIntersecting); });
+    });
+    cardRefs.current.forEach((card) => { if (card) observer.observe(card); });
+    return () => observer.disconnect();
+  }, []);
 
   const renderFrame = useCallback((progress: number) => {
     const root = rootRef.current;
@@ -55,7 +63,8 @@ export function CoverGallery() {
       const relative = index - progress;
       const distance = Math.abs(relative);
       const sign = Math.sign(relative);
-      card.style.visibility = "visible";
+      card.style.visibility = distance < 3.25 ? "visible" : "hidden";
+      card.dataset.offscreen = String(distance >= 3.25);
       card.style.willChange = distance < 2.6 ? "transform, opacity" : "auto";
       const nearScale = mobile ? 0.73 : tablet ? 0.69 : 0.66;
       const scale = distance <= 1 ? lerp(1, nearScale, distance) : Math.max(0.28, nearScale - (distance - 1) * 0.2);
@@ -108,81 +117,19 @@ export function CoverGallery() {
     }
   }, [goTo]);
 
-  const openProject = useCallback(async (index: number) => {
+  const navigationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (navigationTimer.current) clearTimeout(navigationTimer.current); }, []);
+  const openProject = useCallback((index: number) => {
     if (openingIndex !== null) return;
-    if (index !== activeIndex) {
-      goTo(index);
-      return;
-    }
+    if (index !== activeIndex) { goTo(index); return; }
     setOpeningIndex(index);
-    setOpeningProgress(0);
-    setShowPreloader(false);
-    setCollapsing(false);
-    const slug = covers[index].id;
-    const href = `/projects/${slug}`;
-    router.prefetch(href);
-    if (window.sessionStorage.getItem(`project-ready:${slug}`) === "true") {
-      const started = performance.now();
-      const animateCachedProgress = (now: number) => {
-        const time = Math.min(1, (now - started) / 760);
-        setOpeningProgress(Math.round((1 - Math.pow(1 - time, 2.4)) * 100));
-        if (time < 1) requestAnimationFrame(animateCachedProgress);
-        else {
-          setCollapsing(true);
-          window.setTimeout(() => router.push(href), 920);
-        }
-      };
-      requestAnimationFrame(animateCachedProgress);
-      return;
-    }
-    const project = projects.find((item) => item.slug === slug);
-    const assets = project?.assets ?? [];
-    setShowPreloader(true);
-    const preloaders = assets.map((asset) => new Promise<void>((resolve) => {
-      const finish = () => resolve();
-      if (asset.type === "motion" || asset.type === "canvas") {
-        const media = document.createElement("video");
-        media.preload = "metadata";
-        media.onloadedmetadata = finish;
-        media.onerror = finish;
-        media.src = asset.src;
-      } else {
-        const image = new window.Image();
-        image.onload = finish;
-        image.onerror = finish;
-        image.src = asset.src;
-      }
-    }));
-    const loadAssets = Promise.race([
-      Promise.all(preloaders).then(() => undefined),
-      new Promise<void>((resolve) => window.setTimeout(resolve, 5600)),
-    ]);
-    const duration = Math.min(5200, 3200 + assets.length * 420);
-    const animateProgress = new Promise<void>((resolve) => {
-      const started = performance.now();
-      let lastValue = -1;
-      let lastPaint = started - 80;
-      const tick = (now: number) => {
-        const time = Math.min(1, (now - started) / duration);
-        const eased = 1 - Math.pow(1 - time, 2.15);
-        const value = time >= 1 ? 100 : Math.min(99, Math.floor(eased * 100));
-        if (value !== lastValue && (now - lastPaint >= 72 || value === 100)) {
-          lastValue = value;
-          lastPaint = now;
-          setOpeningProgress(value);
-        }
-        if (time < 1) requestAnimationFrame(tick);
-        else resolve();
-      };
-      requestAnimationFrame(tick);
-    });
-    await Promise.all([loadAssets, animateProgress]);
     setOpeningProgress(100);
-    window.sessionStorage.setItem(`project-ready:${slug}`, "true");
+    setShowPreloader(false);
     setCollapsing(true);
-    window.setTimeout(() => router.push(href), 920);
+    const href = `/projects/${covers[index].id}`;
+    router.prefetch(href);
+    navigationTimer.current = setTimeout(() => router.push(href), window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450);
   }, [activeIndex, goTo, openingIndex, router]);
-
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { PortfolioImage as Image } from "@/components/portfolio-image/PortfolioImage";
 import { createPortal } from "react-dom";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState, WheelEvent as ReactWheelEvent } from "react";
 import type { Collaboration } from "@/data/collaborations";
@@ -10,22 +10,25 @@ import styles from "./collaborations.module.css";
 
 type CollabAsset = Collaboration["assets"][number];
 
-function CollabMedia({ asset, priority = false, preview = false }: { asset: CollabAsset; priority?: boolean; preview?: boolean }) {
+function CollabMedia({ asset, priority = false, preview = false, suspended = false }: { asset: CollabAsset; priority?: boolean; preview?: boolean; suspended?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (preview) {
-      void video.play().catch(() => undefined);
-      return () => video.pause();
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) void video.play().catch(() => undefined);
+    let visible = preview;
+    const sync = () => {
+      if (visible && !suspended && !document.hidden) void video.play().catch(() => undefined);
       else video.pause();
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
     }, { threshold: .12 });
     observer.observe(video);
-    return () => { observer.disconnect(); video.pause(); };
-  }, [preview]);
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    return () => { observer.disconnect(); document.removeEventListener("visibilitychange", sync); video.pause(); };
+  }, [preview, suspended]);
 
   if (asset.kind === "video") return <video ref={videoRef} src={asset.src} muted loop playsInline preload="metadata" />;
   return <Image src={asset.src} alt={asset.label} fill sizes={preview ? "92vw" : "(max-width: 760px) 84vw, 36vw"} priority={priority} draggable="false" unoptimized />;
@@ -195,7 +198,7 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
         <div className={styles.assetGrid}>
           {collaboration.assets.map((asset, index) => (
             <article key={asset.src} className={`${styles.asset} ${asset.kind === "video" ? styles.motionAsset : ""}`} data-asset-index={index} data-active={index === active}>
-              <button type="button" onClick={() => { if (galleryGesture.current.moved) return; setActive(index); setPreview(index); }} aria-label={`Open ${asset.label}`}><CollabMedia asset={asset} priority={index < 3} /></button>
+              <button type="button" onClick={() => { if (galleryGesture.current.moved) return; setActive(index); setPreview(index); }} aria-label={`Open ${asset.label}`}><CollabMedia asset={asset} priority={index < 2} suspended={preview !== null} /></button>
               <p><span>{String(index + 1).padStart(2, "0")}</span><strong>{asset.label}</strong><span>{asset.kind}</span></p>
             </article>
           ))}

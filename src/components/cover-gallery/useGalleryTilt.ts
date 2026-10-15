@@ -57,7 +57,7 @@ export function useGalleryTilt(
         face.style.setProperty("--shine-y", `${45 + currentY * 32}%`);
         face.style.setProperty("--tilt-shade", `${Math.abs(currentX) * 0.14}`);
       }
-      if (hovering || Math.abs(currentX) > 0.002 || Math.abs(currentY) > 0.002) frame = requestAnimationFrame(render);
+      if (hovering && (Math.abs(targetX - currentX) > 0.002 || Math.abs(targetY - currentY) > 0.002)) frame = requestAnimationFrame(render);
       else frame = 0;
     };
 
@@ -79,11 +79,7 @@ export function useGalleryTilt(
 
       const nextFace = card?.querySelector<HTMLElement>("[data-cover-face]") ?? null;
       if (!card || !nextFace) {
-        hovering = false;
-        targetX = 0;
-        targetY = 0;
-        if (hoveredCard) hoveredCard.dataset.hovered = "false";
-        hoveredCard = null;
+        leave();
         return;
       }
       if (nextFace !== face) {
@@ -104,6 +100,8 @@ export function useGalleryTilt(
     };
 
     const leave = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
       hovering = false;
       targetX = 0;
       targetY = 0;
@@ -115,11 +113,15 @@ export function useGalleryTilt(
 
     root.addEventListener("pointermove", move);
     root.addEventListener("pointerleave", leave);
+    const visibility = () => { if (document.hidden) leave(); };
+    document.addEventListener("visibilitychange", visibility);
+    const faces = cardRefs.current.map((card) => card?.querySelector("[data-cover-face]")).filter(Boolean);
     return () => {
       cancelAnimationFrame(frame);
       root.removeEventListener("pointermove", move);
       root.removeEventListener("pointerleave", leave);
-      resetFace(face);
+      document.removeEventListener("visibilitychange", visibility);
+      faces.forEach((element) => { if (element) gsap.killTweensOf(element); });
       if (hoveredCard) hoveredCard.dataset.hovered = "false";
     };
   }, [cardRefs, rootRef]);

@@ -10,6 +10,7 @@ const primary = [
   { label: "Main", href: "/" },
   { label: "Covers", href: "/covers" },
   { label: "Illustrations", href: "/illustrations" },
+  { label: "Cards", href: "/cards" },
   { label: "Collaborations", href: "/collaborations" },
 ];
 

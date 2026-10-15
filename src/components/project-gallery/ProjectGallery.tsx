@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { PortfolioImage as Image, mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
@@ -37,8 +37,13 @@ function VideoAsset({ asset, active, poster }: { asset: ProjectAsset; active: bo
     const video = videoRef.current;
     if (!video) return;
     if (Number.isFinite(video.duration)) setDuration(video.duration);
-    if (active) void video.play().catch(() => undefined);
-    else video.pause();
+    const sync = () => {
+      if (active && !document.hidden) void video.play().catch(() => undefined);
+      else video.pause();
+    };
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    return () => { document.removeEventListener("visibilitychange", sync); video.pause(); };
   }, [active]);
 
   const seek = (value: number) => {
@@ -53,11 +58,11 @@ function VideoAsset({ asset, active, poster }: { asset: ProjectAsset; active: bo
       <video
         ref={videoRef}
         src={asset.src}
-        poster={poster}
+        poster={mediaSource(poster)}
         muted={muted}
         loop
         playsInline
-        preload={active ? "auto" : "metadata"}
+        preload={active ? "auto" : "none"}
         onLoadedMetadata={(event) => { setDuration(event.currentTarget.duration); detectAudio(event.currentTarget); }}
         onDurationChange={(event) => setDuration(event.currentTarget.duration)}
         onTimeUpdate={(event) => setCurrent(event.currentTarget.currentTime)}
@@ -252,7 +257,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   };
 
   return (
-    <main ref={rootRef} className={styles.project} style={{ "--accent": project.accent, "--cover": `url("${project.cover}")` } as CSSProperties} data-dragging={dragging} data-leaving={leaving} data-direction={transitionDirection} data-arrival={arrivalDirection}>
+    <main ref={rootRef} className={styles.project} style={{ "--accent": project.accent, "--cover": `url("${mediaSource(project.cover)}")` } as CSSProperties} data-dragging={dragging} data-leaving={leaving} data-direction={transitionDirection} data-arrival={arrivalDirection}>
       <div className={styles.backdrop} aria-hidden="true" />
       <div className={styles.shade} aria-hidden="true" />
       <div className={styles.grain} aria-hidden="true" />
