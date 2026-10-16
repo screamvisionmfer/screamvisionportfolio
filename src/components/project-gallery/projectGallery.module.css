@@ -149,3 +149,9 @@
   .entryTransition span, .exitTransition span { width: 46vmin; }
 }
 @media (prefers-reduced-motion: reduce) { .project, .grain, .infoPanel, .viewport, .zoomOverlay, .zoomMedia { animation: none; } .track, .slide { transition-duration: .01ms; } }
+
+@media (max-width: 1000px), (hover: none) {
+  .grain { animation: none; transform: none; inset: 0; opacity: .08; }
+  .backdrop { animation: none; transform: none; filter: blur(18px) brightness(.31); }
+  .project[data-leaving="true"][data-direction="back"] .backdrop { filter: blur(18px) brightness(.31); transition: none; }
+}

@@ -23,6 +23,10 @@ const planeArtIndexes = copies.map((_, copyIndex) => [
 const clampLoop = (value: number, size: number) => value > size / 2 ? value - size : value < -size / 2 ? value + size : value;
 
 export function IllustrationWorld() {
+  const [view, setView] = useState<"world" | "grid">("world");
+  const gridRef = useRef<HTMLDivElement>(null);
+  const gridScroll = useRef(0);
+  const viewRef = useRef<"world" | "grid">("world");
   const worldRef = useRef<HTMLDivElement>(null);
   const planeRefs = useRef<Array<HTMLDivElement | null>>([]);
   const stageRef = useRef<HTMLElement>(null);
@@ -32,13 +36,38 @@ export function IllustrationWorld() {
   const target = useRef({ x: 0, y: 0 });
   const current = useRef({ x: 0, y: 0 });
   const velocity = useRef({ x: 0, y: 0 });
-  const motion = useRef({ dragging: false, playMode: true, selected: false, reduced: false });
+  const motion = useRef({ dragging: false, playMode: true, selected: false, reduced: false, grid: false });
   const worldSize = useRef({ width: 2800, height: 3734 });
   const pointer = useRef({ x: 0, y: 0, lastX: 0, lastY: 0, lastTime: 0, cameraX: 0, cameraY: 0, index: -1, moved: false, active: false });
   const [dragging, setDragging] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [playMode, setPlayMode] = useState(true);
   const selectedArt = selected === null ? null : illustrations[selected];
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem("illustration-view-v1") ?? "null");
+      if (saved) {
+        if (Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
+          current.current = { x: saved.x, y: saved.y }; target.current = { ...current.current };
+        }
+        gridScroll.current = Number.isFinite(saved.scroll) ? Math.max(0, saved.scroll) : 0;
+        if (saved.view === "grid") { motion.current.grid = true; setView("grid"); }
+        if (typeof saved.drift === "boolean") setPlayMode(saved.drift);
+      }
+    } catch { /* Storage is optional in private browsing. */ }
+    const save = () => {
+      try { sessionStorage.setItem("illustration-view-v1", JSON.stringify({ ...current.current, view: viewRef.current, scroll: gridScroll.current, drift: motion.current.playMode })); } catch {}
+    };
+    window.addEventListener("pagehide", save);
+    return () => { save(); window.removeEventListener("pagehide", save); };
+  }, []);
+  useEffect(() => {
+    viewRef.current = view; motion.current.grid = view === "grid";
+    velocity.current = { x: 0, y: 0 };
+    if (view === "grid" && gridRef.current) gridRef.current.scrollTop = gridScroll.current;
+    wakeRef.current();
+  }, [view]);
 
   useEffect(() => { motion.current.playMode = playMode; wakeRef.current(); }, [playMode]);
   useEffect(() => {
@@ -92,7 +121,7 @@ export function IllustrationWorld() {
     const render = (now: number) => {
       frame = 0;
       if (!running) return;
-      if (motion.current.selected) {
+      if (motion.current.selected || motion.current.grid) {
         stageRef.current?.setAttribute("data-animation-active", "false");
         return;
       }
@@ -181,6 +210,7 @@ export function IllustrationWorld() {
         if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") switchArt(1);
         return;
       }
+      if (view === "grid" || (event.target as HTMLElement).closest("button, a, input")) return;
       const step = event.shiftKey ? 280 : 150;
       velocity.current = { x: 0, y: 0 };
       if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") target.current.x -= step;
@@ -193,13 +223,13 @@ export function IllustrationWorld() {
     return () => {
       window.removeEventListener("keydown", onKey);
     };
-  }, [selected, switchArt]);
+  }, [selected, switchArt, view]);
 
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
     const onWheel = (event: WheelEvent) => {
-      if (selected !== null) return;
+      if (selected !== null || view === "grid") return;
       event.preventDefault();
       velocity.current = { x: 0, y: 0 };
       target.current.x += event.deltaX || event.deltaY * .58;
@@ -208,10 +238,10 @@ export function IllustrationWorld() {
     };
     stage.addEventListener("wheel", onWheel, { passive: false });
     return () => stage.removeEventListener("wheel", onWheel);
-  }, [selected]);
+  }, [selected, view]);
 
   const pointerDown = (event: ReactPointerEvent<HTMLElement>) => {
-    if (selected !== null || (event.target as HTMLElement).closest("a, [data-ui]")) return;
+    if (view === "grid" || selected !== null || (event.target as HTMLElement).closest("a, [data-ui]")) return;
     const tile = (event.target as HTMLElement).closest<HTMLElement>("[data-art-index]");
     const now = performance.now();
     pointer.current = { x: event.clientX, y: event.clientY, lastX: event.clientX, lastY: event.clientY, lastTime: now, cameraX: target.current.x, cameraY: target.current.y, index: tile ? Number(tile.dataset.artIndex) : -1, moved: false, active: true };
@@ -254,9 +284,9 @@ export function IllustrationWorld() {
   };
 
   return (
-    <main ref={stageRef} className={styles.stage} data-dragging={dragging} data-preview={selected !== null} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
+    <main ref={stageRef} className={styles.stage} data-view={view} data-dragging={dragging} data-preview={selected !== null} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
       <div className={styles.ambient} aria-hidden="true" />
-      <div ref={worldRef} className={styles.world} aria-label="Infinite illustration world">
+      <div ref={worldRef} hidden={view !== "world"} className={styles.world} aria-label="Infinite illustration world">
         {copies.map((copy, copyIndex) => (
           <div key={copy.id} ref={(node) => { planeRefs.current[copyIndex] = node; }} className={styles.plane} style={{ transform: `translate(calc(-50% + ${copy.x * 100}%), calc(-50% + ${copy.y * 100}%))` }} aria-hidden={copyIndex !== 0}>
             {planeArtIndexes[copyIndex].map((artIndex, cellIndex) => {
@@ -267,6 +297,14 @@ export function IllustrationWorld() {
           </div>
         ))}
       </div>
+      {view === "grid" && <div ref={gridRef} className={styles.archiveGrid} data-ui aria-label="Illustration grid" onScroll={(event) => { gridScroll.current = event.currentTarget.scrollTop; }}>
+        <div className={styles.gridHeading}><h1>Illustrations</h1><span>{illustrations.length} original artworks</span></div>
+        <div className={styles.gridItems}>{illustrations.map((art, index) => <button type="button" key={art.id} className={styles.gridItem} onClick={() => setSelected(index)} aria-label={`Inspect ${art.title}`}>
+          <span className={styles.gridImage}><Image src={mediaSource(art.image)} alt={art.title} fill sizes="(max-width: 700px) 45vw, (max-width: 1100px) 30vw, 23vw" /></span>
+          <span className={styles.gridCaption}><small>{String(index + 1).padStart(2, "0")}</small><strong>{art.title}</strong><span>↗</span></span>
+        </button>)}</div>
+      </div>}
+      <div className={styles.viewSwitch} data-ui role="group" aria-label="Illustration layout"><button type="button" aria-pressed={view === "world"} onClick={() => setView("world")}>Explore</button><button type="button" aria-pressed={view === "grid"} onClick={() => setView("grid")}>Grid</button></div>
       <div className={styles.vignette} aria-hidden="true" />
 
       <div data-ui><SiteNav /></div>

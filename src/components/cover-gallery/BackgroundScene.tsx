@@ -11,9 +11,16 @@ export function BackgroundScene({ activeIndex }: { activeIndex: number }) {
   const [layers, setLayers] = useState<BackdropLayers>({ front: activeIndex, back: activeIndex });
 
   useEffect(() => {
-    setLayers((current) => current.front === activeIndex
-      ? current
-      : { back: current.front, front: activeIndex });
+    let cancelled = false;
+    const image = new window.Image();
+    image.src = mediaSource(covers[activeIndex].image);
+    // Retain the visible backdrop until its replacement is decoded.
+    image.decode().then(() => {
+      if (!cancelled) setLayers((current) => current.front === activeIndex
+        ? current
+        : { back: current.front, front: activeIndex });
+    }).catch(() => { /* Keep the last successfully loaded background. */ });
+    return () => { cancelled = true; };
   }, [activeIndex]);
 
   return (
