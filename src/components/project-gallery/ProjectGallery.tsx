@@ -294,7 +294,6 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       <SiteNav />
       <span className={styles.assetCounter}>{String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
 
-      <nav className={styles.materialNav} aria-label="Project materials">{project.assets.map((asset, index) => <button type="button" key={asset.src} aria-pressed={active === index} onClick={() => setActive(index)}><small>{String(index + 1).padStart(2, "0")}</small>{asset.label}</button>)}</nav>
       <section aria-label="Project artwork" ref={viewportRef} className={styles.viewport} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerCancel}>
         <div className={styles.track} style={{ transform: `translate3d(${trackX + dragX}px, 0, 0)` }}>
           {project.assets.map((asset, index) => (

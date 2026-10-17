@@ -1,16 +1,32 @@
-.page { position: relative; width: 100%; height: 100dvh; overflow: hidden; background: #0b0b0a; color: #f2f0e9; }
-.page::before { content: ""; position: absolute; inset: -20%; opacity: .3; background: radial-gradient(circle at 72% 28%, #40542f, transparent 24%), radial-gradient(circle at 26% 70%, #4d261b, transparent 28%); filter: blur(70px); animation: breathe 10s ease-in-out infinite alternate; }
-.chapter { position: absolute; left: 30px; top: 92px; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .45; }
-.page section { position: absolute; z-index: 1; left: clamp(30px, 8vw, 150px); bottom: clamp(70px, 12vh, 140px); width: min(1040px, 78vw); }
-.page h1 { max-width: 950px; margin: 0; font-size: clamp(62px, 10vw, 178px); line-height: .8; letter-spacing: -.075em; text-transform: uppercase; }
-.page section p { width: min(590px, 70vw); margin: 36px 0 0 auto; font-size: clamp(16px, 1.35vw, 23px); line-height: 1.35; letter-spacing: -.025em; }
-.note { position: absolute; right: 30px; bottom: 26px; margin: 0; font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .45; }
-@keyframes breathe { to { transform: translate3d(4%, -3%, 0) scale(1.08); } }
+.page { position: relative; width: 100%; height: 100svh; overflow: auto; background: #0b0b0a; color: #f2f0e9; scrollbar-color: #737c6f #0b0b0a; scrollbar-width: thin; }
+.page::before { content: ""; position: absolute; inset: 0 0 auto; height: 850px; pointer-events: none; background: radial-gradient(ellipse at 85% 20%, #40542f30, transparent 55%), radial-gradient(ellipse at 20% 60%, #4d261b28, transparent 50%); }
+.chapter { position: relative; display: block; margin: 102px 30px 0; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .5; }
+.intro, .work { position: relative; margin: 0 clamp(24px, 8vw, 150px); }
+.intro { padding: clamp(64px, 11vh, 120px) 0 80px; }
+.intro h1 { max-width: 1050px; margin: 0; font-size: clamp(68px, 10vw, 164px); line-height: .83; letter-spacing: -.075em; text-transform: uppercase; }
+.description { width: min(520px, 70%); margin: 40px 0 0 auto; }
+.description p { margin: 0; font-size: clamp(16px, 1.45vw, 22px); line-height: 1.5; color: #f2f0e9a6; }
+.description a { display: flex; align-items: center; justify-content: space-between; min-height: 56px; margin-top: 22px; border-bottom: 1px solid #f2f0e95c; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.description a span { font-size: 23px; }
+.work { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; padding: 34px 0 80px; border-top: 1px solid #f2f0e92b; }
+.work h2 { margin: 6px 0 0; font-size: clamp(22px, 2.7vw, 42px); line-height: .95; letter-spacing: -.05em; text-transform: uppercase; }
+.disciplines a { display: grid; grid-template-columns: 28px 1fr 24px; gap: 14px; align-items: baseline; padding: 25px 0; border-bottom: 1px solid #f2f0e92b; text-decoration: none; }
+.disciplines a:first-child { padding-top: 0; }
+.disciplines small { font-size: 9px; opacity: .4; }
+.disciplines h3 { margin: 0; font-size: clamp(24px, 3vw, 42px); line-height: 1; letter-spacing: -.055em; text-transform: uppercase; }
+.disciplines p { margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: #f2f0e980; }
+.disciplines a > span { font-size: 23px; }
+.disciplines a > span, .description a span { transition: transform var(--ui-normal) var(--ui-ease), color var(--ui-normal); }
+@media (hover: hover) { .disciplines a:hover > span, .description a:hover span { transform: translate(3px, -3px); color: #d7ff3f; } }
+.note { position: relative; margin: 0 30px; padding: 24px 0 max(24px, env(safe-area-inset-bottom)); border-top: 1px solid #f2f0e92b; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #f2f0e980; }
 @media (max-width: 760px) {
-  .chapter { left: 16px; top: 78px; }
-  .page section { left: 16px; bottom: 105px; width: calc(100% - 32px); }
-  .page h1 { font-size: clamp(58px, 21vw, 88px); }
-  .page section p { width: 100%; margin-top: 28px; font-size: 16px; }
-  .note { left: 16px; right: auto; bottom: 24px; }
+  .chapter { margin: 86px 16px 0; }
+  .intro, .work { margin-left: 16px; margin-right: 16px; }
+  .intro { padding: 64px 0 48px; }
+  .intro h1 { font-size: clamp(58px, 17vw, 112px); }
+  .description { width: 100%; margin-top: 32px; }
+  .work { grid-template-columns: 1fr; gap: 32px; padding: 28px 0 48px; }
+  .work h2 { font-size: 28px; }
+  .disciplines a { gap: 10px; }
+  .note { margin: 0 16px; line-height: 1.6; }
 }
-@media (prefers-reduced-motion: reduce) { .page::before { animation: none; } }

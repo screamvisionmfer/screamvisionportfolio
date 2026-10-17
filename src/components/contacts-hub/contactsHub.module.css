@@ -45,3 +45,5 @@
   .directory footer span:nth-child(2) { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .texture, .links { animation: none; }.links a, .links i, .tabs button::after { transition: none; } }
+
+@media (max-width: 760px), (hover: none) { .texture { animation: none; transform: none; inset: 0; } }
