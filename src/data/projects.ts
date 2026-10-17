@@ -40,24 +40,17 @@ const extras: Record<string, ProjectAsset[]> = {
   ],
 };
 
-const projectArtists: Record<string, string> = {
-  "hottest-otw": "CRASH RARRI",
-  "with-or-without-you": "94FATSO",
-  "crabs-in-a-barrel": "BIG HEAD BANDZ",
-  bump: "3COMMA$",
-  understood: "DRE DRILLA FT. BASKET CASE",
-  "clench-your-fist": "CRUEL WORLD",
-};
+
 
 export const projects: CoverProject[] = covers.map((cover) => ({
   slug: cover.id,
   title: cover.title,
-  artist: projectArtists[cover.id] ?? cover.artist,
+  artist: cover.artist,
   year: cover.year,
   cover: cover.image,
   accent: cover.accentColor,
   tools: ["Adobe Photoshop", ...(cover.motion || extras[cover.id]?.some((asset) => asset.type === "motion" || asset.type === "canvas") ? ["After Effects"] : [])],
-  services: ["Cover artwork", ...(extras[cover.id]?.some((asset) => asset.type === "motion") ? ["Motion design"] : [])],
+  services: ["Cover artwork", ...(extras[cover.id]?.some((asset) => asset.type === "motion" || asset.type === "canvas") ? ["Motion design"] : [])],
   assets: [
     { type: "cover", label: "Final cover", src: cover.image },
     ...(extras[cover.id] ?? []),

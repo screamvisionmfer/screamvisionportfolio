@@ -26,8 +26,18 @@ const coverItems: CoverItem[] = [
   { id: "motorbound-2", number: "09", title: "MotorBound 2", artist: "SCREAM VISION", year: "2022", image: "/covers/MotorBound-2.jpg", backgroundFrom: "#b3c8f4", backgroundTo: "#7e9ee1", blobColor: "#ef6d54", accentColor: "#23326b", textColor: "#10172b", placeholder: { label: "MOTOR / BOUND 2", motif: "echo" } },
 ];
 
+const projectArtists: Record<string, string> = {
+  "hottest-otw": "CRASH RARRI",
+  "with-or-without-you": "94FATSO",
+  "crabs-in-a-barrel": "BIG HEAD BANDZ",
+  bump: "3COMMA$",
+  understood: "DRE DRILLA FT. BASKET CASE",
+  "clench-your-fist": "CRUEL WORLD",
+};
+
 export const covers = coverItems.map((cover, index) => ({
   ...cover,
+  artist: projectArtists[cover.id] ?? cover.artist,
   image: [
     "/covers/Crash Rarri - Hottest OTW 2022/hottest otw cover.jpg",
     "/covers/94Fatso - With Or Without You 2024/%236028With-Or-Without-You.jpg",

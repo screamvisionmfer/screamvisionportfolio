@@ -128,6 +128,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
 
   useEffect(() => {
     setActive(0);
+    rootRef.current?.scrollTo({ top: 0, behavior: "instant" });
     setLeaving(false);
     setTransitionDirection("default");
     setZoomed(null);
@@ -140,10 +141,16 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   useEffect(() => {
     const onEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") closeZoom();
+      if (zoomed === null || zoomClosing || (event.target as HTMLElement).closest("input")) return;
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        const next = Math.max(0, Math.min(count - 1, zoomed + (event.key === "ArrowRight" ? 1 : -1)));
+        setZoomed(next); setActive(next);
+      }
     };
     window.addEventListener("keydown", onEscape);
     return () => window.removeEventListener("keydown", onEscape);
-  }, [closeZoom]);
+  }, [closeZoom, zoomed, zoomClosing, count]);
 
   useEffect(() => {
     measure();
@@ -174,6 +181,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       window.setTimeout(() => { wheelLock = false; }, 620);
     };
     const onKey = (event: KeyboardEvent) => {
+      if (zoomed !== null || (event.target as HTMLElement).closest("input, button, a")) return;
       if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") move(1);
       if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") move(-1);
     };
@@ -184,7 +192,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       if (wheelGalleryEnabled) viewport.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKey);
     };
-  }, [move]);
+  }, [move, zoomed]);
 
   const navigate = (href: string, direction: "next" | "previous" | "back") => {
     if (leaving) return;
@@ -266,7 +274,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       <div className={styles.shade} aria-hidden="true" />
       <div className={styles.grain} aria-hidden="true" />
 
-      <button type="button" className={styles.back} onClick={() => navigate(`/?cover=${project.slug}`, "back")}>← Back to covers</button>
+      <button type="button" className={styles.back} onClick={() => navigate(`/covers?cover=${project.slug}`, "back")}>← Back to covers</button>
 
       <aside ref={infoRef} className={styles.infoPanel} onPointerMove={tiltInfo} onPointerLeave={resetInfoTilt}>
         <div className={styles.identity}>
@@ -277,7 +285,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
         </div>
         <dl className={styles.meta}>
           <div><dt>Year</dt><dd>{project.year}</dd></div>
-          <div><dt>Services</dt><dd>{project.services.join(" / ")}</dd></div>
+          <div><dt>My role</dt><dd>{project.services.join(" / ")}</dd></div>
           <div><dt>Tools</dt><dd>{project.tools.join(" / ")}</dd></div>
           <div><dt>Materials</dt><dd>{String(project.assets.length).padStart(2, "0")}</dd></div>
         </dl>
@@ -286,11 +294,12 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       <SiteNav />
       <span className={styles.assetCounter}>{String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
 
-      <section ref={viewportRef} className={styles.viewport} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerCancel}>
+      <nav className={styles.materialNav} aria-label="Project materials">{project.assets.map((asset, index) => <button type="button" key={asset.src} aria-pressed={active === index} onClick={() => setActive(index)}><small>{String(index + 1).padStart(2, "0")}</small>{asset.label}</button>)}</nav>
+      <section aria-label="Project artwork" ref={viewportRef} className={styles.viewport} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerCancel}>
         <div className={styles.track} style={{ transform: `translate3d(${trackX + dragX}px, 0, 0)` }}>
           {project.assets.map((asset, index) => (
             <article key={`${asset.type}-${asset.src}`} ref={(node) => { slideRefs.current[index] = node; }} className={`${styles.slide} ${asset.type === "canvas" ? styles.canvasSlide : ""}`} data-active={index === active}>
-              <div className={styles.media} data-asset-index={index} role="button" tabIndex={0} aria-label={`Open ${asset.label}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") openAsset(index); }}>
+              <div className={styles.media} data-asset-index={index} role="button" tabIndex={0} aria-label={`Open ${asset.label}`} onKeyDown={(event) => { if (event.target === event.currentTarget && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); openAsset(index); } }}>
                 {asset.type === "motion" || asset.type === "canvas"
                   ? <VideoAsset asset={asset} active={index === active && zoomed === null} poster={project.cover} />
                   : <Image src={asset.src} alt={`${project.title} — ${asset.label}`} fill sizes="(max-width: 700px) 78vw, 52vw" priority={index === 0} draggable="false" unoptimized />}
@@ -303,7 +312,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
 
       <footer className={styles.footer}>
         <div className={styles.progress}><span style={{ transform: `scaleX(${(active + 1) / count})` }} /></div>
-        <div className={styles.actions}><button onClick={() => move(-1)} disabled={active === 0}>←</button><button onClick={() => move(1)} disabled={active === count - 1}>→</button></div>
+        <div className={styles.actions}><button aria-label="Previous material" onClick={() => move(-1)} disabled={active === 0}>←</button><button aria-label="Next material" onClick={() => move(1)} disabled={active === count - 1}>→</button></div>
       </footer>
 
       <div className={styles.projectSwitchers}>
@@ -323,7 +332,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
               ? <VideoAsset asset={zoomedAsset} active poster={project.cover} />
               : <Image src={zoomedAsset.src} alt={`${project.title} — ${zoomedAsset.label}`} fill sizes="94vw" draggable="false" unoptimized />}
           </div>
-          <div className={styles.zoomCaption}><span>{zoomedAsset.label}</span><span>Click outside or press Esc to close</span></div>
+          <div className={styles.zoomCaption} onClick={(event) => event.stopPropagation()}><span aria-live="polite">{zoomedAsset.label} · {String(zoomed! + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span><div className={styles.actions}><button aria-label="Previous artwork" disabled={zoomed === 0 || zoomClosing} onClick={() => { setZoomed(zoomed! - 1); setActive(zoomed! - 1); }}>←</button><button aria-label="Next artwork" disabled={zoomed === count - 1 || zoomClosing} onClick={() => { setZoomed(zoomed! + 1); setActive(zoomed! + 1); }}>→</button></div></div>
         </div>,
         document.body,
       )}

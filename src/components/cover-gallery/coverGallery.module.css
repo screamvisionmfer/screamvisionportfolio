@@ -291,3 +291,15 @@
   .cardShine, .cardSweep, .cardTexture { display: none; }
   .gallery[data-opening="true"] .background { animation: none; }
 }
+
+/* Release details remain available without requiring hover. */
+.info { opacity: 1; transform: translate(-50%, 0); }
+.infoTitle { min-width: 0; gap: 6px; }
+.infoTitle small { font-size: 8px; letter-spacing: .06em; color: #f5f2ed99; line-height: 1.4; }
+.viewProject { min-height: 44px; }
+@media (max-width: 679px) {
+  .info { bottom: calc(9% + env(safe-area-inset-bottom)); row-gap: 4px; }
+  .infoTitle strong { font-size: 14px; line-height: 1.2; }
+  .infoTitle span { line-height: 1.5; }
+  .viewProject { display: flex; grid-column: 2; justify-content: space-between; width: 100%; }
+}
