@@ -10,5 +10,5 @@ export default async function CollaborationPage({ params }: { params: Promise<{ 
   const { slug } = await params;
   const collaboration = collaborations.find((item) => item.slug === slug);
   if (!collaboration) notFound();
-  return <CollaborationCase collaboration={collaboration} />;
+  return <CollaborationCase key={slug} collaboration={collaboration} />;
 }
