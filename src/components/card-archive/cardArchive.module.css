@@ -237,3 +237,4 @@
 .ribbonTrack { animation: none; }
 @media (max-width: 600px) { .archive { --ribbon-top: 190px; --ribbon-bottom: 225px; --ribbon-preferred: clamp(158px, 46vw, 192px); --ribbon-gap: 28px; } }
 @media (max-height: 680px) { .archive { --ribbon-top: 156px; --ribbon-bottom: 140px; --ribbon-preferred: clamp(120px, calc((100svh - 350px) * .56), 185px); } .revealTarget { padding-top: 12px; padding-bottom: 12px; } }
+@media (max-width: 600px) { .footer { bottom: max(23px, env(safe-area-inset-bottom)); } }

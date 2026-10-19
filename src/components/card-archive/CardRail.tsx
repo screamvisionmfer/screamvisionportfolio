@@ -2,6 +2,7 @@
 
 import { Children, type ReactNode, type RefObject, useEffect, useRef } from "react";
 import styles from "./cardArchive.module.css";
+import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
 type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode };
 
@@ -40,7 +41,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
       if (next !== nearest.current) { nearest.current = next; select.current(next); }
       root.dataset.animationActive = String(down || Boolean(motion));
     };
-    const requestPaint = () => { if (!frame && !document.hidden) frame = requestAnimationFrame(paint); };
+    const requestPaint = () => { if (!frame && isPageActive()) frame = requestAnimationFrame(paint); };
     const stop = () => { cancelAnimationFrame(motion); motion = 0; };
     const goTo = (target: number) => {
       stop();
@@ -49,7 +50,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
       const duration = Math.min(700, 380 + Math.abs(end - start) * .18);
       let began = 0;
       const tick = (now: number) => {
-        if (document.hidden) { motion = 0; return; }
+        if (!isPageActive()) { motion = 0; return; }
         if (!began) began = now;
         const p = Math.min(1, (now - began) / duration);
         viewport.scrollLeft = start + (end - start) * (1 - Math.pow(1 - p, 4));
@@ -110,7 +111,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
     };
     const visibility = () => {
       stop();
-      if (document.hidden) { cancelAnimationFrame(frame); frame = 0; down = false; root.dataset.dragging = "false"; root.dataset.animationActive = "false"; }
+      if (!isPageActive()) { cancelAnimationFrame(frame); frame = 0; window.clearTimeout(wheelTimer); down = false; root.dataset.dragging = "false"; root.dataset.animationActive = "false"; }
       else goTo(desired.current);
     };
     const resize = new ResizeObserver(measure); resize.observe(viewport);
@@ -121,7 +122,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
     viewport.addEventListener("pointercancel", release);
     viewport.addEventListener("click", click, true);
     viewport.addEventListener("wheel", wheel, { passive: false });
-    document.addEventListener("visibilitychange", visibility);
+    const stopObservingActivity = observePageActivity(visibility);
     measure();
     return () => {
       stop(); cancelAnimationFrame(frame); window.clearTimeout(wheelTimer); resize.disconnect(); navigate.current = () => {};
@@ -129,7 +130,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
       viewport.removeEventListener("pointerdown", press); viewport.removeEventListener("pointermove", move);
       viewport.removeEventListener("pointerup", release); viewport.removeEventListener("pointercancel", release);
       viewport.removeEventListener("click", click, true); viewport.removeEventListener("wheel", wheel);
-      document.removeEventListener("visibilitychange", visibility);
+      stopObservingActivity();
     };
   }, [count, rootRef]);
 

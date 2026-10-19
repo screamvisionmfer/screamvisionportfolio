@@ -106,3 +106,8 @@
 .stage[data-dragging="true"] .tile img { transform: none; transition: none; }
 .stage[data-dragging="true"] .tile::after, .stage[data-dragging="true"] .tile span { opacity: 0; transition: none; }
 @media (hover: none) { .tile:hover { transform: none; } .tile:hover img { transform: none; } }
+@media (max-width: 700px) {
+  .viewSwitch button { min-height: 44px; }
+  .previewControls { grid-template-columns: 44px 1fr 44px; }
+  .previewControls button { width: 44px; height: 44px; }
+}

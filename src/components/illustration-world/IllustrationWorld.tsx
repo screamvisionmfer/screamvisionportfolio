@@ -1,4 +1,5 @@
 "use client";
+import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
 import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
 import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
@@ -111,7 +112,7 @@ export function IllustrationWorld() {
     syncWorldSize();
     window.addEventListener("resize", syncWorldSize, { passive: true });
     let frame = 0;
-    let running = !document.hidden;
+    let running = isPageActive();
     let lastTime = performance.now();
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const syncReducedMotion = () => { motion.current.reduced = reduceMotion.matches; wakeRef.current(); };
@@ -185,7 +186,7 @@ export function IllustrationWorld() {
       if (running && frame === 0) { lastTime = performance.now(); frame = requestAnimationFrame(render); }
     };
     const syncVisibility = () => {
-      running = !document.hidden;
+      running = isPageActive();
       stageRef.current?.setAttribute("data-animation-active", String(running));
       lastTime = performance.now();
       if (running && frame === 0) frame = requestAnimationFrame(render);
@@ -195,11 +196,11 @@ export function IllustrationWorld() {
       }
     };
     if (running) frame = requestAnimationFrame(render);
-    document.addEventListener("visibilitychange", syncVisibility);
+    const stopObservingActivity = observePageActivity(syncVisibility);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("resize", syncWorldSize);
-      document.removeEventListener("visibilitychange", syncVisibility);
+      stopObservingActivity();
       reduceMotion.removeEventListener("change", syncReducedMotion);
       wakeRef.current = () => {};
     };

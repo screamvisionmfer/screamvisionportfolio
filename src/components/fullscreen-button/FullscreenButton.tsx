@@ -5,8 +5,10 @@ import styles from "./fullscreenButton.module.css";
 
 export function FullscreenButton() {
   const [active, setActive] = useState(false);
+  const [supported, setSupported] = useState(false);
 
   useEffect(() => {
+    setSupported(Boolean(document.fullscreenEnabled && document.documentElement.requestFullscreen));
     const sync = () => setActive(Boolean(document.fullscreenElement));
     sync();
     document.addEventListener("fullscreenchange", sync);
@@ -14,9 +16,13 @@ export function FullscreenButton() {
   }, []);
 
   const toggle = async () => {
-    if (document.fullscreenElement) await document.exitFullscreen();
-    else await document.documentElement.requestFullscreen();
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await document.documentElement.requestFullscreen();
+    } catch { /* The browser may deny fullscreen after a device or window change. */ }
   };
+
+  if (!supported) return null;
 
   return (
     <button className={styles.button} type="button" onClick={toggle} aria-label={active ? "Exit fullscreen" : "Enter fullscreen"}>

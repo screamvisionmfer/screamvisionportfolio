@@ -3,6 +3,7 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Observer } from "gsap/Observer";
+import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
 gsap.registerPlugin(Observer);
 
@@ -129,6 +130,7 @@ export function useGalleryController(
     });
 
     const onKeyDown = (event: KeyboardEvent) => {
+      if (!isPageActive()) return;
       if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") {
         event.preventDefault();
         nudge(1);
@@ -145,7 +147,7 @@ export function useGalleryController(
 
     const tick = (now: number) => {
       raf = 0;
-      if (document.hidden) return;
+      if (!isPageActive()) return;
       const delta = lastTime ? Math.min(2, Math.max(0.5, (now - lastTime) / 16.667)) : 1;
       lastTime = now;
       if (!dragging.current) {
@@ -187,15 +189,18 @@ export function useGalleryController(
       if (moving) raf = requestAnimationFrame(tick);
     };
     wake.current = () => {
-      if (!raf && !document.hidden) { lastTime = 0; raf = requestAnimationFrame(tick); }
+      if (!raf && isPageActive()) { lastTime = 0; raf = requestAnimationFrame(tick); }
     };
     const syncVisibility = () => {
-      root.dataset.hidden = String(document.hidden);
-      if (document.hidden) { cancelAnimationFrame(raf); raf = 0; root.dataset.animationActive = "false"; }
-      else wake.current();
+      root.dataset.hidden = String(!isPageActive());
+      if (!isPageActive()) {
+        cancelAnimationFrame(raf); raf = 0; root.dataset.animationActive = "false";
+        dragging.current = false; root.dataset.dragging = "false"; velocity.current = 0;
+        observer.disable();
+      } else { observer.enable(); wake.current(); }
     };
     const resize = () => { lastRendered = Number.NaN; wake.current(); };
-    document.addEventListener("visibilitychange", syncVisibility);
+    const stopObservingActivity = observePageActivity(syncVisibility);
     window.addEventListener("resize", resize);
     raf = requestAnimationFrame(tick);
 
@@ -203,7 +208,7 @@ export function useGalleryController(
       observer.kill();
       cancelAnimationFrame(raf);
       window.removeEventListener("keydown", onKeyDown);
-      document.removeEventListener("visibilitychange", syncVisibility);
+      stopObservingActivity();
       window.removeEventListener("resize", resize);
       wake.current = () => {};
     };

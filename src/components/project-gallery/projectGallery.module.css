@@ -173,3 +173,10 @@
   .slide { width: min(40vw, calc(100svh - 290px)); }
   .canvasSlide { width: min(25vw, calc((100svh - 290px) * .5625)); }
 }
+
+/* Match the gallery's navigation tempo and avoid a long opaque hold. */
+.entryTransition, .entryTransition::before, .entryTransition span { animation-duration: .55s; }
+.exitTransition, .exitTransition::before, .exitTransition span { animation-duration: .45s; }
+.project[data-leaving="true"] .infoPanel, .project[data-leaving="true"] .viewport, .project[data-leaving="true"] .footer, .project[data-leaving="true"] .projectSwitchers, .project[data-leaving="true"] .back { transition-duration: .45s; }
+@keyframes circleFadeIn { 0%, 12% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .entryTransition, .exitTransition { display: none; } }

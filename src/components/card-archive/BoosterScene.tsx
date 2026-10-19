@@ -1,4 +1,5 @@
 "use client";
+import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
 import { useEffect, useRef } from "react";
 import type * as Three from "three";
@@ -159,7 +160,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
 
       const render = (now: number) => {
         raf = 0;
-        if (disposed || document.hidden || !inView || completed) { element.dataset.animationActive = "false"; return; }
+        if (disposed || !isPageActive() || !inView || completed) { element.dataset.animationActive = "false"; return; }
         const elapsedDelta = last ? (now - last) / 1000 : .016;
         const dt = Math.min(elapsedDelta, .05);
         last = now;
@@ -231,7 +232,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
         element.dataset.animationActive = String(moving);
         if (moving) raf = requestAnimationFrame(render);
       };
-      const wake = () => { if (!raf && !disposed && !document.hidden && inView && !completed) { last = 0; raf = requestAnimationFrame(render); } };
+      const wake = () => { if (!raf && !disposed && isPageActive() && inView && !completed) { last = 0; raf = requestAnimationFrame(render); } };
       const resize = () => {
         const { width, height } = element.getBoundingClientRect();
         if (!width || !height) return;
@@ -264,7 +265,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
       };
       const leave = () => { aim.x = -.16; aim.y = .08; wake(); };
       const visibility = () => {
-        if (document.hidden) { cancelAnimationFrame(raf); raf = 0; element.dataset.animationActive = "false"; }
+        if (!isPageActive()) { cancelAnimationFrame(raf); raf = 0; element.dataset.animationActive = "false"; }
         else wake();
       };
       const contextLost = (event: Event) => { event.preventDefault(); callbacks.current.onUnavailable(); };
@@ -274,14 +275,14 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
       const surface = element.parentElement!;
       surface.addEventListener("pointermove", pointer);
       surface.addEventListener("pointerleave", leave);
-      document.addEventListener("visibilitychange", visibility);
+      const stopObservingActivity = observePageActivity(visibility);
       renderer.domElement.addEventListener("webglcontextlost", contextLost);
       reduced.addEventListener("change", wake);
       cleanup = () => {
         cancelAnimationFrame(raf);
         resizeObserver.disconnect(); observer.disconnect();
         surface.removeEventListener("pointermove", pointer); surface.removeEventListener("pointerleave", leave);
-        document.removeEventListener("visibilitychange", visibility);
+        stopObservingActivity();
         reduced.removeEventListener("change", wake);
         renderer.domElement.removeEventListener("webglcontextlost", contextLost);
         geometries.forEach((g) => g.dispose()); materials.forEach((m) => m.dispose()); textures.forEach((t) => t.dispose());

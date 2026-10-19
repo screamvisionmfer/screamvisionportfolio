@@ -1,4 +1,5 @@
 "use client";
+import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
 import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
 import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
@@ -21,7 +22,7 @@ function CollabMedia({ asset, priority = false, preview = false, suspended = fal
     if (!video) return;
     let visible = preview;
     const sync = () => {
-      if (visible && !suspended && !document.hidden) void video.play().catch(() => undefined);
+      if (visible && !suspended && isPageActive()) void video.play().catch(() => undefined);
       else video.pause();
     };
     const observer = new IntersectionObserver(([entry]) => {
@@ -30,8 +31,8 @@ function CollabMedia({ asset, priority = false, preview = false, suspended = fal
     }, { threshold: .12 });
     observer.observe(video);
     sync();
-    document.addEventListener("visibilitychange", sync);
-    return () => { observer.disconnect(); document.removeEventListener("visibilitychange", sync); video.pause(); };
+    const stopObservingActivity = observePageActivity(sync);
+    return () => { observer.disconnect(); stopObservingActivity(); video.pause(); };
   }, [preview, suspended]);
 
   if (asset.kind === "video") return <video ref={videoRef} src={asset.src} muted loop playsInline preload="metadata" />;

@@ -188,3 +188,8 @@
   .caseInfo dl div:nth-child(2) { grid-row: 2; }
   .assetGrid { padding-left: calc(50vw - min(42vw, 215px)); padding-right: calc(50vw - min(42vw, 215px)); }
 }
+
+.casePage::after { animation-duration: .55s; }
+@keyframes caseCurtain { 0%, 18% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
+@media (max-width: 760px) { .caseInfo { animation-duration: .44s; animation-delay: .1s; } }
+@media (prefers-reduced-motion: reduce) { .casePage::after { display: none; } }

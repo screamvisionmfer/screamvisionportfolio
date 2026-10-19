@@ -1,4 +1,5 @@
 "use client";
+import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
 import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
 import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
@@ -41,12 +42,12 @@ function VideoAsset({ asset, active, poster }: { asset: ProjectAsset; active: bo
     if (!video) return;
     if (Number.isFinite(video.duration)) setDuration(video.duration);
     const sync = () => {
-      if (active && !document.hidden) void video.play().catch(() => undefined);
+      if (active && isPageActive()) void video.play().catch(() => undefined);
       else video.pause();
     };
     sync();
-    document.addEventListener("visibilitychange", sync);
-    return () => { document.removeEventListener("visibilitychange", sync); video.pause(); };
+    const stopObservingActivity = observePageActivity(sync);
+    return () => { stopObservingActivity(); video.pause(); };
   }, [active]);
 
   const seek = (value: number) => {
@@ -94,6 +95,8 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   const dragActive = useRef(false);
   const dragMoved = useRef(false);
   const pendingAsset = useRef<number | null>(null);
+  const navigationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (navigationTimer.current) clearTimeout(navigationTimer.current); }, []);
   const [active, setActive] = useState(0);
   const [trackX, setTrackX] = useState(0);
   const [dragX, setDragX] = useState(0);
@@ -198,8 +201,11 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
     if (leaving) return;
     setTransitionDirection(direction);
     setLeaving(true);
-    if (direction === "next" || direction === "previous") window.sessionStorage.setItem("project-slide-direction", direction);
-    window.setTimeout(() => router.push(href), direction === "back" ? 920 : 820);
+    if (direction === "next" || direction === "previous") {
+      try { window.sessionStorage.setItem("project-slide-direction", direction); } catch {}
+    }
+    router.prefetch(href);
+    navigationTimer.current = setTimeout(() => router.push(href), window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450);
   };
 
   const openAsset = (index: number) => {
@@ -300,7 +306,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
             <article key={`${asset.type}-${asset.src}`} ref={(node) => { slideRefs.current[index] = node; }} className={`${styles.slide} ${asset.type === "canvas" ? styles.canvasSlide : ""}`} data-active={index === active}>
               <div className={styles.media} data-asset-index={index} role="button" tabIndex={0} aria-label={`Open ${asset.label}`} onKeyDown={(event) => { if (event.target === event.currentTarget && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); openAsset(index); } }}>
                 {asset.type === "motion" || asset.type === "canvas"
-                  ? <VideoAsset asset={asset} active={index === active && zoomed === null} poster={project.cover} />
+                  ? <VideoAsset asset={asset} active={index === active && zoomed === null && !leaving} poster={project.cover} />
                   : <Image src={asset.src} alt={`${project.title} — ${asset.label}`} fill sizes="(max-width: 700px) 78vw, 52vw" priority={index === 0} draggable="false" unoptimized />}
               </div>
               <div className={styles.caption}><span>{String(index + 1).padStart(2, "0")}</span><strong>{asset.label}</strong><span>{asset.type}</span></div>

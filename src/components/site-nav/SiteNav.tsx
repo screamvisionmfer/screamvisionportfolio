@@ -23,6 +23,14 @@ export function SiteNav({ className = "" }: { className?: string }) {
 
   useEffect(() => setMenuOpen(false), [pathname]);
   useEffect(() => {
+    document.documentElement.dataset.navigationOpen = String(menuOpen);
+    window.dispatchEvent(new Event("portfolio:navigation"));
+  }, [menuOpen]);
+  useEffect(() => () => {
+    delete document.documentElement.dataset.navigationOpen;
+    window.dispatchEvent(new Event("portfolio:navigation"));
+  }, []);
+  useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1001px)");
     const resize = () => { if (desktop.matches) setMenuOpen(false); };
     desktop.addEventListener("change", resize);

@@ -29,3 +29,6 @@ button:disabled { cursor: default; }
 }
 
 ::selection { background: rgba(20, 20, 12, .86); color: #fff; }
+
+html[data-navigation-open="true"] main * { animation-play-state: paused !important; }
+html[data-navigation-open="true"] main { touch-action: auto !important; }
