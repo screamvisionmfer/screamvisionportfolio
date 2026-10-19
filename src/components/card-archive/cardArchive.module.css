@@ -169,3 +169,33 @@
 }
 @media (max-height: 650px) and (min-width: 601px) { .archive { --card-width: 160px; } .rail { top: 155px; bottom: 130px; } .grid { top: 183px; bottom: 135px; } .packStage { inset: 95px 0 105px; } .packDock { top: 150px; } .identity { bottom: 65px; } .identity h1 { font-size: 34px; } }
 @media (prefers-reduced-motion: reduce) { .archive *, .inspection * { animation: none !important; transition: none !important; } }
+
+/* Deal once, then keep the collection still until the next interaction. */
+.archive { --card-width: clamp(152px, 14vw, 196px); --spacing: clamp(148px, 16vw, 220px); }
+.railSlot { --rest: translate3d(calc(-50% + var(--offset) * var(--spacing) + var(--drag, 0px)), calc(-50% + var(--distance) * 4px), calc(var(--distance) * -45px)) rotateY(calc(var(--offset) * -5deg)) rotateZ(calc(var(--offset) * 1deg)) scale(calc(1 - var(--distance) * .025)); transform: var(--rest); opacity: calc(1 - var(--distance) * .1); }
+.slab { animation: none; }
+.rail[data-dealing="true"] { pointer-events: none; }
+.rail[data-dealing="true"] .railSlot { animation: dealFromStack .8s cubic-bezier(.16,1,.3,1) var(--arrival) both; }
+.gridSlot .slab { animation: inspectIn .4s ease var(--arrival) backwards; }
+.skipOpening { position: absolute; z-index: 5; left: 50%; bottom: -36px; transform: translateX(-50%); min-height: 44px; padding: 10px 16px; background: transparent; color: #c5cfb0; font-size: 8px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.slabShine { mix-blend-mode: normal; }
+.railControls > button, .inspectionControls > button { width: 44px; height: 44px; flex-shrink: 0; }
+.railControls button:disabled { opacity: .35; }
+.viewSwitch button { min-height: 36px; }
+.inspectionArt { touch-action: pan-y pinch-zoom; cursor: grab; }
+.inspectionArt:active { cursor: grabbing; }
+.inspectionArt img { pointer-events: none; }
+@keyframes dealFromStack {
+  0% { opacity: 0; transform: translate3d(-50%, -24%, -160px) rotateY(95deg) rotateZ(-9deg) scale(.55); }
+  35% { opacity: 1; }
+  100% { opacity: calc(1 - var(--distance) * .1); transform: var(--rest); }
+}
+@media (max-width: 600px) {
+  .archive { --card-width: clamp(136px, 40vw, 164px); --spacing: 145px; }
+  .viewSwitch button { min-height: 44px; }
+  .rail { top: 193px; }
+  .skipOpening { bottom: -43px; }
+}
+@media (max-height: 650px) { .archive { --card-width: 136px; } }
+@media (prefers-reduced-motion: reduce) { .rail[data-dealing="true"] .railSlot { animation: none; } }
+@media (max-width: 600px) { .inspection { padding-left: 12px; padding-right: 12px; overflow-x: hidden; } .inspectionArt { max-width: 100%; } }

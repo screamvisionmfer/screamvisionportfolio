@@ -79,6 +79,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
         positions.setZ(i, .15 + .034 * Math.sin(x * 10 + y * 1.3) * Math.pow(Math.abs(x) / 1.09, 3) + .018 * Math.cos(y * 17));
       }
       frontGeometry.computeVertexNormals();
+      const frontRest = new Float32Array(positions.array);
       const frontMaterial = material(new T.MeshPhysicalMaterial({ color: 0xffffff, metalness: .18, roughness: .43, clearcoat: .8, clearcoatRoughness: .27, transparent: true, side: T.DoubleSide }));
       const front = new T.Mesh(frontGeometry, frontMaterial);
       packGroup.add(front);
@@ -89,11 +90,17 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
       const crimpPositions = crimpGeometry.attributes.position;
       for (let i = 0; i < crimpPositions.count; i++) crimpPositions.setZ(i, .025 * Math.sin(crimpPositions.getX(i) * 115));
       crimpGeometry.computeVertexNormals();
-      strip.add(new T.Mesh(crimpGeometry, foil));
+      const tearGeometry = geometry(crimpGeometry.clone());
+      const tearPositions = tearGeometry.attributes.position;
+      const tearRest = new Float32Array(tearPositions.array);
+      strip.add(new T.Mesh(tearGeometry, foil));
       const bottom = new T.Mesh(crimpGeometry, foil);
       bottom.position.y = -1.67; packGroup.add(bottom);
       const seam = new T.Mesh(geometry(new T.BoxGeometry(2.2, .018, .18)), material(new T.MeshBasicMaterial({ color: 0x2d3220 })));
       seam.position.y = 1.525; packGroup.add(seam);
+      const openingGlow = material(new T.MeshBasicMaterial({ color: 0xe6f443, transparent: true, opacity: 0, depthWrite: false, blending: T.AdditiveBlending }));
+      const slit = new T.Mesh(geometry(new T.PlaneGeometry(2.12, .045)), openingGlow);
+      slit.position.set(0, 1.53, .2); packGroup.add(slit);
 
       const cards: Three.Group[] = [];
       const cardMaterials: Three.MeshBasicMaterial[] = [];
@@ -132,7 +139,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
         const tex = new T.CanvasTexture(canvas); tex.colorSpace = T.SRGBColorSpace; textures.add(tex); return tex;
       };
       const cardBack = material(new T.MeshBasicMaterial({ map: sleeveTexture() }));
-      for (let i = 0; i < Math.min(7, pack.cards.length); i++) {
+      for (let i = 0; i < Math.min(5, pack.cards.length); i++) {
         const group = new T.Group();
         group.add(new T.Mesh(cardGeometry, [metal, metal, metal, metal, metal, cardBack]));
         const faceMaterial = material(new T.MeshBasicMaterial({ color: 0xffffff, transparent: true }));
@@ -157,28 +164,48 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
         last = now;
         let moving = false;
         if (started) {
-          elapsed += elapsedDelta;
-          const tear = ease((elapsed - .22) / .65);
-          const burst = ease((elapsed - .75) / 1.1);
-          const exit = ease((elapsed - 1) / 1.05);
-          packGroup.rotation.z = -.08 + Math.sin(elapsed * 65) * .016 * (1 - tear) + exit * .45;
+          elapsed += dt;
+          const tension = Math.sin(clamp(elapsed / .55) * Math.PI);
+          const tear = ease((elapsed - .38) / .85);
+          const burst = ease((elapsed - 1.05) / 1.25);
+          const exit = ease((elapsed - 1.35) / 1.15);
+          packGroup.rotation.z = -.08 + tension * .055 + exit * .35;
           packGroup.rotation.y = -.14 - exit * 1.1;
           packGroup.position.y = -exit * 3.8;
-          packGroup.position.x = -exit * 2.2;
-          strip.position.set(tear * 2.5, 1.68 + tear * 2.3, tear * .5);
-          strip.rotation.set(tear * 1.3, tear * .7, -tear * 1.5);
+          packGroup.position.x = -exit * 1.4;
+          packGroup.scale.set(1 + tension * .025, 1 - tension * .035, 1);
+          // The tear travels across the sealed edge before the foil peels away.
+          for (let i = 0; i < tearPositions.count; i++) {
+            const x = tearRest[i * 3];
+            const peel = ease((tear * 1.55 - (x + 1.11) / 2.22) / .55);
+            tearPositions.setXYZ(i, x, tearRest[i * 3 + 1] + peel * .65, tearRest[i * 3 + 2] + peel * .7);
+          }
+          tearPositions.needsUpdate = true;
+          tearGeometry.computeVertexNormals();
+          const detach = ease((elapsed - 1.05) / .75);
+          strip.position.set(detach * 2.3, 1.68 + detach * 1.8, detach * .5);
+          strip.rotation.set(detach * 1.3, detach * .7, -detach * 1.8);
+          for (let i = 0; i < positions.count; i++) {
+            const x = frontRest[i * 3], y = frontRest[i * 3 + 1];
+            const fold = Math.max(0, (y - .25) / 1.28) * tear;
+            positions.setXYZ(i, x, y - fold * .18, frontRest[i * 3 + 2] + Math.sin(x * 5) * tension * .025 + fold * .28);
+          }
+          positions.needsUpdate = true;
+          frontGeometry.computeVertexNormals();
+          openingGlow.opacity = Math.sin(tear * Math.PI) * .8;
           frontMaterial.opacity = 1 - exit;
           foil.opacity = 1 - exit;
           seam.visible = exit < .6;
-          const spread = camera.aspect < .8 ? 1.6 : 2.1;
+          const spread = camera.aspect < .8 ? .28 : .48;
           cards.forEach((card, i) => {
-            const local = ease((elapsed - .72 - i * .07) / 1.05);
+            const local = ease((elapsed - .95 - i * .09) / 1.1);
             const offset = i - (cards.length - 1) / 2;
             card.visible = local > 0;
-            card.position.set((offset * spread + (camera.aspect < .8 ? 0 : .45)) * local, Math.sin(local * Math.PI) * (1.1 + i * .08) - .22 * local, .5 + local * (-.15 - Math.abs(offset) * .65));
-            card.rotation.set((1 - local) * -.6, (1 - local) * Math.PI * 1.7 - offset * .17 * local, offset * -.035 * local);
-            card.scale.setScalar(.45 + local * 1.15);
+            card.position.set(offset * spread * local, local * 1.05 + Math.sin(local * Math.PI) * .4, -.18 + local * (.7 + i * .035));
+            card.rotation.set((1 - local) * -.15, Math.PI * (1 - ease((elapsed - 1.35 - i * .09) / .65)), offset * -.075 * local);
+            card.scale.setScalar(.75 + local * .25);
           });
+          renderer.domElement.style.opacity = String(1 - ease((elapsed - 2.35) / .35));
           for (let i = 0; i < 64; i++) {
             const a = i * 2.399;
             particlePositions[i * 3] = Math.cos(a) * burst * (1.7 + i % 5 * .4);
@@ -187,7 +214,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
           }
           particleGeometry.attributes.position.needsUpdate = true;
           particleMaterial.opacity = Math.sin(burst * Math.PI) * .9;
-          if (elapsed >= 2.35 || reduced.matches) {
+          if (elapsed >= 2.7 || reduced.matches) {
             completed = true;
             element.dataset.animationActive = "false";
             callbacks.current.onComplete();
@@ -254,7 +281,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
         if (disposed || !cover) return;
         frontMaterial.map = cover; frontMaterial.needsUpdate = true;
         await Promise.all(cards.map(async (_, i) => {
-          const index = (i - Math.floor(cards.length / 2) + pack.cards.length) % pack.cards.length;
+          const index = i;
           const map = await texture(pack.cards[index].image);
           if (!map || disposed) return;
           cardMaterials[i].map = sleeveTexture(map.image, index); cardMaterials[i].needsUpdate = true;
