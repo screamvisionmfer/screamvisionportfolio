@@ -3,6 +3,7 @@
 import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
 
 import dynamic from "next/dynamic";
+import { CardRail } from "./CardRail";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import { PortfolioImage, mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import { SiteNav } from "@/components/site-nav/SiteNav";
@@ -27,22 +28,14 @@ export function CardArchive() {
   const [active, setActive] = useState(0);
   const [inspect, setInspect] = useState<number | null>(null);
   const [seen, setSeen] = useState<Set<string>>(() => new Set());
-  const [dealing, setDealing] = useState(false);
   const pack = cardPacks[packIndex];
   const gallery = useRef<HTMLDivElement>(null);
   const inspectTrigger = useRef<HTMLButtonElement | null>(null);
-  const swipe = useRef({ x: 0, active: false, moved: false });
   const unlocked = mode === "collection";
   const reveal = useCallback(() => {
-    setDealing(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     setMode("collection"); setView("rail"); setActive(0);
     setSeen(new Set([pack.cards[0]?.id].filter(Boolean)));
   }, [pack]);
-  useEffect(() => {
-    if (!dealing) return;
-    const timer = setTimeout(() => setDealing(false), 1350);
-    return () => clearTimeout(timer);
-  }, [dealing]);
   const unavailable = useCallback(() => { setFallback(true); setReady(true); }, []);
   useEffect(() => {
     if (mode !== "opening" || !fallback) return;
@@ -65,51 +58,12 @@ export function CardArchive() {
     else setMode("opening");
   };
   const change = useCallback((direction: number) => {
-    setActive((value) => (value + direction + pack.cards.length) % pack.cards.length);
+    setActive((value) => Math.max(0, Math.min(pack.cards.length - 1, value + direction)));
   }, [pack.cards.length]);
-  const reset = () => { setMode("sealed"); setInspect(null); setDealing(false); setReady(false); setFallback(false); setSeen(new Set()); swipe.current.moved = false; };
+  const reset = () => { setMode("sealed"); setInspect(null); setReady(false); setFallback(false); setSeen(new Set()); };
   const inspectCard = (index: number, trigger: HTMLButtonElement) => {
-    if (swipe.current.moved) return;
     setActive(index); setInspect(index); inspectTrigger.current = trigger;
   };
-  useEffect(() => {
-    const node = gallery.current;
-    if (!node || !unlocked || dealing || view !== "rail" || inspect !== null) return;
-    let last = 0;
-    const wheel = (event: WheelEvent) => {
-      event.preventDefault();
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-      if (Math.abs(delta) < 8 || performance.now() - last < 330) return;
-      last = performance.now(); change(delta > 0 ? 1 : -1);
-    };
-    node.addEventListener("wheel", wheel, { passive: false });
-    return () => node.removeEventListener("wheel", wheel);
-  }, [change, dealing, inspect, unlocked, view]);
-  const pointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (view !== "rail" || dealing || event.button !== 0) return;
-    swipe.current = { x: event.clientX, active: true, moved: false };
-  };
-  const pointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (!swipe.current.active) return;
-    if (Math.abs(event.clientX - swipe.current.x) > 10) {
-      swipe.current.moved = true;
-      event.currentTarget.setPointerCapture(event.pointerId);
-      event.currentTarget.style.setProperty("--drag", `${(event.clientX - swipe.current.x) * .4}px`);
-    }
-  };
-  const pointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (!swipe.current.active) return;
-    const dx = event.clientX - swipe.current.x;
-    swipe.current.active = false;
-    event.currentTarget.style.setProperty("--drag", "0px");
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    if (Math.abs(dx) > 45) change(dx < 0 ? 1 : -1);
-  };
-  const cancelPointer = (event: ReactPointerEvent<HTMLDivElement>) => {
-    swipe.current.active = false; swipe.current.moved = false;
-    event.currentTarget.style.setProperty("--drag", "0px");
-  };
-  const slots = Array.from({ length: Math.min(pack.cards.length, 7) }, (_, i) => i - Math.floor(Math.min(pack.cards.length - 1, 6) / 2));
   const currentCard = pack.cards[active];
   return (
     <main className={styles.archive} data-mode={mode} data-view={view} style={{ "--pack-accent": pack.accent } as CSSProperties}>
@@ -128,22 +82,14 @@ export function CardArchive() {
       {unlocked && <>
         <aside className={styles.packDock}><button onClick={reset} aria-label="Repack collection"><PortfolioImage src={mediaSource(pack.artwork)} alt={`${pack.title} opened pack`} width={68} height={88} /><span>↶ Repack</span></button><span className={styles.dockLine} /><span>{pad(pack.cards.length)} ARTWORKS</span></aside>
         <div className={styles.viewSwitch} aria-label="Collection layout"><button aria-pressed={view === "rail"} onClick={() => setView("rail")}><span>▥</span> Showcase</button><button aria-pressed={view === "grid"} onClick={() => setView("grid")}><span>▦</span> All cards</button></div>
-        <div ref={gallery} className={view === "rail" ? styles.rail : styles.grid} data-dealing={dealing} tabIndex={0} aria-label={view === "rail" ? "Card carousel" : "All cards"} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={cancelPointer} onKeyDown={(event) => {
-          swipe.current.moved = false;
-          if (dealing || view !== "rail") return;
-          if (["ArrowLeft", "ArrowRight"].includes(event.key)) { event.preventDefault(); change(event.key === "ArrowRight" ? 1 : -1); }
-          if (event.key === "Enter" && event.target === event.currentTarget && view === "rail") setInspect(active);
-        }}>
-          {view === "rail" ? slots.map((offset) => {
-            const index = (active + offset + pack.cards.length) % pack.cards.length;
-            return <div key={pack.cards[index].id} className={styles.railSlot} data-active={offset === 0} style={{ "--offset": offset, "--distance": Math.abs(offset), "--arrival": `${(offset + Math.floor(slots.length / 2)) * 85}ms` } as CSSProperties}>
-              <CardSlab card={pack.cards[index]} index={index} pack={pack} active={offset === 0} onSelect={(button) => { if (swipe.current.moved) return; if (offset !== 0) setActive(index); else inspectCard(index, button); }} />
-            </div>;
-          }) : pack.cards.map((card, index) => <div className={styles.gridSlot} key={card.id} style={{ "--arrival": `${Math.min(index, 20) * 22}ms` } as CSSProperties}>
-            <CardSlab card={card} index={index} pack={pack} active={index === active} onSelect={(button) => { swipe.current.moved = false; inspectCard(index, button); }} />
+        {view === "rail" ? <CardRail rootRef={gallery} index={active} count={pack.cards.length} onActiveChange={setActive}>
+          {pack.cards.map((card, index) => <CardSlab key={card.id} card={card} index={index} pack={pack} active={index === active} onSelect={(button) => { if (index === active) inspectCard(index, button); else setActive(index); }} />)}
+        </CardRail> : <div ref={gallery} className={styles.grid} tabIndex={0} aria-label="All cards">
+          {pack.cards.map((card, index) => <div className={styles.gridSlot} key={card.id} style={{ "--arrival": `${Math.min(index, 20) * 22}ms` } as CSSProperties}>
+            <CardSlab card={card} index={index} pack={pack} active={index === active} onSelect={(button) => inspectCard(index, button)} />
           </div>)}
-        </div>
-        {view === "rail" && <div className={styles.railControls}><button disabled={dealing} onClick={() => change(-1)} aria-label="Previous card">←</button><div><span>{pad(active + 1)} <i>/ {pad(pack.cards.length)}</i></span><input disabled={dealing} type="range" min={0} max={pack.cards.length - 1} value={active} aria-label="Choose card" onChange={(event) => setActive(Number(event.target.value))} /></div><button disabled={dealing} onClick={() => change(1)} aria-label="Next card">→</button></div>}
+        </div>}
+        {view === "rail" && <div className={styles.railControls}><button disabled={active === 0} onClick={() => change(-1)} aria-label="Previous card">←</button><div><span>{pad(active + 1)} <i>/ {pad(pack.cards.length)}</i></span><input type="range" min={0} max={pack.cards.length - 1} value={active} aria-label="Choose card" onChange={(event) => setActive(Number(event.target.value))} /></div><button disabled={active === pack.cards.length - 1} onClick={() => change(1)} aria-label="Next card">→</button></div>}
       </>}
       <section className={styles.identity} aria-live="polite"><p>{unlocked ? `${pack.title} / ${view === "rail" ? "Selected card" : "Full collection"}` : pack.edition}</p><h1>{unlocked && view === "rail" ? currentCard.title : pack.title}</h1><span>{unlocked ? `${seen.size} / ${pack.cards.length} explored` : pack.subtitle}</span></section>
       <aside className={styles.actions}>
