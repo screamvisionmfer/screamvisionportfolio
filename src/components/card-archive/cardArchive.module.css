@@ -227,3 +227,13 @@
 @media (max-height: 680px) { .ribbonTrack { padding-top: 12px; padding-bottom: 12px; } }
 .ribbon .cardButton { cursor: grab; }
 .ribbon[data-dragging="true"] .cardButton { cursor: grabbing; }
+
+/* Shared geometry keeps the WebGL landing and the collection ribbon aligned. */
+.archive { --ribbon-top: 170px; --ribbon-bottom: 160px; --ribbon-preferred: clamp(184px, 18vw, 238px); --ribbon-card: min(var(--ribbon-preferred), calc((100svh - var(--ribbon-top) - var(--ribbon-bottom) - 44px) * .6)); --ribbon-gap: clamp(24px, 3vw, 48px); }
+.ribbon, .revealTarget { inset: var(--ribbon-top) 0 var(--ribbon-bottom); }
+.ribbon { --ribbon-card: inherit; --ribbon-gap: inherit; }
+.revealTarget { position: absolute; display: flex; justify-content: center; align-items: center; padding: 18px 0 38px; gap: var(--ribbon-gap); pointer-events: none; visibility: hidden; }
+.revealTarget > span { width: var(--ribbon-card); aspect-ratio: .665; transform: scale(1.1); }
+.ribbonTrack { animation: none; }
+@media (max-width: 600px) { .archive { --ribbon-top: 190px; --ribbon-bottom: 225px; --ribbon-preferred: clamp(158px, 46vw, 192px); --ribbon-gap: 28px; } }
+@media (max-height: 680px) { .archive { --ribbon-top: 156px; --ribbon-bottom: 140px; --ribbon-preferred: clamp(120px, calc((100svh - 350px) * .56), 185px); } .revealTarget { padding-top: 12px; padding-bottom: 12px; } }

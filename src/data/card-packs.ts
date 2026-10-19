@@ -19,6 +19,7 @@ export const cardPacks: CardPack[] = [{
   edition: "Vibechain special edition",
   artwork: "/cards/SBGC/VIBECHAIN%20PACK%203.jpg",
   accent: "#e6f443",
+  marketUrl: "https://vibechain.com/market/packs/base-skullboardgameclub",
   cards: Array.from({ length: 49 }, (_, index) => ({
     id: `sbgc-${index + 1}`,
     title: `SBGC #${String(index + 1).padStart(2, "0")}`,

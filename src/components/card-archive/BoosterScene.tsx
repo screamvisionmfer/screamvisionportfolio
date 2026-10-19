@@ -56,6 +56,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
       let completed = false;
       let inView = true;
       let available = false;
+      const landing = { x: 0, y: 0, scale: 1, spacing: 1.6 };
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
       const aim = { x: -.16, y: .08 };
       const loader = new T.TextureLoader();
@@ -164,7 +165,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
         last = now;
         let moving = false;
         if (started) {
-          elapsed += dt;
+          elapsed += elapsedDelta;
           const tension = Math.sin(clamp(elapsed / .55) * Math.PI);
           const tear = ease((elapsed - .38) / .85);
           const burst = ease((elapsed - 1.05) / 1.25);
@@ -196,16 +197,16 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
           frontMaterial.opacity = 1 - exit;
           foil.opacity = 1 - exit;
           seam.visible = exit < .6;
-          const spread = camera.aspect < .8 ? .28 : .48;
           cards.forEach((card, i) => {
             const local = ease((elapsed - .95 - i * .09) / 1.1);
-            const offset = i - (cards.length - 1) / 2;
+            const settle = ease((elapsed - 1.5 - i * .06) / .8);
             card.visible = local > 0;
-            card.position.set(offset * spread * local, local * 1.05 + Math.sin(local * Math.PI) * .4, -.18 + local * (.7 + i * .035));
-            card.rotation.set((1 - local) * -.15, Math.PI * (1 - ease((elapsed - 1.35 - i * .09) / .65)), offset * -.075 * local);
-            card.scale.setScalar(.75 + local * .25);
+            // Lift through the seal, then deal into the actual ribbon slots.
+            card.position.set((landing.x + i * landing.spacing) * settle, landing.y * settle + Math.sin(local * Math.PI) * .6, 0);
+            card.rotation.set((1 - local) * -.15, Math.PI * (1 - settle) - Math.min(25, i * 12) * Math.PI / 180 * settle, 0);
+            const sideScale = i === 0 ? 1 : (.87 - Math.min(i - 1, 2.5) * .07) / 1.1;
+            card.scale.setScalar(.75 + (landing.scale * sideScale - .75) * settle);
           });
-          renderer.domElement.style.opacity = String(1 - ease((elapsed - 2.35) / .35));
           for (let i = 0; i < 64; i++) {
             const a = i * 2.399;
             particlePositions[i * 3] = Math.cos(a) * burst * (1.7 + i % 5 * .4);
@@ -237,7 +238,18 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
         renderer.setSize(width, height, false);
         camera.aspect = width / height;
         camera.position.z = camera.aspect < .8 ? 10 : 8.5;
-        camera.updateProjectionMatrix(); wake();
+        camera.updateProjectionMatrix();
+        const anchor = element.closest("main")?.querySelector<HTMLElement>("[data-card-landing]");
+        if (anchor) {
+          const bounds = element.getBoundingClientRect(), slot = anchor.getBoundingClientRect();
+          const units = 2 * Math.tan(camera.fov * Math.PI / 360) * camera.position.z / height;
+          const gap = Number.parseFloat(getComputedStyle(anchor.parentElement!).columnGap) || 28;
+          landing.x = (slot.left + slot.width / 2 - bounds.left - width / 2) * units;
+          landing.y = (bounds.top + height / 2 - slot.top - slot.height / 2) * units;
+          landing.scale = slot.height * units / 1.87;
+          landing.spacing = (slot.width / 1.1 + gap) * units;
+        }
+        wake();
       };
       begin.current = () => {
         if (started || !available) return;

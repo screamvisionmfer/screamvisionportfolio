@@ -100,3 +100,9 @@
 @media (hover: hover) { .gridItem:hover .gridImage img { transform: scale(1.025); } .viewSwitch button:hover { color: #fff; } .viewSwitch button[aria-pressed="true"]:hover { color: #101510; } }
 @media (max-width: 1100px) { .gridItems { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .stage[data-view="grid"] { min-height: 0; } .archiveGrid { inset: 135px 0 0; padding: 12px 16px 30px; } .gridItems { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px; } .gridHeading { display: block; margin-bottom: 24px; } .gridHeading > span { display: block; margin-top: 12px; } .gridCaption { gap: 6px; } .gridCaption strong { font-size: 9px; } }
+
+/* Keep decoded art mounted while moving between repeated world planes. */
+.stage[data-dragging="true"] .tile { pointer-events: none; transform: none; transition: none; box-shadow: 0 24px 55px #0005; }
+.stage[data-dragging="true"] .tile img { transform: none; transition: none; }
+.stage[data-dragging="true"] .tile::after, .stage[data-dragging="true"] .tile span { opacity: 0; transition: none; }
+@media (hover: none) { .tile:hover { transform: none; } .tile:hover img { transform: none; } }

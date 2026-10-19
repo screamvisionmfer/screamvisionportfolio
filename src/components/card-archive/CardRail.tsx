@@ -32,7 +32,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
         if (distance > 5 && item.style.visibility === "hidden") return;
         item.style.visibility = distance < 5 ? "visible" : "hidden";
         item.inert = distance >= 3.5;
-        const scale = distance <= 1 ? 1 - distance * .13 : .87 - Math.min(distance - 1, 2.5) * .07;
+        const scale = distance <= 1 ? 1.1 - distance * .23 : .87 - Math.min(distance - 1, 2.5) * .07;
         item.style.transform = `perspective(1000px) translateY(${Math.min(distance, 3) * 7}px) rotateY(${Math.max(-25, Math.min(25, -relative * 12))}deg) scale(${scale})`;
         item.style.opacity = String(Math.max(.25, 1 - distance * .13));
       });

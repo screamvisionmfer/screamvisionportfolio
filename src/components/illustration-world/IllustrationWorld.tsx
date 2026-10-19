@@ -16,11 +16,11 @@ const copies = [
   { id: "vertical", x: 0, y: 1 },
   { id: "diagonal", x: 1, y: 1 },
 ] as const;
-const planeArtIndexes = copies.map((_, copyIndex) => [
+const planeArtIndexes = copies.map(() => [
   ...illustrations.map((__, artIndex) => artIndex),
-  (copyIndex * 13 + 23) % illustrations.length,
+  23 % illustrations.length,
 ]);
-const clampLoop = (value: number, size: number) => value > size / 2 ? value - size : value < -size / 2 ? value + size : value;
+const clampLoop = (value: number, size: number) => Math.abs(value) <= size / 2 ? value : ((value + size / 2) % size + size) % size - size / 2;
 
 export function IllustrationWorld() {
   const [view, setView] = useState<"world" | "grid">("world");
@@ -81,13 +81,12 @@ export function IllustrationWorld() {
       setVisibleTiles((previous) => {
         const next = new Set(previous);
         entries.forEach((entry) => {
-          const key = (entry.target as HTMLElement).dataset.tileKey!;
-          if (entry.isIntersecting) next.add(key);
-          else next.delete(key);
+          const key = (entry.target as HTMLElement).dataset.artIndex!;
+          if (entry.isIntersecting) { next.add(key); observer.unobserve(entry.target); }
         });
-        return next;
+        return next.size === previous.size ? previous : next;
       });
-    }, { root: stageRef.current, rootMargin: "220px" });
+    }, { root: stageRef.current, rootMargin: "750px" });
     worldRef.current?.querySelectorAll("[data-tile-key]").forEach((tile) => observer.observe(tile));
     return () => observer.disconnect();
   }, []);
@@ -154,12 +153,16 @@ export function IllustrationWorld() {
         const wrappedX = clampLoop(current.current.x, width);
         const wrappedY = clampLoop(current.current.y, height);
         if (wrappedX !== current.current.x) {
+          const shift = wrappedX - current.current.x;
           current.current.x = wrappedX;
-          target.current.x = clampLoop(target.current.x, width);
+          target.current.x += shift;
+          if (pointer.current.active) pointer.current.cameraX += shift;
         }
         if (wrappedY !== current.current.y) {
+          const shift = wrappedY - current.current.y;
           current.current.y = wrappedY;
-          target.current.y = clampLoop(target.current.y, height);
+          target.current.y += shift;
+          if (pointer.current.active) pointer.current.cameraY += shift;
         }
         const sideX = wrappedX >= 0 ? 1 : -1;
         const sideY = wrappedY >= 0 ? 1 : -1;
@@ -276,7 +279,7 @@ export function IllustrationWorld() {
     motion.current.dragging = false;
     setDragging(false);
     wakeRef.current();
-    if (!pointer.current.moved && pointer.current.index >= 0) {
+    if (event.type !== "pointercancel" && !pointer.current.moved && pointer.current.index >= 0) {
       velocity.current = { x: 0, y: 0 };
       setSelected(pointer.current.index);
     }
@@ -292,7 +295,7 @@ export function IllustrationWorld() {
             {planeArtIndexes[copyIndex].map((artIndex, cellIndex) => {
               const art = illustrations[artIndex];
               const tileKey = `${copy.id}-${cellIndex}`;
-              return <ArtTile key={tileKey} tileKey={tileKey} visible={visibleTiles.has(tileKey)} art={art} index={artIndex} />;
+              return <ArtTile key={tileKey} tileKey={tileKey} visible={visibleTiles.has(String(artIndex))} art={art} index={artIndex} />;
             })}
           </div>
         ))}

@@ -71,6 +71,7 @@ export function CardArchive() {
       <SiteNav />
       <div className={styles.topline}><span><i /> Collectibles / Vibechain</span><span>{pad(packIndex + 1)} — {pad(cardPacks.length)} <b>/{unlocked ? " Unsealed" : " Booster archive"}</b></span></div>
       <div className={styles.ghostTitle} aria-hidden="true">{pack.title}</div>
+      {!unlocked && <div className={styles.revealTarget} aria-hidden="true"><span data-card-landing /></div>}
       {!unlocked && <section className={styles.packStage} aria-label={`${pack.title} booster`}>
         <div className={styles.halo} aria-hidden="true" />
         {!fallback && <BoosterScene key={pack.id} pack={pack} opening={mode === "opening"} onReady={() => setReady(true)} onComplete={reveal} onUnavailable={unavailable} />}
