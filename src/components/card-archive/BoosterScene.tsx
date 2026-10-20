@@ -39,10 +39,10 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
       const camera = new T.PerspectiveCamera(36, 1, .1, 40);
       const packGroup = new T.Group();
       scene.add(packGroup);
-      scene.add(new T.HemisphereLight(0xfffee6, 0x28282f, 2.8));
-      const key = new T.DirectionalLight(0xffffff, 3.4);
+      scene.add(new T.HemisphereLight(0xffffff, 0x28282f, 2.2));
+      const key = new T.DirectionalLight(0xffffff, 2.2);
       key.position.set(-3, 4, 6); scene.add(key);
-      const rim = new T.DirectionalLight(0xd6ee87, 3);
+      const rim = new T.DirectionalLight(0xffffff, 1.3);
       rim.position.set(4, 1, 2); scene.add(rim);
 
       const textures = new Set<Three.Texture>();
@@ -70,7 +70,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
         return tex;
       };
 
-      const foil = material(new T.MeshPhysicalMaterial({ color: 0xc5c865, metalness: .7, roughness: .3, clearcoat: 1, side: T.DoubleSide, transparent: true }));
+      const foil = material(new T.MeshPhysicalMaterial({ color: 0x9b9e9b, metalness: .65, roughness: .42, clearcoat: 1, side: T.DoubleSide, transparent: true }));
       const back = new T.Mesh(geometry(new T.BoxGeometry(2.18, 3.08, .14)), foil);
       packGroup.add(back);
       // Sculpt the front surface instead of pasting a flat rectangle onto the scene.
@@ -82,7 +82,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
       }
       frontGeometry.computeVertexNormals();
       const frontRest = new Float32Array(positions.array);
-      const frontMaterial = material(new T.MeshPhysicalMaterial({ color: 0xffffff, metalness: .18, roughness: .43, clearcoat: .8, clearcoatRoughness: .27, transparent: true, side: T.DoubleSide }));
+      const frontMaterial = material(new T.MeshPhysicalMaterial({ color: 0xffffff, metalness: .06, roughness: .58, clearcoat: .5, clearcoatRoughness: .27, transparent: true, side: T.DoubleSide }));
       const front = new T.Mesh(frontGeometry, frontMaterial);
       packGroup.add(front);
       const strip = new T.Group();

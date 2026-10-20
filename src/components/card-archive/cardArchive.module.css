@@ -39,9 +39,33 @@
 .marketPending i { color: #66705b; font-style: normal; }
 .footer { position: absolute; z-index: 8; bottom: 23px; left: 30px; right: 30px; display: flex; justify-content: space-between; align-items: center; gap: 18px; color: #64705c; font-size: 7px; text-transform: uppercase; letter-spacing: .11em; pointer-events: none; }
 .footer span:nth-child(2) { color: #a0a68f; }
-.packSelector { position: absolute; top: 140px; left: 30px; z-index: 8; display: flex; gap: 10px; }
-.packSelector button { padding: 7px 12px; background: transparent; color: #88927d; cursor: pointer; font-size: 10px; }
-.packSelector button[aria-pressed="true"] { color: #e2eac9; border-bottom: 1px solid currentColor; }
+.boosterShelf { position: absolute; inset: 132px 0 185px; touch-action: pan-y; }
+.shelfTrack { position: absolute; inset: 0; perspective: 1300px; }
+.shelfPack { --tilt: 0deg; position: absolute; left: 50%; top: 46%; width: clamp(160px, 23vw, 290px); height: min(100%, 410px); max-height: 41vw; aspect-ratio: .69; padding: 0; border: 0; background: none; color: #e6e6dc; cursor: pointer; transform: translate(calc(-50% + var(--slot) * min(34vw, 435px)), -50%) rotateY(calc(var(--slot) * -17deg)) rotateZ(calc(var(--slot) * 5deg)) scale(.86); opacity: .64; transition: transform .65s cubic-bezier(.2,.8,.2,1), opacity .45s; -webkit-tap-highlight-color: transparent; }
+.shelfPack[data-selected="true"] { transform: translate(calc(-50% + var(--slot) * min(34vw, 435px)), -50%) rotateY(calc(var(--slot) * -9deg)) rotateZ(calc(var(--slot) * 3deg)) scale(1); opacity: 1; z-index: 2; }
+.wrapper { position: absolute; inset: 0; display: block; border-radius: 7px 7px 10px 10px; background: #16191b; box-shadow: 14px 28px 30px #0009, -1px 0 1px #ffffff70, inset -4px 0 5px #0009; transform: rotateY(var(--tilt)); transition: transform .25s ease; overflow: hidden; }
+.wrapperArt { position: absolute; inset: 0; }
+.wrapperArt img { object-fit: cover; }
+.wrapperTop, .wrapperBottom { position: absolute; left: 0; right: 0; height: 6%; background: repeating-linear-gradient(90deg,#1118 0 1px,#ffffff24 1px 2px,transparent 2px 4px), linear-gradient(180deg,#bfc2be,#343a39 30%,#c7c9c2 65%,#454b46); background-blend-mode: multiply,normal; box-shadow: 0 1px 2px #0009; }
+.wrapperTop { top: 0; border-bottom: 1px solid #0008; }
+.wrapperBottom { bottom: 0; transform: rotate(180deg); }
+.wrapperReflection { position: absolute; inset: 0; background: linear-gradient(104deg,#fff0 2%,#fff3 7%,#fff0 13%,#fff0 40%,#ffffff10 47%,#fff0 58%,#0003 89%,#ffffff35 96%,#0008); mix-blend-mode: soft-light; pointer-events: none; }
+.wrapperSpine { position: absolute; inset: 6% 0; border-left: 3px solid #ffffff21; border-right: 4px solid #0006; box-shadow: inset 8px 0 10px #ffffff0c, inset -8px 0 9px #0005; }
+.shelfCaption { position: absolute; top: calc(100% + 22px); left: 3px; right: 3px; display: flex; justify-content: space-between; align-items: baseline; text-align: left; }
+.shelfCaption b { font-size: 14px; letter-spacing: .1em; }
+.shelfCaption > span { font-size: 8px; color: #92988b; text-transform: uppercase; letter-spacing: .1em; }
+.shelfCaption i { margin-left: 14px; color: var(--foil-accent); font-style: normal; font-size: 16px; }
+.shelfPack:focus-visible { outline: 1px solid var(--foil-accent); outline-offset: 14px; }
+.shelfHint { position: absolute; bottom: -68px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 14px; font-size: 7px; letter-spacing: .12em; text-transform: uppercase; color: #7e8879; pointer-events: none; }
+.shelfHint > span { color: #d2d7c9; }.shelfHint i { height: 1px; width: 25px; background: #79826e; }
+@media (max-width:600px) {
+  .boosterShelf { inset: 132px 0 245px; }
+  .shelfPack { width: 52vw; height: auto; max-height: 100%; transform: translate(calc(-50% + var(--offset) * 58vw),-50%) rotateY(calc(var(--offset) * -22deg)) rotateZ(calc(var(--offset) * 6deg)) scale(.78); }
+  .shelfPack[data-selected="true"] { transform: translate(-50%,-50%) rotateZ(-3deg); }
+  .shelfCaption { top: calc(100% + 17px); }.shelfCaption b { font-size: 12px; }
+  .shelfHint { bottom: -42px; gap: 8px; font-size: 6px; }.shelfHint i { width: 12px; }
+}
+@media (prefers-reduced-motion:reduce) { .shelfPack,.wrapper { transition: none; }.wrapper { transform: none; } }
 .packDock { position: absolute; z-index: 10; top: 166px; left: 24px; width: 80px; display: flex; align-items: center; flex-direction: column; gap: 28px; }
 .packDock button { background: none; padding: 0; color: #929c82; cursor: pointer; }
 .packDock img { object-fit: fill; transform: rotate(-8deg); filter: brightness(.75); box-shadow: 0 8px 16px #0006; transition: transform var(--ui-normal) var(--ui-ease), filter var(--ui-normal) var(--ui-ease); }

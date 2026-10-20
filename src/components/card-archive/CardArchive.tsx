@@ -4,6 +4,7 @@ import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
 
 import dynamic from "next/dynamic";
 import { CardRail } from "./CardRail";
+import { BoosterShelf } from "./BoosterShelf";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import { PortfolioImage, mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import { SiteNav } from "@/components/site-nav/SiteNav";
@@ -72,7 +73,8 @@ export function CardArchive() {
       <div className={styles.topline}><span><i /> Collectibles / Vibechain</span><span>{pad(packIndex + 1)} — {pad(cardPacks.length)} <b>/{unlocked ? " Unsealed" : " Booster archive"}</b></span></div>
       <div className={styles.ghostTitle} aria-hidden="true">{pack.title}</div>
       {!unlocked && <div className={styles.revealTarget} aria-hidden="true"><span data-card-landing /></div>}
-      {!unlocked && <section className={styles.packStage} aria-label={`${pack.title} booster`}>
+      {mode === "sealed" && <BoosterShelf selected={packIndex} onSelect={(index) => { reset(); setPackIndex(index); }} onOpen={open} />}
+      {mode === "opening" && <section className={styles.packStage} aria-label={`${pack.title} booster`}>
         <div className={styles.halo} aria-hidden="true" />
         {!fallback && <BoosterScene key={pack.id} pack={pack} opening={mode === "opening"} onReady={() => setReady(true)} onComplete={reveal} onUnavailable={unavailable} />}
         <div className={styles.fallbackPack} data-visible={!ready || fallback} data-opening={mode === "opening" && fallback} aria-hidden="true"><span /><div><PortfolioImage src={pack.artwork} alt="" fill sizes="300px" priority /></div><span /></div>
@@ -97,7 +99,6 @@ export function CardArchive() {
         {!unlocked ? <button className={styles.openButton} disabled={mode === "opening"} onClick={open}><span>{mode === "opening" ? "Unsealing" : "Break the seal"}</span><i>{mode === "opening" ? "···" : "↗"}</i></button> : <MarketLink url={currentCard.marketUrl ?? pack.marketUrl} />}
         {!unlocked && <span>{pack.cards.length} artworks inside / Click to unpack</span>}
       </aside>
-      {cardPacks.length > 1 && !unlocked && <div className={styles.packSelector}>{cardPacks.map((item, index) => <button key={item.id} disabled={mode === "opening"} aria-pressed={index === packIndex} onClick={() => { reset(); setPackIndex(index); }}>{item.title}</button>)}</div>}
       <footer className={styles.footer}><span>SCREAM VISION × {pack.title}</span><span>{unlocked ? view === "rail" ? "Drag / Scroll to browse · Click to inspect" : "Hover to tilt · Click to inspect" : "Original art. Collectible worlds."}</span><span>Card archive / {pad(pack.cards.length)}</span></footer>
       {inspect !== null && <CardInspection pack={pack} index={inspect} onChange={(index) => { setInspect(index); setActive(index); }} onClose={() => { setInspect(null); (inspectTrigger.current?.isConnected ? inspectTrigger.current : gallery.current)?.focus({ preventScroll: true }); }} />}
     </main>
