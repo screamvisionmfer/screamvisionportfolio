@@ -18,8 +18,19 @@ export function BoosterShelf({ selected, onSelect, onOpen }: { selected: number;
         onPointerMove={(event) => {
           if (event.buttons || event.pointerType === "touch") return;
           const rect = event.currentTarget.getBoundingClientRect();
-          event.currentTarget.style.setProperty("--tilt", `${(event.clientX - rect.left) / rect.width * 12 - 6}deg`);
-        }} onPointerLeave={(event) => event.currentTarget.style.setProperty("--tilt", "0deg")}>
+          const x = Math.max(-1, Math.min(1, (event.clientX - rect.left) / rect.width * 2 - 1));
+          const y = Math.max(-1, Math.min(1, (event.clientY - rect.top) / rect.height * 2 - 1));
+          const style = event.currentTarget.style;
+          style.setProperty("--tilt-x", `${-y * 13}deg`);
+          style.setProperty("--tilt-y", `${x * 17}deg`);
+          style.setProperty("--shine-x", `${50 + x * 45}%`);
+          style.setProperty("--shine-y", `${50 + y * 45}%`);
+          event.currentTarget.dataset.hovered = "true";
+        }} onPointerLeave={(event) => {
+          event.currentTarget.style.setProperty("--tilt-x", "0deg");
+          event.currentTarget.style.setProperty("--tilt-y", "0deg");
+          event.currentTarget.dataset.hovered = "false";
+        }}>
         <span className={styles.wrapper}>
           <span className={styles.wrapperArt}><PortfolioImage src={pack.artwork} alt={`${pack.subtitle} booster artwork`} fill sizes="(max-width: 600px) 220px, 340px" priority /></span>
           <span className={styles.wrapperTop} /><span className={styles.wrapperBottom} />
