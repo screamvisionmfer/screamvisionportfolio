@@ -1,0 +1,75 @@
+.home { --world-accent: #ed784a; position: relative; isolation: isolate; width: 100%; height: 100svh; min-height: 0; overflow-y: auto; overflow-x: hidden; background: #0a0c0b; color: #f1eee6; scrollbar-width: thin; scrollbar-color: #65725f #0a0c0b; }
+.home::before { content: ""; position: absolute; z-index: -2; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 77% 42%, color-mix(in srgb, var(--world-accent) 10%, transparent), transparent 48%); transition: background var(--ui-normal); }
+.texture { position: absolute; z-index: -1; inset: 0; pointer-events: none; opacity: .035; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E"); background-size: 150px; }
+.content { min-height: 100svh; display: flex; flex-direction: column; padding: 106px clamp(24px, 4vw, 72px) max(16px, env(safe-area-inset-bottom)); }
+.feature { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-height: 440px; padding: 28px 0 36px; }
+.intro { display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+.eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 26px; font-size: 8px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #b4baac; }
+.eyebrow i { width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: var(--world-accent); }
+.intro h1 { margin: 0; font-size: clamp(64px, 7.4vw, 128px); line-height: .85; letter-spacing: -.075em; text-transform: uppercase; }
+.intro h1 > span { color: #f1eee68a; }
+.introBottom { display: flex; align-items: flex-end; gap: clamp(24px, 4vw, 70px); margin-top: 32px; }
+.introBottom p { margin: 0; color: #a4ad9e; font-size: 11px; line-height: 1.6; }
+.enter { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 44px; width: 192px; padding: 0 0 9px; border-bottom: 1px solid var(--world-accent); color: inherit; text-decoration: none; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; }
+.enter > span { font-size: 24px; color: var(--world-accent); transition: transform var(--ui-normal) var(--ui-ease); }
+.showcase { position: relative; min-width: 0; display: flex; flex-direction: column; }
+.stageLabel, .artCaption { display: flex; justify-content: space-between; gap: 20px; font-size: 8px; line-height: 1.5; text-transform: uppercase; letter-spacing: .07em; }
+.stageLabel { color: #7c8977; padding: 0 4px; }
+.stageLabel > span { font-variant-numeric: tabular-nums; color: #b6c1ac; }
+.artLink { position: relative; flex: 1; min-height: 360px; display: block; color: inherit; perspective: 1000px; -webkit-tap-highlight-color: transparent; }
+.composition { position: absolute; inset: 0; transform: translate3d(var(--pointer-x, 0px), var(--pointer-y, 0px), 0) rotate(var(--pointer-rotate, 0deg)); transition: transform .35s var(--ui-ease); }
+.artworkSet { position: absolute; inset: 0; animation: arrive .5s var(--ui-ease) both; }
+.artwork { position: absolute; aspect-ratio: 1; border: 1px solid #ffffff25; background: #101512; box-shadow: 0 22px 44px #0006; }
+.artwork img { object-fit: cover; }
+.front { z-index: 3; width: min(62%, 340px); top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-5deg); }
+.backLeft { z-index: 1; width: 34%; top: 37%; left: 0; transform: rotate(-14deg); opacity: .78; }
+.backRight { z-index: 2; width: 35%; top: 9%; right: 0; transform: rotate(11deg); opacity: .88; }
+.artworkSet[data-format="portrait"] .artwork { aspect-ratio: .72; }
+.artworkSet[data-format="portrait"] .front { width: min(45%, 240px); }
+.artworkSet[data-format="portrait"] .backLeft { width: 29%; left: 6%; top: 32%; }
+.artworkSet[data-format="portrait"] .backRight { width: 29%; right: 3%; top: 12%; }
+.openMark { position: absolute; z-index: 4; right: 9%; bottom: 6%; display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #fff6; border-radius: 50%; background: #0c110dcc; font-size: 24px; transition: color var(--ui-normal), background var(--ui-normal), transform var(--ui-normal); }
+.artCaption { position: relative; z-index: 4; align-items: baseline; border-top: 1px solid #ffffff26; padding: 12px 0 0; color: #bdc4b6; }
+.artCaption > span:first-child { max-width: 72%; }
+.artCaption > span:last-child { flex-shrink: 0; color: #7c8977; }
+.worlds { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 38px); margin-top: 4px; }
+.worlds button { display: grid; grid-template-columns: 20px 1fr auto 18px; gap: 8px; align-items: baseline; position: relative; min-height: 75px; padding: 22px 0 16px; border-top: 1px solid #ffffff30; color: #a2aa9c; background: transparent; text-align: left; cursor: pointer; transition: color var(--ui-fast), border-color var(--ui-fast); }
+.worlds button[aria-selected="true"] { border-top-color: var(--world-accent); color: #f1eee6; }
+.worlds button small, .worlds button > span { font-size: 8px; font-variant-numeric: tabular-nums; font-weight: 400; opacity: .55; }
+.worlds strong { font-size: clamp(15px, 1.6vw, 27px); font-weight: 500; letter-spacing: -.05em; }
+.worlds button i { font-style: normal; justify-self: end; font-size: 18px; opacity: 0; transform: translate(-5px, 5px); transition: opacity var(--ui-normal), transform var(--ui-normal); }
+.worlds button[aria-selected="true"] i { opacity: 1; transform: none; }
+.footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; min-height: 38px; padding-top: 8px; font-size: 7px; letter-spacing: .1em; text-transform: uppercase; color: #7c8977; }
+.footer a { color: #c1c9b8; min-height: 44px; display: flex; align-items: center; gap: 18px; text-decoration: none; }
+.footer a span { font-size: 16px; }
+@keyframes arrive { from { opacity: .15; transform: translateY(14px) rotate(2deg) scale(.97); } to { opacity: 1; transform: none; } }
+@media (hover: hover) { .artLink:hover .openMark { background: var(--world-accent); color: #101510; transform: translate(3px, -3px); } .enter:hover > span { transform: translate(3px, -3px); } .worlds button:hover { color: #f1eee6; } }
+@media (max-width: 1050px) { .content { padding-left: 24px; padding-right: 24px; } .intro h1 { font-size: clamp(62px, 7.4vw, 90px); } .introBottom { flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 26px; } .worlds { gap: 14px; } .worlds button { gap: 5px; grid-template-columns: 16px 1fr auto; } .worlds button i { display: none; } }
+@media (max-width: 700px) {
+  .home { min-height: 0; }
+  .content { padding: 98px 16px max(12px, env(safe-area-inset-bottom)); }
+  .feature { grid-template-columns: 1fr; gap: 20px; padding: 8px 0 20px; min-height: 0; }
+  .eyebrow { font-size: 6px; margin-bottom: 18px; letter-spacing: .08em; }
+  .intro h1 { font-size: clamp(44px, 12.3vw, 78px); line-height: .87; }
+  .desktopBreak { display: none; }
+  .introBottom { flex-direction: row; align-items: center; justify-content: space-between; gap: 18px; margin-top: 20px; }
+  .introBottom p { font-size: 9px; flex-shrink: 0; }
+  .enter { width: 165px; font-size: 9px; gap: 10px; }
+  .showcase { min-height: 298px; }
+  .stageLabel { font-size: 7px; }
+  .artLink { min-height: 246px; }
+  .front { width: 59%; max-width: 250px; }
+  .backLeft { width: 30%; left: 3%; top: 34%; }
+  .backRight { width: 31%; right: 2%; top: 8%; }
+  .artworkSet[data-format="portrait"] .front { width: 40%; max-width: 170px; }
+  .artworkSet[data-format="portrait"] .backLeft, .artworkSet[data-format="portrait"] .backRight { width: 26%; }
+  .openMark { width: 40px; height: 40px; font-size: 20px; bottom: 7%; right: 5%; }
+  .artCaption { padding-top: 9px; font-size: 6px; }
+  .worlds { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+  .worlds button { min-height: 60px; padding: 18px 0 12px; }
+  .worlds strong { font-size: 19px; }
+  .footer { font-size: 6px; gap: 12px; padding-top: 8px; }
+  .footer > span:last-child { display: none; }
+}
+@media (max-width: 370px) { .introBottom { gap: 12px; } .enter { font-size: 8px; width: 150px; } .worlds strong { font-size: 17px; } }
+@media (prefers-reduced-motion: reduce) { .artworkSet { animation: none; } .composition, .openMark, .worlds button, .worlds button i, .enter > span { transition: none; } }
