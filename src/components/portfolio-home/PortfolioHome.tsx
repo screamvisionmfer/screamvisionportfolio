@@ -16,7 +16,7 @@ const pack = cardPacks[0];
 const worlds = [
   { title: "Covers", href: "/covers", count: covers.length, unit: "releases", accent: "#ed784a", format: "square", images: [covers[0].image, covers[3].image, covers[1].image], titles: [covers[0].title, covers[3].title, covers[1].title] },
   { title: "Illustrations", href: "/illustrations", count: illustrations.length, unit: "artworks", accent: "#badd63", format: "square", images: [illustrations[26].image, illustrations[37].image, illustrations[21].image], titles: [illustrations[26].title, illustrations[37].title, illustrations[21].title] },
-  { title: "Cards", href: "/cards", count: pack.cards.length, unit: "cards", accent: pack.accent, format: "portrait", images: [pack.cards[0].image, pack.cards[5].image, pack.cards[6].image], titles: [pack.cards[0].title, pack.cards[5].title, pack.cards[6].title] },
+  { title: "Cards", href: "/cards", count: cardPacks.reduce((total, item) => total + item.cards.length, 0), unit: "cards", accent: pack.accent, format: "portrait", images: [pack.cards[0].image, pack.cards[5].image, pack.cards[6].image], titles: [pack.cards[0].title, pack.cards[5].title, pack.cards[6].title] },
   { title: "Collaborations", href: "/collaborations", count: collaborations.length, unit: "projects", accent: "#73cbd1", format: "square", images: [collaborations[1].hero, collaborations[0].assets[4].src, collaborations[1].assets[3].src], titles: [collaborations[1].title, "Brick by brick", "Amigo"] },
 ];
 const artworks = [0, 1, 2].flatMap((imageIndex) => [1, 0, 2, 3].map((worldIndex) => ({

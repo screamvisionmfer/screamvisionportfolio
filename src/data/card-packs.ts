@@ -25,4 +25,17 @@ export const cardPacks: CardPack[] = [{
     title: `SBGC #${String(index + 1).padStart(2, "0")}`,
     image: `/cards/SBGC/${index + 1}.jpg`,
   })),
+}, {
+  id: "dfc",
+  title: "DFC",
+  subtitle: "Degen Fight Club",
+  edition: "Vibechain special edition",
+  artwork: `/cards/${encodeURIComponent("DFC (DEGEN FIGHT CLUB)")}/${encodeURIComponent("Футбольный бойцовский клуб DFC.png")}`,
+  accent: "#ff4934",
+  marketUrl: "https://vibechain.com/market/packs/degen-fight-club",
+  cards: Array.from({ length: 10 }, (_, index) => ({
+    id: `dfc-${index + 1}`,
+    title: `DFC #${String(index + 1).padStart(2, "0")}`,
+    image: `/cards/${encodeURIComponent("DFC (DEGEN FIGHT CLUB)")}/${index + 1}.jpg`,
+  })),
 }];

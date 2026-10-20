@@ -4,6 +4,8 @@ The `/cards` page is configured in `src/data/card-packs.ts`. Each entry is a sep
 
 SBGC uses the 49 numbered JPG files in `public/cards/SBGC`, in numeric order. `VIBECHAIN PACK 3.jpg` is the wrapper art and is not included in the card count. Titles are neutral file-number labels until actual names are supplied.
 
+DFC (Degen Fight Club) uses the 10 numbered JPG files in `public/cards/DFC (DEGEN FIGHT CLUB)`, in numeric order. The PNG in that folder is the wrapper artwork. Its purchase link points to the Degen Fight Club pack on VibeMarket.
+
 To add a collection:
 
 1. Put originals in a new directory under `public/cards`.
