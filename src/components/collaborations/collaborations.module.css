@@ -1,6 +1,6 @@
 .archive, .casePage { position: relative; width: 100vw; height: 100svh; min-height: 590px; overflow: hidden; color: #f4f0e9; background: #0a0a09; isolation: isolate; }
 .archive::before, .casePage::before { content: ""; position: absolute; z-index: -1; inset: -5%; opacity: .15; pointer-events: none; background-size: 160px; animation: collabGrain 1s steps(2) infinite; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E"); }
-.navHeader { position: absolute; z-index: 80; top: 0; left: 0; right: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; padding: max(20px, env(safe-area-inset-top)) 28px 0; color: #f4f0e9; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: .075em; pointer-events: none; }
+.navHeader { position: absolute; z-index: 80; top: 0; left: 0; right: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; padding: max(20px, env(safe-area-inset-top)) 28px 0; color: #f4f0e9; text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: .075em; pointer-events: none; }
 .navHeader nav { display: flex; gap: clamp(13px, 1.55vw, 28px); padding-top: 5px; pointer-events: auto; }
 .navHeader nav:first-child { justify-content: flex-end; }
 .navHeader a { color: inherit; text-decoration: none; opacity: .48; }
@@ -10,10 +10,10 @@
 .navLogo img { width: 180px; height: 88px; object-fit: contain; transition: transform .4s ease; }
 .navLogo:hover img { transform: scale(1.05); animation: collabLogo 2.8s linear infinite; }
 .secondary { justify-content: flex-start; }
-.backToArchive { position: absolute; z-index: 85; left: 29px; top: 89px; color: inherit; text-decoration: none; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: .075em; opacity: .8 !important; pointer-events: auto; }
+.backToArchive { position: absolute; z-index: 85; left: 29px; top: 89px; color: inherit; text-decoration: none; text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: .075em; opacity: .8 !important; pointer-events: auto; }
 .casePage .navHeader nav:first-child { visibility: hidden; }
 .archiveIntro { position: absolute; z-index: 4; left: 29px; top: 24%; width: 22vw; pointer-events: none; }
-.archiveIntro span { text-transform: uppercase; font-size: 8px; letter-spacing: .12em; opacity: .5; }
+.archiveIntro span { text-transform: uppercase; font-size: 12px; letter-spacing: .12em; opacity: .5; }
 .archiveIntro h1 { margin: 18px 0 0; font-size: clamp(42px, 5.2vw, 82px); line-height: .82; letter-spacing: -.07em; text-transform: uppercase; }
 .archiveIntro h1 i { display: block; font: italic 400 .62em/1 Georgia, serif; letter-spacing: -.04em; text-transform: none; }
 .cards { position: absolute; z-index: 3; inset: 13vh 4.5vw 10vh 28vw; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
@@ -22,29 +22,29 @@
 .cardMedia img { object-fit: cover; transition: transform .75s cubic-bezier(.22,.61,.36,1), filter .5s ease; }
 .cardMedia::after { content: ""; position: absolute; inset: 0; opacity: .2; background: linear-gradient(120deg, transparent 22%, rgba(255,255,255,.25) 47%, transparent 68%); transform: translateX(-115%); transition: transform .8s cubic-bezier(.22,.61,.36,1); }
 .cardWash { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,5,5,.76), transparent 54%), linear-gradient(0deg, rgba(5,5,5,.56), transparent 52%); }
-.cardTop { position: absolute; left: 22px; right: 22px; top: 20px; display: flex; justify-content: space-between; text-transform: uppercase; font-size: 8px; letter-spacing: .12em; }
+.cardTop { position: absolute; left: 22px; right: 22px; top: 20px; display: flex; justify-content: space-between; text-transform: uppercase; font-size: 12px; letter-spacing: .12em; }
 .cardTitle { position: absolute; left: 24px; bottom: 23px; max-width: 72%; }
-.cardTitle p { margin: 0 0 10px; text-transform: uppercase; font-size: 8px; letter-spacing: .13em; opacity: .7; }
+.cardTitle p { margin: 0 0 10px; text-transform: uppercase; font-size: 12px; letter-spacing: .13em; opacity: .7; }
 .cardTitle h2 { margin: 0; max-width: 850px; font-size: clamp(32px, 3.25vw, 58px); line-height: .82; letter-spacing: -.07em; text-transform: uppercase; }
-.cardAction { position: absolute; right: 23px; bottom: 24px; display: flex; align-items: center; gap: 12px; text-transform: uppercase; font-size: 8px; font-weight: 700; letter-spacing: .09em; }
+.cardAction { position: absolute; right: 23px; bottom: 24px; display: flex; align-items: center; gap: 12px; text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: .09em; }
 .cardAction i { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,.58); border-radius: 50%; font-style: normal; font-size: 16px; transition: color var(--ui-normal) var(--ui-ease), background var(--ui-normal) var(--ui-ease), transform var(--ui-normal) var(--ui-ease); }
 .collabCard:hover .cardMedia img { transform: scale(1.02); }
 .collabCard:hover .cardMedia::after { transform: translateX(115%); }
 .collabCard:hover .cardAction i { color: #111; background: #fff; transform: rotate(45deg); }
 .collabCard[data-opening="true"] .cardMedia::before { content: ""; position: absolute; z-index: 8; inset: 0; background: var(--card-accent, #ee745d); transform-origin: bottom; animation: cardFill .86s cubic-bezier(.65,0,.35,1) both; }
 .archive[data-opening="true"] .archiveIntro, .archive[data-opening="true"] .navHeader, .archive[data-opening="true"] .archiveFooter { opacity: 0; transform: translateY(-18px); transition: opacity .55s ease, transform .7s ease; }
-.archiveFooter { position: absolute; left: 29px; right: 29px; bottom: 25px; display: flex; justify-content: space-between; margin: 0; text-transform: uppercase; font-size: 8px; letter-spacing: .1em; opacity: .45; }
+.archiveFooter { position: absolute; left: 29px; right: 29px; bottom: 25px; display: flex; justify-content: space-between; margin: 0; text-transform: uppercase; font-size: 12px; letter-spacing: .1em; opacity: .45; }
 .casePage { --case-accent: #ee745d; background: #0b0a09; animation: caseEnter .65s ease both; }
 .casePage::after { content: ""; position: absolute; z-index: 70; inset: 0; pointer-events: none; background: var(--case-accent); transform-origin: top; animation: caseCurtain 1.05s cubic-bezier(.65,0,.35,1) both; }
 .caseInfo { position: absolute; z-index: 20; isolation: isolate; left: 29px; top: 50%; width: clamp(280px, 25vw, 430px); transform: translateY(-48%); animation: infoReveal .82s cubic-bezier(.22,.61,.36,1) .48s both; }
 .caseInfo::before { content: ""; position: absolute; z-index: -1; inset: -100vh -15vw -100vh -29px; pointer-events: none; background: linear-gradient(90deg, #090909 0, rgba(9,9,9,.96) 47%, rgba(9,9,9,.72) 68%, transparent 100%); }
-.eyebrow { text-transform: uppercase; font-size: 8px; letter-spacing: .13em; opacity: .56; }
+.eyebrow { text-transform: uppercase; font-size: 12px; letter-spacing: .13em; opacity: .56; }
 .caseInfo h1 { margin: 20px 0 42px; font-size: clamp(50px, 6vw, 100px); line-height: .78; letter-spacing: -.075em; text-transform: uppercase; }
 .caseInfo dl { display: grid; gap: 14px; margin: 0 0 38px; }
-.caseInfo dl div { display: grid; grid-template-columns: 64px 1fr; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.2); text-transform: uppercase; font-size: 8px; line-height: 1.45; letter-spacing: .09em; }
+.caseInfo dl div { display: grid; grid-template-columns: 64px 1fr; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.2); text-transform: uppercase; font-size: 12px; line-height: 1.45; letter-spacing: .09em; }
 .caseInfo dt { opacity: .42; }
 .caseInfo dd { margin: 0; }
-.magicButton { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 12px 12px 15px; border: 1px solid rgba(255,255,255,.5); color: inherit; text-decoration: none; text-transform: uppercase; font-size: 9px; font-weight: 700; letter-spacing: .08em; transition: color var(--ui-normal) var(--ui-ease), background var(--ui-normal) var(--ui-ease); }
+.magicButton { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 12px 12px 15px; border: 1px solid rgba(255,255,255,.5); color: inherit; text-decoration: none; text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: .08em; transition: color var(--ui-normal) var(--ui-ease), background var(--ui-normal) var(--ui-ease); }
 .magicButton i { display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid rgba(255,255,255,.5); border-radius: 50%; font-style: normal; }
 .magicButton:hover { color: #111; background: #f4f0e9; }
 .caseViewport { position: absolute; z-index: 10; inset: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; overscroll-behavior: contain; touch-action: none; cursor: grab; scroll-snap-type: x mandatory; mask-image: linear-gradient(90deg, transparent 0, transparent 19vw, #000 32vw, #000 100%); }
@@ -60,12 +60,12 @@
 .motionAsset button { aspect-ratio: 9 / 16; }
 .asset img, .asset video { width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: transform .65s ease; }
 .asset button:hover img, .asset button:hover video { transform: scale(1.018); }
-.asset p { display: grid; grid-template-columns: 40px 1fr auto; gap: 11px; margin: 0; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.34); text-transform: uppercase; font-size: 8px; letter-spacing: .09em; }
+.asset p { display: grid; grid-template-columns: 40px 1fr auto; gap: 11px; margin: 0; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.34); text-transform: uppercase; font-size: 12px; letter-spacing: .09em; }
 .asset p span { opacity: .5; }
 .caseFooter { position: absolute; z-index: 30; left: clamp(340px, 30vw, 520px); right: 29px; bottom: 23px; display: grid; grid-template-columns: minmax(100px, 25vw) auto 36px 36px; align-items: center; gap: 9px; pointer-events: none; }
 .caseFooter > div { height: 1px; overflow: hidden; background: rgba(255,255,255,.24); }
 .caseFooter > div span { display: block; width: 100%; height: 100%; background: #fff; transform-origin: left; transition: transform .55s ease; }
-.caseFooter p { margin: 0 12px 0 4px; font-size: 8px; letter-spacing: .09em; }
+.caseFooter p { margin: 0 12px 0 4px; font-size: 12px; letter-spacing: .09em; }
 .caseFooter button { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 1px solid rgba(255,255,255,.46); border-radius: 50%; color: #fff; background: rgba(0,0,0,.16); cursor: pointer; pointer-events: auto; }
 .caseFooter button:disabled { opacity: .25; }
 .assetPreview { --preview-drag-x: 0px; position: fixed; z-index: 10000; inset: 0; display: grid; place-items: center; overflow: hidden; padding: 42px; touch-action: none; cursor: grab; color: #f6f3ee; background: #050505; animation: previewFade .52s ease both; }
@@ -76,7 +76,7 @@
 .assetPreview[data-dragging="true"] .previewAsset { transition: none; }
 .previewAsset img, .previewAsset video { width: 100%; height: 100%; object-fit: contain; }
 
-.previewMeta { position: absolute; z-index: 3; left: 28px; right: 28px; bottom: 22px; display: flex; justify-content: space-between; text-transform: uppercase; font-size: 8px; letter-spacing: .09em; }
+.previewMeta { position: absolute; z-index: 3; left: 28px; right: 28px; bottom: 22px; display: flex; justify-content: space-between; text-transform: uppercase; font-size: 12px; letter-spacing: .09em; }
 .previewMeta span:last-child { opacity: .45; }
 @keyframes cardReveal { from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(22px); } to { opacity: 1; clip-path: inset(0); transform: translateY(0); } }
 @keyframes cardFill { from { transform: scaleY(0); } to { transform: scaleY(1); } }
@@ -106,13 +106,13 @@
   .casePage { overflow-y: auto; }
   .caseInfo { position: relative; left: 0; top: 0; width: 100%; padding: 78px 16px 22px; transform: none; animation: mobileInfo .7s ease .45s both; }
   .caseInfo::before { display: none; }
-  .eyebrow { font-size: 7px; }
+  .eyebrow { font-size: 12px; }
   .caseInfo h1 { margin: 12px 0 18px; max-width: 94%; font-size: clamp(40px, 11.5vw, 52px); line-height: .8; }
   .caseInfo dl { grid-template-columns: 1fr 1fr; gap: 6px 12px; margin: 0 0 14px; }
-  .caseInfo dl div { display: block; padding-top: 6px; font-size: 7px; line-height: 1.3; }
+  .caseInfo dl div { display: block; padding-top: 6px; font-size: 12px; line-height: 1.3; }
   .caseInfo dl div:nth-child(2) { grid-column: 1 / -1; }
   .caseInfo dt { margin-bottom: 4px; }
-  .magicButton { padding: 7px 7px 7px 11px; font-size: 8px; }
+  .magicButton { padding: 7px 7px 7px 11px; font-size: 12px; }
   .magicButton i { width: 29px; height: 29px; }
   .caseViewport { position: relative; inset: auto; width: 100%; height: auto; min-height: 500px; overflow: visible; touch-action: pan-y; cursor: default; scroll-snap-type: none; mask-image: none; }
   .assetGrid { display: grid; grid-template-columns: 1fr 1fr; width: auto; min-width: 0; height: auto; gap: 7px; padding: 0 7px 28px; background-size: 50% 180px; perspective: none; }
@@ -121,7 +121,7 @@
   .asset:nth-child(4n + 1) { grid-column: span 2; }
   .asset:nth-child(4n + 1) button { aspect-ratio: 1; }
   .asset img, .asset video { object-fit: contain; }
-  .asset p { grid-template-columns: 24px 1fr auto; gap: 6px; padding-top: 7px; font-size: 7px; }
+  .asset p { grid-template-columns: 24px 1fr auto; gap: 6px; padding-top: 7px; font-size: 12px; }
   .caseFooter { position: relative; left: 0; right: auto; bottom: auto; width: calc(100% - 32px); margin: 18px 16px 30px; grid-template-columns: 1fr auto 36px 36px; }
   .assetPreview { padding: 50px 12px 56px; }
   .previewAsset { width: 96vw; height: 78svh; }
@@ -151,17 +151,17 @@
 .filmstrip button:focus-visible { outline-offset: -3px; }
 .filmstrip img { object-fit: cover; }
 .filmstrip button > span { font-size: 12px; }
-.filmstrip small { position: absolute; z-index: 1; left: 0; bottom: 0; padding: 3px 5px; background: #080808b3; font-size: 8px; }
+.filmstrip small { position: absolute; z-index: 1; left: 0; bottom: 0; padding: 3px 5px; background: #080808b3; font-size: 12px; }
 .caseFooter { grid-template-columns: minmax(80px, 1fr) auto 44px 44px; }
 .caseFooter button, .previewMeta button { width: 44px; height: 44px; }
 .nextProject { position: absolute; z-index: 30; bottom: 28px; left: 29px; width: clamp(280px, 25vw, 430px); display: grid; grid-template-columns: 1fr 24px; gap: 8px 12px; padding-top: 16px; border-top: 1px solid #ffffff30; color: inherit; text-decoration: none; text-transform: uppercase; }
-.nextProject small { font-size: 8px; letter-spacing: .1em; opacity: .45; }
+.nextProject small { font-size: 12px; letter-spacing: .1em; opacity: .45; }
 .nextProject strong { font-size: 12px; letter-spacing: -.02em; }
 .nextProject > span { grid-column: 2; grid-row: 1 / 3; align-self: center; font-size: 24px; }
 .previewAsset { height: min(78svh, 920px); }
 .previewMeta { align-items: center; bottom: max(18px, env(safe-area-inset-bottom)); }
 .previewMeta > span { display: grid; gap: 8px; }
-.previewMeta small { opacity: .45; font-size: 8px; }
+.previewMeta small { opacity: .45; font-size: 12px; }
 .previewMeta > div { display: flex; gap: 8px; }
 .previewMeta button { border: 1px solid #ffffff65; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
 @media (max-width: 760px) {

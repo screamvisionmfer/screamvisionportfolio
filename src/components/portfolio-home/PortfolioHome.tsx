@@ -8,6 +8,7 @@ import { covers } from "@/data/covers";
 import { illustrations } from "@/data/illustrations";
 import { collaborations } from "@/data/collaborations";
 import { cardPacks } from "@/data/card-packs";
+import { SiteNav } from "@/components/site-nav/SiteNav";
 import { WorldPortal } from "./WorldPortal";
 import { useMobilePortals } from "./useMobilePortals";
 import { usePhoneMotion } from "./usePhoneMotion";
@@ -33,11 +34,10 @@ export function PortfolioHome(){
  const changeNoir=(enabled:boolean)=>{setNoir(enabled);applyNoirMode(enabled);};
  const rail=useRef<HTMLElement>(null),drawerButton=useRef<HTMLButtonElement>(null),drawerDrag=useRef({y:0,moved:false});
  const activePortal=useMobilePortals(rail);
- const router=useRouter(),exit=useRef<ReturnType<typeof setTimeout>|null>(null),settingsButton=useRef<HTMLButtonElement>(null);
+ const router=useRouter(),settingsButton=useRef<HTMLButtonElement>(null);
  useEffect(()=>{
   const cover=new URLSearchParams(window.location.search).get("cover");
   if(cover&&covers.some(item=>item.id===cover))router.replace(`/covers?cover=${encodeURIComponent(cover)}`);
-  return()=>{if(exit.current)clearTimeout(exit.current);};
  },[router]);
  useEffect(()=>{
   if(!settings&&!drawerOpen)return;
@@ -46,20 +46,14 @@ export function PortfolioHome(){
  },[settings,drawerOpen]);
  const enter=(href:string)=>{
   if(leaving)return;router.prefetch(href);setLeaving(true);
-  const animate=motion&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(animate)sessionStorage.setItem("room-arrival",href);
-  exit.current=setTimeout(()=>router.push(href),animate?850:0);
+  window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:href}));
  };
  return <main className={styles.room} data-ready={ready} data-lit={lit} data-motion={motion} data-retro={retro} data-leaving={leaving}>
   <h1 className={styles.srOnly}>SCREAM VISION — Cover art, illustrations and collectible worlds</h1>
   <div className={styles.scene}><RoomScene lit={lit} motion={motion} gyro={phone.enabled} onGyroData={phone.onData} resetVersion={resetVersion} onReady={()=>setReady(true)}/></div>
   <div className={styles.focusVeil} aria-hidden="true"/>
   <div className={styles.screen} aria-hidden="true"/>
-  <header className={styles.header}>
-   <Link href="/" aria-label="SCREAM VISION home"><Image src="/scream-logo.png" alt="SCREAM VISION" width={104} height={60} unoptimized/></Link>
-   <span>Independent artist<br/><b>Portfolio / Room 01</b></span>
-   <Link href="/contacts">Get in touch <i>↗</i></Link>
-  </header>
+  <SiteNav />
   <button className={styles.wallSwitch} onClick={()=>setLit(value=>!value)} aria-label={lit?"Turn lamp off":"Turn lamp on"} aria-pressed={lit}>
    <span className={styles.switchImages}><Image src="/scene/switch-on.webp" alt="" fill sizes="75px" unoptimized data-visible={lit}/><Image src="/scene/switch-off.webp" alt="" fill sizes="75px" unoptimized data-visible={!lit}/></span>
    <span><b>LIGHT</b><i data-on={lit}/>{lit?"ON":"OFF"}</span>
@@ -70,7 +64,6 @@ export function PortfolioHome(){
    const links=Array.from(event.currentTarget.querySelectorAll<HTMLAnchorElement>("a")),index=links.indexOf(document.activeElement as HTMLAnchorElement);
    event.preventDefault();links[(Math.max(0,index)+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+links.length)%links.length]?.focus();
   }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} railActive={activePortal===index} onEnter={enter}/>)}</nav>
-  {leaving&&<div className={styles.departure} aria-hidden="true"/>}
   <div className={styles.loading} role="status">{ready?"":"Loading the room"}<span/></div>
   {settings&&<section className={`${styles.settings} ${styles.desktopSettings}`} data-room-settings role="dialog" aria-label="Room settings">
    <div><h2>Room settings</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
@@ -79,12 +72,12 @@ export function PortfolioHome(){
    <label>Noir mode<input type="checkbox" checked={noir} onChange={event=>changeNoir(event.target.checked)}/></label>
    <PhoneMotionControl phone={phone} motion={motion}/>
    <button className={styles.resetView} onClick={()=>setResetVersion(value=>value+1)}>Reset camera <span>↶</span></button>
-   <p>Mouse to look · Wheel to zoom<br/>Arrows to select · Enter to open</p>
+   <p>Mouse to look · Wheel to zoom<br/>Arrow keys to select · Enter to open</p>
   </section>}
   <footer className={styles.consoleBar}>
-   <div className={styles.controls}><span><b className={styles.green}>A</b> ENTER</span><span><b className={styles.grey}>R</b> ZOOM</span></div>
-   <div className={styles.footerLinks}><a href="mailto:screamvisionmfer@gmail.com"><b className={styles.blue}>X</b> screamvisionmfer@gmail.com</a><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a><Link href="/about">ABOUT</Link></div>
-   <button ref={settingsButton} aria-expanded={settings} onClick={()=>setSettings(value=>!value)}><b className={styles.yellow}>Y</b> SETTINGS</button>
+   <div className={styles.controls}><span>CLICK TO EXPLORE</span><span>SCROLL TO ZOOM</span></div>
+   <div className={styles.footerLinks}><a href="mailto:screamvisionmfer@gmail.com"> screamvisionmfer@gmail.com</a><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a><Link href="/about">ABOUT</Link></div>
+   <button ref={settingsButton} aria-expanded={settings} onClick={()=>setSettings(value=>!value)}> SETTINGS</button>
   </footer>
   <button className={styles.drawerBackdrop} data-open={drawerOpen} tabIndex={drawerOpen?0:-1} aria-hidden={!drawerOpen} aria-label="Dismiss room panel" onClick={()=>{setDrawerOpen(false);drawerButton.current?.focus();}}/>
   <section className={styles.mobileConsole} data-open={drawerOpen} aria-label="Mobile room controls" data-room-settings>
@@ -92,7 +85,7 @@ export function PortfolioHome(){
     onPointerDown={event=>{drawerDrag.current={y:event.clientY,moved:false};event.currentTarget.setPointerCapture(event.pointerId);}}
     onPointerUp={event=>{const delta=event.clientY-drawerDrag.current.y;if(Math.abs(delta)>30){drawerDrag.current.moved=true;setDrawerOpen(delta<0);}}}
     onClick={event=>{if(event.detail&&drawerDrag.current.moved){drawerDrag.current.moved=false;return;}drawerDrag.current.moved=false;setDrawerOpen(value=>!value);}}>
-    <i/><span><b className={styles.yellow}>Y</b> SYSTEM / CONTACTS</span><strong>{drawerOpen?"⌄":"⌃"}</strong>
+    <i/><span> SYSTEM / CONTACTS</span><strong>{drawerOpen?"⌄":"⌃"}</strong>
    </button>
    <div id="mobile-room-panel" className={styles.drawerBody} inert={!drawerOpen} aria-hidden={!drawerOpen}>
     <p className={styles.drawerTitle}>ROOM 01 / DISPLAY OPTIONS</p>
@@ -101,9 +94,9 @@ export function PortfolioHome(){
     <label>Noir mode<input type="checkbox" checked={noir} onChange={event=>changeNoir(event.target.checked)}/></label>
     <PhoneMotionControl phone={phone} motion={motion}/>
     <button className={styles.resetView} onClick={()=>setResetVersion(value=>value+1)}>Reset camera <span>↶</span></button>
-    <a className={styles.drawerEmail} href="mailto:screamvisionmfer@gmail.com"><b className={styles.blue}>X</b> screamvisionmfer@gmail.com <span>↗</span></a>
+    <a className={styles.drawerEmail} href="mailto:screamvisionmfer@gmail.com"> screamvisionmfer@gmail.com <span>↗</span></a>
     <div className={styles.drawerLinks}><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a><Link href="/about">ABOUT</Link></div>
-    <p className={styles.drawerHelp}><b className={styles.green}>A</b> TAP TO ENTER <span>↔ SWIPE TO SELECT</span></p>
+    <p className={styles.drawerHelp}> TAP TO ENTER <span>↔ SWIPE TO SELECT</span></p>
    </div>
   </section>
  </main>;

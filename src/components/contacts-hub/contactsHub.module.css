@@ -2,7 +2,7 @@
 .texture { position: fixed; z-index: -1; inset: -8%; opacity: .075; pointer-events: none; background-size: 150px; animation: grain 1.1s steps(2) infinite; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E"); }
 .directory { display: grid; grid-template-rows: auto auto 1fr auto; width: 100%; min-height: 100dvh; padding: 88px clamp(22px,3vw,52px) 24px; }
 .heading { position: relative; text-align: center; }
-.heading > span, .heading p, .tabs button, .links span, .links small, .directory footer { font-size: 8px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+.heading > span, .heading p, .tabs button, .links span, .links small, .directory footer { font-size: 12px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
 .heading > span { display: block; margin-bottom: 14px; opacity: .38; }
 .heading h1 { margin: 0; font-size: clamp(62px,8.1vw,142px); line-height: .74; letter-spacing: -.075em; text-transform: uppercase; }
 .heading p { position: absolute; right: 0; bottom: 2px; max-width: 180px; margin: 0; line-height: 1.45; text-align: left; opacity: .42; }
@@ -11,7 +11,7 @@
 .tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: #fff; transform: scaleX(0); transition: transform var(--ui-normal) var(--ui-ease); }
 .tabs button:hover, .tabs button[aria-selected="true"] { opacity: 1; }
 .tabs button[aria-selected="true"]::after { transform: scaleX(1); }
-.tabs button span, .tabs button small { font-size: 7px; opacity: .5; }
+.tabs button span, .tabs button small { font-size: 12px; opacity: .5; }
 .links { align-self: center; width: min(1380px,100%); margin: 0 auto; border-top: 1px solid rgba(255,255,255,.17); animation: linksIn .48s cubic-bezier(.16,1,.3,1) both; }
 .links a { display: grid; grid-template-columns: 44px minmax(0,1fr) minmax(130px,20vw) 36px; align-items: center; min-height: clamp(62px,8vh,90px); color: inherit; border-bottom: 1px solid rgba(255,255,255,.17); text-decoration: none; transition: opacity var(--ui-fast) var(--ui-ease), padding var(--ui-normal) var(--ui-ease); }
 .links span { opacity: .3; }
@@ -38,7 +38,7 @@
   .links { align-self: auto; }
   .links a { grid-template-columns: 26px minmax(0,1fr) 30px; min-height: 72px; }
   .links strong { font-size: clamp(27px,9.5vw,42px); }
-  .links small { grid-column: 2; grid-row: 2; margin-top: -17px; padding-bottom: 9px; font-size: 7px; }
+  .links small { grid-column: 2; grid-row: 2; margin-top: -17px; padding-bottom: 9px; font-size: 12px; }
   .links i { grid-column: 3; grid-row: 1 / 3; }
   .links a:hover { padding-left: 0; }
   .directory footer { grid-template-columns: 1fr auto; margin-top: 34px; }

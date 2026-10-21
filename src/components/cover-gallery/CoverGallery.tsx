@@ -117,8 +117,6 @@ export function CoverGallery() {
     }
   }, [goTo]);
 
-  const navigationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => () => { if (navigationTimer.current) clearTimeout(navigationTimer.current); }, []);
   const openProject = useCallback((index: number) => {
     if (openingIndex !== null) return;
     if (index !== activeIndex) { goTo(index); return; }
@@ -128,7 +126,7 @@ export function CoverGallery() {
     setCollapsing(true);
     const href = `/projects/${covers[index].id}`;
     router.prefetch(href);
-    navigationTimer.current = setTimeout(() => router.push(href), window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450);
+    window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:href}));
   }, [activeIndex, goTo, openingIndex, router]);
   useEffect(() => {
     const root = rootRef.current;

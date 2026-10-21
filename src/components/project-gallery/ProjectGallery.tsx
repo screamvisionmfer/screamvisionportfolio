@@ -95,8 +95,6 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   const dragActive = useRef(false);
   const dragMoved = useRef(false);
   const pendingAsset = useRef<number | null>(null);
-  const navigationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => () => { if (navigationTimer.current) clearTimeout(navigationTimer.current); }, []);
   const [active, setActive] = useState(0);
   const [trackX, setTrackX] = useState(0);
   const [dragX, setDragX] = useState(0);
@@ -205,7 +203,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       try { window.sessionStorage.setItem("project-slide-direction", direction); } catch {}
     }
     router.prefetch(href);
-    navigationTimer.current = setTimeout(() => router.push(href), window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450);
+    window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:href}));
   };
 
   const openAsset = (index: number) => {

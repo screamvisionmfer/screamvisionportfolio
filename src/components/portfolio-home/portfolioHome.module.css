@@ -125,3 +125,13 @@
 .room[data-leaving="true"] .world[data-entering="true"] .portalBody { animation:none;scale:1.035;transition:scale .65s; }
 @media (max-width:600px) { .focusVeil { display:none; }.world[data-position="cards"] .portalArt { aspect-ratio:1.65; } }
 @media (prefers-reduced-motion:reduce) { .focusVeil { backdrop-filter:none; }.world[data-position="cards"] .portalArt > span { transition:none; } }
+
+.routeCurtain { position:fixed;inset:0;z-index:10000;background:#050605;pointer-events:auto; }
+.routeCurtain[data-phase="out"] { animation:routeOut .55s cubic-bezier(.4,0,.5,1) both; }
+.routeCurtain[data-phase="in"] { pointer-events:none;animation:routeIn .65s ease-out both; }
+@keyframes routeOut { from { opacity:0; } to { opacity:1; } }
+@keyframes routeIn { from { opacity:1; } to { opacity:0; } }
+.consoleBar { font-size:12px;min-height:76px; }.controls { font-size:11px;gap:18px; }.footerLinks { gap:20px; }.consoleBar button { min-height:44px; }.settings { width:330px;font-size:14px; }.settings h2 { font-size:17px; }.settings label { min-height:52px; }.settings p { font-size:11px; }.gyroControl > div button { font-size:12px;min-height:42px; }.gyroControl p { font-size:11px; }
+.portalLabel > span { font-size:11px; }.wallSwitch > span:last-child { font-size:11px; }.loading { font-size:11px; }
+@media(max-width:1000px) and (min-width:601px) { .consoleBar { font-size:10px; }.controls { font-size:10px;gap:10px; }.footerLinks { gap:12px; } }
+@media(max-width:600px) { .drawerHandle { font-size:13px; }.drawerBody { font-size:14px; }.drawerTitle { font-size:10px; }.drawerEmail { font-size:12px; }.drawerLinks { font-size:11px; }.drawerHelp { font-size:10px; }.portalLabel > span { font-size:10px; }.railHint { font-size:11px; }.railHint span { font-size:10px; }.wallSwitch > span:last-child { font-size:9px; }.consoleBar { display:none; } }

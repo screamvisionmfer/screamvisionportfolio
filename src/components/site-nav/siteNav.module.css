@@ -13,3 +13,24 @@
 @media(max-width:600px) { .header { padding:max(12px,env(safe-area-inset-top)) 16px 0;gap:12px; }.logo { gap:8px; }.logo img { width:70px;height:38px; }.logo > span { font-size:7px;letter-spacing:.06em; }.logo b { font-size:14px; }.location { display:none; }.menuButton { margin-left:auto;min-height:44px;padding:5px 9px;font-size:8px!important;gap:7px; }.key { width:18px;height:18px;font-size:10px; }.menuContent { left:24px;right:24px;width:auto;top:82px;padding:12px 0 max(22px,env(safe-area-inset-bottom)); }.menuHeading { margin-bottom:17px; }.menuHeading h2 { font-size:32px; }.panel nav a { min-height:clamp(44px,6.8svh,60px);gap:13px;padding-inline:10px; }.panel nav a > span { font-size:23px; }.panel nav a em { font-size:5px; }.menuFooter { margin-top:20px; }.backdrop { background:linear-gradient(120deg,#10160eeb,#0a0f08e8);backdrop-filter:blur(5px); } }
 @media(max-height:650px) { .menuContent { top:75px;padding-top:10px; }.menuHeading { margin-bottom:12px; }.menuHeading h2 { font-size:28px; }.panel nav a { min-height:44px; }.menuFooter { margin-top:14px; } }
 @media(prefers-reduced-motion:reduce) { .panel,.menuContent,.panel nav a { transition:none; }.backdrop { backdrop-filter:none; } }
+
+/* Full-size world selection with a separate briefing window. */
+.logo img { width:138px;height:68px;transition:transform .35s cubic-bezier(.2,.8,.2,1); }
+.logo:hover img { transform:scale(1.13);animation:logoSpectrum .7s linear infinite; }
+@keyframes logoSpectrum { 0%,100% { filter:sepia(1) saturate(8) hue-rotate(0deg); } 33% { filter:sepia(1) saturate(8) hue-rotate(120deg); } 66% { filter:sepia(1) saturate(8) hue-rotate(240deg); } }
+.logo > span,.location { font-size:12px; }.menuButton { font-size:13px!important;min-height:50px;padding:10px 18px;gap:14px; }.menuButton i { font-size:21px; }
+.menuContent { left:5vw;top:clamp(100px,13vh,155px);width:43vw;padding:10px 28px 30px 0; }
+.menuHeading h2 { font-size:clamp(36px,3.8vw,70px); }.menuHeading > span { font-size:11px; }.menuHeading p { font-size:13px; }
+.panel nav a { min-height:clamp(49px,6.3vh,78px);gap:22px; }.panel nav a > span { font-size:clamp(24px,2.45vw,46px); }.panel nav a small { font-size:12px; }.panel nav a em { font-size:10px; }.panel nav a i { font-size:23px; }
+.menuFooter { font-size:12px; }.menuFooter > a { min-height:44px; }.menuFooter p { font-size:10px; }.menuFooter > div { gap:30px;padding-block:16px; }
+.preview { position:absolute;left:53%;right:5%;top:24%;bottom:12%;display:flex;flex-direction:column;gap:22px;pointer-events:none; }
+.previewScreen { position:relative;aspect-ratio:16/10;max-height:67%;border:1px solid #b5a57755;background:#090d08;box-shadow:0 25px 60px #0006;overflow:hidden;animation:briefingIn .45s ease-out both; }
+.previewScreen img { object-fit:cover; }.previewScreen > span { position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 3px,#0002 3px 4px),linear-gradient(transparent 60%,#05080588); }
+.previewCaption > span { font:11px monospace;letter-spacing:.2em;color:#a49b7c; }.previewCaption strong { display:block;font-size:clamp(26px,3vw,48px);letter-spacing:-.04em;margin-top:10px; }.previewCaption p { margin:12px 0;font:13px/1.7 monospace;text-transform:none;color:#b5b29d;max-width:440px; }
+@keyframes briefingIn { from { transform:translateY(8px); } to { transform:none; } }
+@media(max-width:800px) { .location { display:none; }.header { padding-inline:18px; }.logo img { width:106px;height:54px; }.logo > span { font-size:9px; }.menuButton { font-size:12px!important;min-height:46px;padding:8px 12px; }.menuContent { left:24px;right:24px;width:auto;top:92px;padding:12px 0 28px; }.menuHeading h2 { font-size:38px; }.panel nav a { min-height:50px;gap:14px; }.panel nav a > span { font-size:26px; }.panel nav a small { font-size:10px; }.panel nav a em { font-size:8px; }.preview { display:none; }.menuFooter p { gap:18px;font-size:10px; }.menuHeading p { font-size:12px; } }
+@media(min-width:801px) and (max-height:800px) { .menuContent { top:96px; }.menuHeading { margin-bottom:12px; }.menuHeading h2 { font-size:38px; }.panel nav a { min-height:45px; }.panel nav a > span { font-size:27px; }.menuFooter { margin-top:14px; }.menuFooter > div { padding-block:12px; }.menuFooter p { margin-top:12px; } }
+@media(prefers-reduced-motion:reduce) { .logo:hover img { animation:none;transform:none; }.previewScreen { animation:none; } }
+
+.logo img { width:180px;height:88px; }.previewScreen video { width:100%;height:100%;object-fit:cover; }
+@media(max-width:800px) { .logo img { width:140px;height:68px; }.logo { gap:4px; }.logo > span { font-size:8px;max-width:80px;line-height:1.5; } }
