@@ -10,6 +10,7 @@ import { collaborations } from "@/data/collaborations";
 import { cardPacks } from "@/data/card-packs";
 import { WorldPortal } from "./WorldPortal";
 import { useMobilePortals } from "./useMobilePortals";
+import { applyNoirMode, readNoirMode } from "@/components/site-settings/NoirMode";
 import styles from "./portfolioHome.module.css";
 const RoomScene=dynamic(()=>import("./RoomScene").then(m=>m.RoomScene),{ssr:false});
 const sections=[
@@ -22,6 +23,9 @@ export function PortfolioHome(){
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(true),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
  const [drawerOpen,setDrawerOpen]=useState(false);
+ const [noir,setNoir]=useState(false);
+ useEffect(()=>{setNoir(readNoirMode());},[]);
+ const changeNoir=(enabled:boolean)=>{setNoir(enabled);applyNoirMode(enabled);};
  const rail=useRef<HTMLElement>(null),drawerButton=useRef<HTMLButtonElement>(null),drawerDrag=useRef({y:0,moved:false});
  const activePortal=useMobilePortals(rail);
  const router=useRouter(),exit=useRef<ReturnType<typeof setTimeout>|null>(null),settingsButton=useRef<HTMLButtonElement>(null);
@@ -63,6 +67,7 @@ export function PortfolioHome(){
    <div><h2>Room settings</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
    <label>Motion / Parallax<input type="checkbox" checked={motion} onChange={event=>setMotion(event.target.checked)}/></label>
    <label>Retro screen<input type="checkbox" checked={retro} onChange={event=>setRetro(event.target.checked)}/></label>
+   <label>Noir mode<input type="checkbox" checked={noir} onChange={event=>changeNoir(event.target.checked)}/></label>
    <button className={styles.resetView} onClick={()=>setResetVersion(value=>value+1)}>Reset camera <span>↶</span></button>
    <p>Mouse to look · Wheel to zoom<br/>Arrows to select · Enter to open</p>
   </section>}
@@ -83,6 +88,7 @@ export function PortfolioHome(){
     <p className={styles.drawerTitle}>ROOM 01 / DISPLAY OPTIONS</p>
     <label>Motion / Parallax<input type="checkbox" checked={motion} onChange={event=>setMotion(event.target.checked)}/></label>
     <label>Retro screen<input type="checkbox" checked={retro} onChange={event=>setRetro(event.target.checked)}/></label>
+    <label>Noir mode<input type="checkbox" checked={noir} onChange={event=>changeNoir(event.target.checked)}/></label>
     <button className={styles.resetView} onClick={()=>setResetVersion(value=>value+1)}>Reset camera <span>↶</span></button>
     <a className={styles.drawerEmail} href="mailto:screamvisionmfer@gmail.com"><b className={styles.blue}>X</b> screamvisionmfer@gmail.com <span>↗</span></a>
     <div className={styles.drawerLinks}><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a><Link href="/about">ABOUT</Link></div>
