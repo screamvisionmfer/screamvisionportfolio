@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { NoirMode } from "@/components/site-settings/NoirMode";
+import { RoomArrival } from "@/components/portfolio-home/RoomArrival";
 
 export const metadata: Metadata = {
   title: "SCREAM VISION — Cover Art",
@@ -16,7 +17,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body><NoirMode />{children}</body>
+      <body><NoirMode />{children}<RoomArrival /></body>
     </html>
   );
 }
