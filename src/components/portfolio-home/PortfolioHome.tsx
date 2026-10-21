@@ -63,7 +63,7 @@ export function PortfolioHome(){
   </section>}
   <footer className={styles.consoleBar}>
    <div className={styles.controls}><span><b className={styles.green}>A</b> ENTER</span><span><b className={styles.grey}>R</b> ZOOM</span></div>
-   <div className={styles.footerLinks}><Link href="/contacts"><b className={styles.blue}>X</b> CONTACT</Link><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a><Link href="/about">ABOUT</Link></div>
+   <div className={styles.footerLinks}><a href="mailto:screamvisionmfer@gmail.com"><b className={styles.blue}>X</b> screamvisionmfer@gmail.com</a><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a><Link href="/about">ABOUT</Link></div>
    <button ref={settingsButton} aria-expanded={settings} onClick={()=>setSettings(value=>!value)}><b className={styles.yellow}>Y</b> SETTINGS</button>
   </footer>
  </main>;
