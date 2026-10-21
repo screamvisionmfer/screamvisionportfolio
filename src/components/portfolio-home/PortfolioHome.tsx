@@ -1,18 +1,17 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { covers } from "@/data/covers";
 import { illustrations } from "@/data/illustrations";
 import { collaborations } from "@/data/collaborations";
 import { cardPacks } from "@/data/card-packs";
-import { WorldPortal, type PortalDeparture } from "./WorldPortal";
+import { WorldPortal } from "./WorldPortal";
 import { useMobilePortals } from "./useMobilePortals";
 import { usePhoneMotion } from "./usePhoneMotion";
 import { applyNoirMode, readNoirMode } from "@/components/site-settings/NoirMode";
-import { PortfolioImage } from "@/components/portfolio-image/PortfolioImage";
 import styles from "./portfolioHome.module.css";
 const RoomScene=dynamic(()=>import("./RoomScene").then(m=>m.RoomScene),{ssr:false});
 const sections=[
@@ -27,7 +26,6 @@ function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMoti
 export function PortfolioHome(){
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(true),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
- const [departure,setDeparture]=useState<PortalDeparture|null>(null);
  const [drawerOpen,setDrawerOpen]=useState(false);
  const phone=usePhoneMotion();
  const [noir,setNoir]=useState(false);
@@ -46,15 +44,16 @@ export function PortfolioHome(){
   const key=(event:KeyboardEvent)=>{if(event.key==="Escape"){setSettings(false);setDrawerOpen(false);(drawerOpen?drawerButton:settingsButton).current?.focus();}};
   window.addEventListener("keydown",key);return()=>window.removeEventListener("keydown",key);
  },[settings,drawerOpen]);
- const enter=(href:string,art:PortalDeparture)=>{
-  if(leaving)return;router.prefetch(href);setDeparture(art);setLeaving(true);
+ const enter=(href:string)=>{
+  if(leaving)return;router.prefetch(href);setLeaving(true);
   const animate=motion&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(animate)sessionStorage.setItem("room-arrival",href);
-  exit.current=setTimeout(()=>router.push(href),animate?1200:0);
+  exit.current=setTimeout(()=>router.push(href),animate?850:0);
  };
  return <main className={styles.room} data-ready={ready} data-lit={lit} data-motion={motion} data-retro={retro} data-leaving={leaving}>
   <h1 className={styles.srOnly}>SCREAM VISION — Cover art, illustrations and collectible worlds</h1>
   <div className={styles.scene}><RoomScene lit={lit} motion={motion} gyro={phone.enabled} onGyroData={phone.onData} resetVersion={resetVersion} onReady={()=>setReady(true)}/></div>
+  <div className={styles.focusVeil} aria-hidden="true"/>
   <div className={styles.screen} aria-hidden="true"/>
   <header className={styles.header}>
    <Link href="/" aria-label="SCREAM VISION home"><Image src="/scream-logo.png" alt="SCREAM VISION" width={104} height={60} unoptimized/></Link>
@@ -71,10 +70,7 @@ export function PortfolioHome(){
    const links=Array.from(event.currentTarget.querySelectorAll<HTMLAnchorElement>("a")),index=links.indexOf(document.activeElement as HTMLAnchorElement);
    event.preventDefault();links[(Math.max(0,index)+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+links.length)%links.length]?.focus();
   }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} railActive={activePortal===index} onEnter={enter}/>)}</nav>
-  {departure&&<div className={styles.departure} aria-hidden="true">
-   <div className={styles.departureArt} data-position={departure.position} style={{left:departure.x,top:departure.y,width:departure.width,height:departure.height,"--travel-x":`${window.innerWidth/2-departure.x-departure.width/2}px`,"--travel-y":`${window.innerHeight/2-departure.y-departure.height/2}px`,"--travel-scale":Math.min(3.8,window.innerWidth*.68/departure.width)} as CSSProperties}><PortfolioImage src={departure.src} alt="" fill sizes="(max-width:600px) 68vw, 295px"/><span/></div>
-   <div className={styles.departureTitle}><span>ENTERING</span><strong>{departure.title}</strong></div>
-  </div>}
+  {leaving&&<div className={styles.departure} aria-hidden="true"/>}
   <div className={styles.loading} role="status">{ready?"":"Loading the room"}<span/></div>
   {settings&&<section className={`${styles.settings} ${styles.desktopSettings}`} data-room-settings role="dialog" aria-label="Room settings">
    <div><h2>Room settings</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
