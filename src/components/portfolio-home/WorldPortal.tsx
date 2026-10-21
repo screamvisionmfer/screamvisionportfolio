@@ -11,7 +11,7 @@ export function WorldPortal({ title, href, images, note, index, position, motion
  const element=useRef<HTMLAnchorElement>(null);
  useEffect(()=>{
   if(!motion||(!hovered&&!focused))return;
-  const timer=setInterval(()=>{if(!document.hidden&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches)setActive(value=>(value+1)%images.length);},1350);
+  const timer=setInterval(()=>{if(!document.hidden&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches)setActive(value=>(value+1)%images.length);},800);
   return()=>clearInterval(timer);
  },[hovered,focused,images.length,motion]);
  const reset=()=>{element.current?.style.setProperty("--tilt-x","0deg");element.current?.style.setProperty("--tilt-y","0deg");};

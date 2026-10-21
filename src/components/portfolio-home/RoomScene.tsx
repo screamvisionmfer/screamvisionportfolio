@@ -47,9 +47,10 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
    const reduced=window.matchMedia("(prefers-reduced-motion: reduce)");
    const loader=new T.TextureLoader();
    let frame=0,last=0,time=0,intro=0,power=0,loaded=false,mobile=false,baseZ=10;
+   let lastInteraction=0;
    let aimX=0,aimY=0,zoom=0,lastReset=control.current.resetVersion;
    let angle=0,velocity=0,pitch=0,pitchVelocity=0,previousPointerX:number|null=null,previousPointerY=0;
-   let character:THREE.Mesh|undefined;
+   let character:THREE.Mesh|undefined,lampMesh:THREE.Mesh|undefined,beamMesh:THREE.Mesh|undefined,blackCat:THREE.Mesh|undefined,orangeCat:THREE.Mesh|undefined;
    const pendulum=new T.Group();scene.add(pendulum);
    const layer=async(file:string,w:number,h:number,x:number,y:number,z:number,order:number,kind=0,parent:THREE.Object3D=scene)=>{
     if(disposed)throw new Error("Scene disposed");
@@ -61,7 +62,7 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
     const mesh=new T.Mesh(geometry,material);mesh.position.set(x,y,z);mesh.renderOrder=order;parent.add(mesh);return mesh;
    };
    const dustGeo=new T.BufferGeometry(),dustPositions=new Float32Array(40*3);
-   for(let i=0;i<40;i++){dustPositions[i*3]=Math.sin(i*53.7)*2.5;dustPositions[i*3+1]=i/40*6-3;dustPositions[i*3+2]=Math.sin(i*31.1)*2;}
+   for(let i=0;i<40;i++){dustPositions[i*3]=Math.sin(i*53.7)*2.5;dustPositions[i*3+1]=i/40*6-3;dustPositions[i*3+2]=Math.sin(i*31.1 )*1.35;}
    dustGeo.setAttribute("position",new T.BufferAttribute(dustPositions,3));geometries.push(dustGeo);
    const dustMat=new T.PointsMaterial({color:0xf5c675,size:.015,transparent:true,opacity:0,depthWrite:false});materials.push(dustMat);
    const dust=new T.Points(dustGeo,dustMat);dust.renderOrder=7;scene.add(dust);
@@ -72,12 +73,16 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
     const dt=last?Math.min((now-last)/1000,.05):.016;last=now;time+=dt;
     if(lastReset!==control.current.resetVersion){lastReset=control.current.resetVersion;zoom=0;aimX=aimY=0;angle=velocity=pitch=pitchVelocity=0;previousPointerX=null;root?.style.setProperty("--mouse-x","0px");root?.style.setProperty("--mouse-y","0px");}
     if(loaded)intro=Math.min(3,intro+dt);
-    const target=control.current.lit?(!moving?1:intro<.25?0:intro<.38?.8:intro<.48?.12:intro<.6?.9:intro<.66?.3:1):0;
+    let target=control.current.lit?(!moving?1:intro<.25?0:intro<.38?.8:intro<.48?.12:intro<.6?.9:intro<.66?.3:1):0;
+    const idle=moving?T.MathUtils.smoothstep(time-lastInteraction,2,5):0;
+    const phase=time%20;
+    if(moving&&control.current.lit&&time>=20&&phase<.28){target*=1-.24*Math.pow(Math.sin(phase/.28*Math.PI),2);el.dataset.lastFlicker=String(Math.floor(time/20)*20);}
     power+=(target-power)*(reduced.matches?1:1-Math.exp(-dt*9));uniforms.power.value=power;
     uniforms.time.value=moving?time:0;
     if(!moving){aimX=aimY=0;angle=velocity=pitch=pitchVelocity=0;}
-    camera.position.x+=(aimX-camera.position.x)*(1-Math.exp(-dt*4));
-    camera.position.y+=(aimY-camera.position.y)*(1-Math.exp(-dt*4));
+    const cameraX=aimX+Math.sin(time*.23)*.045*idle,cameraY=aimY+Math.sin(time*.19)*.028*idle;
+    camera.position.x+=(cameraX-camera.position.x)*(1-Math.exp(-dt*4));
+    camera.position.y+=(cameraY-camera.position.y)*(1-Math.exp(-dt*4));
     camera.position.z+=(baseZ+zoom-camera.position.z)*(reduced.matches?1:1-Math.exp(-dt*5));
     camera.lookAt(0,mobile?-2.1:0,0);
     if(moving){
@@ -87,10 +92,10 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
      if(Math.abs(angle)+Math.abs(velocity)<.0001)angle=velocity=0;
      if(Math.abs(pitch)+Math.abs(pitchVelocity)<.0001)pitch=pitchVelocity=0;
     }
-    pendulum.rotation.set(pitch,0,angle);
+    pendulum.rotation.set(pitch+Math.sin(time*.71)*.004*idle,0,angle+Math.sin(time*.83)*.012*idle);
     if(character)character.scale.y=moving?1+Math.sin(time*.8)*.002:1;
     dustMat.opacity=power*.2;dust.position.y=moving?Math.sin(time*.12)*.15:0;
-    el.dataset.lampAngle=angle.toFixed(4);el.dataset.zoom=(camera.position.z-baseZ).toFixed(3);
+    el.dataset.lampAngle=pendulum.rotation.z.toFixed(4);el.dataset.lightLevel=power.toFixed(3);el.dataset.idle=idle.toFixed(2);el.dataset.zoom=(camera.position.z-baseZ).toFixed(3);
     renderer.render(scene,camera);
     const settling=Math.abs(power-target)>.001||Math.abs(camera.position.x-aimX)>.001||Math.abs(camera.position.y-aimY)>.001||Math.abs(camera.position.z-baseZ-zoom)>.001;
     if(moving||settling||intro<1){frame=requestAnimationFrame(render);el.dataset.animationActive="true";}else el.dataset.animationActive="false";
@@ -101,17 +106,21 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
     camera.aspect=width/height;camera.fov=mobile?44:40;camera.position.z=baseZ+zoom;camera.updateProjectionMatrix();
     // The pivot sits at the ceiling, rather than at the centre of the lampshade.
     pendulum.position.set(0,(baseZ-.7)*Math.tan(T.MathUtils.degToRad(camera.fov/2))+(mobile?-2:.12),.7);
+    const lift=20*(2*(baseZ-.7)*Math.tan(T.MathUtils.degToRad(camera.fov/2)))/height;
+    if(lampMesh)lampMesh.position.y=-.93+lift;if(beamMesh)beamMesh.position.y=-4.5+lift;
+    if(blackCat)blackCat.position.x=mobile?-2.43:-2.78;if(orangeCat)orangeCat.position.x=mobile?2.43:2.78;
     renderer.setSize(Math.max(1,Math.round(width*.8)),Math.max(1,Math.round(height*.8)),false);start();
    };
    const pointer=(event:PointerEvent)=>{
     if(reduced.matches||!control.current.motion||event.pointerType==="touch")return;
+    lastInteraction=time;
     const x=event.clientX/window.innerWidth,y=event.clientY/window.innerHeight;
-    if(previousPointerX!==null){velocity+=-T.MathUtils.clamp(x-previousPointerX,-.15,.15)*3.8;pitchVelocity+=T.MathUtils.clamp(y-previousPointerY,-.15,.15)*2;}
+    if(previousPointerX!==null){velocity+=-T.MathUtils.clamp(x-previousPointerX,-.15,.15)*2.5;pitchVelocity+=T.MathUtils.clamp(y-previousPointerY,-.15,.15 )*1.35;}
     previousPointerX=x;previousPointerY=y;
     aimX=(x-.5)*.58;aimY=-(y-.5)*.3;
     root?.style.setProperty("--mouse-x",`${aimX*25}px`);root?.style.setProperty("--mouse-y",`${-aimY*25}px`);start();
    };
-   const leave=()=>{aimX=aimY=0;previousPointerX=null;root?.style.setProperty("--mouse-x","0px");root?.style.setProperty("--mouse-y","0px");start();};
+   const leave=()=>{lastInteraction=time;aimX=aimY=0;previousPointerX=null;root?.style.setProperty("--mouse-x","0px");root?.style.setProperty("--mouse-y","0px");start();};
    const wheel=(event:WheelEvent)=>{
     if(event.ctrlKey||!isPageActive()||(event.target as HTMLElement).closest("[data-room-settings]"))return;
     event.preventDefault();
@@ -129,13 +138,13 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
    try{
     await layer("plants",13,7.5,0,.1,-2.4,0);
     await layer("rug",12,3,0,-2.5,-1.6,1);
-    await layer("cat",1.35,1.35,-2.4,-2.1,-.5,2);
-    await layer("cat-orange",1.4,1.4,2.4,-2.1,-.5,2);
+    blackCat=await layer("cat",1.35,1.35,-2.4,-2.1,-.5,2);
+    orangeCat=await layer("cat-orange",1.4,1.4,2.4,-2.1,-.5,2);
     character=await layer("character",4.55,5.6,0,-.65,0,4,1);
-    await layer("lamp-off",2.25,1.86,0,-.93,0,6,2,pendulum);
+    lampMesh=await layer("lamp-off",2.25,1.86,0,-.93,0,6,2,pendulum);
     const beamGeo=new T.PlaneGeometry(6,6);geometries.push(beamGeo);
     const beamMat=new T.ShaderMaterial({uniforms,vertexShader:vertex,fragmentShader:`uniform float power;varying vec2 vUv;void main(){float spread=.025+(1.-vUv.y)*.47;float edge=1.-smoothstep(spread*.7,spread,abs(vUv.x-.5));float fade=smoothstep(0.,.25,vUv.y)*(1.-smoothstep(.92,1.,vUv.y));gl_FragColor=vec4(.82,.55,.23,edge*fade*power*.13);}`,transparent:true,depthWrite:false,blending:T.AdditiveBlending});materials.push(beamMat);
-    const beam=new T.Mesh(beamGeo,beamMat);beam.position.set(0,-4.5,-1.4);beam.renderOrder=3;pendulum.add(beam);
+    const beam=new T.Mesh(beamGeo,beamMat);beamMesh=beam;beam.position.set(0,-4.5,-1.4);beam.renderOrder=3;pendulum.add(beam);
     if(disposed)throw new Error("Scene disposed");loaded=true;resize();control.current.onReady();start();
    }catch{if(!disposed){cleanup();setFailed(true);control.current.onReady();}}
   }).catch(()=>{if(!disposed){setFailed(true);control.current.onReady();}});
