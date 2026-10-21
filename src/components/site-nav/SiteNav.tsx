@@ -31,12 +31,6 @@ export function SiteNav({ className = "" }: { className?: string }) {
     window.dispatchEvent(new Event("portfolio:navigation"));
   }, []);
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1001px)");
-    const resize = () => { if (desktop.matches) setMenuOpen(false); };
-    desktop.addEventListener("change", resize);
-    return () => desktop.removeEventListener("change", resize);
-  }, []);
-  useEffect(() => {
     if (!menuOpen) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -51,22 +45,23 @@ export function SiteNav({ className = "" }: { className?: string }) {
   const allLinks = [...primary, { label: "About", href: "/about" }, { label: "Contacts", href: "/contacts" }];
   return (
     <header ref={menuFocus} className={`${styles.header} ${className}`} data-menu-open={menuOpen} onKeyDown={(event) => { if (menuOpen) { event.stopPropagation(); if (event.key === "Escape") setMenuOpen(false); } }}>
-      <nav className={styles.primary} aria-label="Portfolio sections">
-        {primary.map((item) => <Link key={item.href} aria-current={activeHref === item.href ? "page" : undefined} className={activeHref === item.href ? styles.active : undefined} href={item.href}>{item.label}</Link>)}
-      </nav>
-      <Link className={styles.logo} href="/" aria-label="SCREAM VISION home"><Image src="/scream-logo.png" alt="" width={180} height={88} priority unoptimized /></Link>
-      <nav className={styles.secondary} aria-label="Information"><Link aria-current={activeHref === "/about" ? "page" : undefined} className={activeHref === "/about" ? styles.active : undefined} href="/about">About</Link><Link aria-current={activeHref === "/contacts" ? "page" : undefined} className={activeHref === "/contacts" ? styles.active : undefined} href="/contacts">Contacts</Link></nav>
-      <button className={styles.menuButton} type="button" aria-expanded={menuOpen} aria-controls="mobile-site-menu" aria-label={menuOpen ? "Close menu" : "Open menu"} onClick={() => setMenuOpen((value) => !value)}>
-        <span /><span /><b>{menuOpen ? "Close" : "Menu"}</b>
+      <Link className={styles.logo} href="/" aria-label="Return to room"><Image src="/scream-logo.png" alt="" width={90} height={44} priority unoptimized /><span><b>←</b> RETURN TO ROOM</span></Link>
+      <span className={styles.location}><i/> {primary.find(item=>item.href===activeHref)?.label??(activeHref==="/about"?"About":"Contacts")} <small>/ SCREAM VISION</small></span>
+      <button className={styles.menuButton} type="button" aria-expanded={menuOpen} aria-controls="site-world-menu" aria-label={menuOpen ? "Close menu" : "Open menu"} onClick={() => setMenuOpen(value=>!value)}>
+        <b className={styles.key}>Y</b><span>{menuOpen?"RESUME":"MENU"}</span><i>{menuOpen?"×":"☰"}</i>
       </button>
-      <div id="mobile-site-menu" className={styles.mobilePanel} aria-hidden={!menuOpen}>
-        <nav aria-label="Mobile navigation">
-          {allLinks.map((item, index) => {
-            const active = item.href === "/about" ? pathname.startsWith("/about") : item.href === "/contacts" ? pathname.startsWith("/contacts") : activeHref === item.href;
-            return <Link key={item.href} onClick={() => setMenuOpen(false)} aria-current={active ? "page" : undefined} className={active ? styles.mobileActive : undefined} href={item.href} tabIndex={menuOpen ? 0 : -1}><small>{String(index + 1).padStart(2, "0")}</small><span>{item.label}</span><i>↗</i></Link>;
-          })}
-        </nav>
-        <p><span>Digital art direction</span><span>Selected works · 2022—2026</span></p>
+      <div id="site-world-menu" className={styles.panel} inert={!menuOpen} aria-hidden={!menuOpen}>
+        <button className={styles.backdrop} aria-label="Dismiss menu" onClick={()=>setMenuOpen(false)} tabIndex={menuOpen?0:-1}/>
+        <div className={styles.menuContent} role={menuOpen?"dialog":undefined} aria-modal={menuOpen?true:undefined} aria-label="World select">
+          <div className={styles.menuHeading}><span><i/> PAUSED</span><h2>World select<span> /</span></h2><p>Where do you want to go?</p></div>
+          <nav aria-label="Portfolio sections">
+            {allLinks.map((item,index)=>{
+              const active=activeHref===item.href;
+              return <Link key={item.href} href={item.href} onClick={()=>setMenuOpen(false)} aria-current={active?"page":undefined} className={active?styles.active:undefined} tabIndex={menuOpen?0:-1}><small>{String(index+1).padStart(2,"0")}</small><span>{item.href==="/"?"The room":item.label}</span><em>{active?"YOU ARE HERE":""}</em><i>↗</i></Link>;
+            })}
+          </nav>
+          <div className={styles.menuFooter}><a href="mailto:screamvisionmfer@gmail.com"><b className={styles.contactKey}>X</b> GET IN TOUCH <span>↗</span></a><div><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a></div><p><span><b>A</b> SELECT</span><span><b>B</b> ESC / CLOSE</span></p></div>
+        </div>
       </div>
     </header>
   );
