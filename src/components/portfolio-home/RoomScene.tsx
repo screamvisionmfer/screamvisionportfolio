@@ -108,7 +108,7 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
     pendulum.position.set(0,(baseZ-.7)*Math.tan(T.MathUtils.degToRad(camera.fov/2))+(mobile?-2:.12),.7);
     const lift=20*(2*(baseZ-.7)*Math.tan(T.MathUtils.degToRad(camera.fov/2)))/height;
     if(lampMesh)lampMesh.position.y=-.93+lift;if(beamMesh)beamMesh.position.y=-4.5+lift;
-    if(blackCat)blackCat.position.x=mobile?-2.43:-2.78;if(orangeCat)orangeCat.position.x=mobile?2.43:2.78;
+    if(blackCat)blackCat.position.x=mobile?-2.5:-2.73;if(orangeCat)orangeCat.position.x=mobile?2.5:2.95;
     renderer.setSize(Math.max(1,Math.round(width*.8)),Math.max(1,Math.round(height*.8)),false);start();
    };
    const pointer=(event:PointerEvent)=>{
@@ -122,7 +122,7 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
    };
    const leave=()=>{lastInteraction=time;aimX=aimY=0;previousPointerX=null;root?.style.setProperty("--mouse-x","0px");root?.style.setProperty("--mouse-y","0px");start();};
    const wheel=(event:WheelEvent)=>{
-    if(event.ctrlKey||!isPageActive()||(event.target as HTMLElement).closest("[data-room-settings]"))return;
+    if(event.ctrlKey||!isPageActive()||(event.target as HTMLElement).closest("[data-room-settings]")||(mobile&&(event.target as HTMLElement).closest("nav[aria-label=\"Choose a world\"]")))return;
     event.preventDefault();
     const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?window.innerHeight:1);
     zoom=T.MathUtils.clamp(zoom+delta*.0015,-1.05,.7);start();
@@ -138,8 +138,8 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
    try{
     await layer("plants",13,7.5,0,.1,-2.4,0);
     await layer("rug",12,3,0,-2.5,-1.6,1);
-    blackCat=await layer("cat",1.35,1.35,-2.4,-2.1,-.5,2);
-    orangeCat=await layer("cat-orange",1.4,1.4,2.4,-2.1,-.5,2);
+    blackCat=await layer("cat",1.25,1.25,-2.73,-1.95,-1.2,2);
+    orangeCat=await layer("cat-orange",1.3,1.3,2.95,-1.95,-1.2,2);
     character=await layer("character",4.55,5.6,0,-.65,0,4,1);
     lampMesh=await layer("lamp-off",2.25,1.86,0,-.93,0,6,2,pendulum);
     const beamGeo=new T.PlaneGeometry(6,6);geometries.push(beamGeo);
