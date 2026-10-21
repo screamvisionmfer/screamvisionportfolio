@@ -79,3 +79,12 @@
 }
 @media (prefers-reduced-motion:reduce) { .mobileConsole,.drawerBackdrop,.drawerBody { transition:none; } }
 @media (max-width:600px) { .worlds { pointer-events:auto; } }
+.gyroControl { display:none; border-bottom:1px solid #706d4733; padding:10px 0; }
+.gyroControl > div { display:flex; align-items:center; justify-content:space-between; gap:12px; text-transform:uppercase; }
+.gyroControl > div button { min-width:72px; min-height:34px; border:1px solid #867957; background:#252b1c; color:#c7b482; font:9px monospace; letter-spacing:.08em; cursor:pointer; }
+.gyroControl > div button[aria-pressed="true"] { color:#c8d5a4; border-color:#9aa577; }
+.gyroControl > div button:disabled { opacity:.45; cursor:default; }.gyroControl p { margin:6px 0 0; font:8px/1.6 monospace; color:#92947c; text-transform:none; }
+@media (max-width:600px),(pointer:coarse) { .gyroControl { display:block; } }
+@media (max-width:600px) {
+ .scene::after { content:""; position:absolute; z-index:1; left:-24px; right:-24px; top:calc(100% - 420px - env(safe-area-inset-bottom)); bottom:-24px; background:linear-gradient(transparent,#07070630 55px,#070706bd 120px,#070706f5 190px,#070706 250px); filter:blur(12px); pointer-events:none; }
+}

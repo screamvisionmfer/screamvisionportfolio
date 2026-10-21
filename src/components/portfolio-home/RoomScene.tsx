@@ -4,16 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import type * as THREE from "three";
 import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 import styles from "./portfolioHome.module.css";
+import { screenTilt, relativeTilt } from "./phoneTilt";
 
 const vertex=`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`;
 const fragment=`
-uniform sampler2D art;uniform float power;uniform float time;uniform float kind;
+uniform sampler2D art;uniform float power;uniform float time;uniform float kind;uniform float floorFade;
 varying vec2 vUv;
 void main(){
  vec2 uv=vUv;
  if(kind==2.)uv.y=.34+uv.y*.66;
  if(kind==1.)uv.x+=sin(uv.y*5.+time*.7)*.0015*sin(uv.y*3.14159);
  vec4 c=texture2D(art,uv);if(c.a<.06)discard;
+ if(kind==3.)c.a*=mix(1.,smoothstep(.10,.42,vUv.y),floorFade);
  float ambient=kind==2.?.4:.14;
  c.rgb*=mix(vec3(ambient,ambient,ambient),vec3(1.02,.94,.8),power);
  if(kind==2.){
@@ -26,11 +28,11 @@ void main(){
  #include <colorspace_fragment>
 }`;
 
-export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:boolean;resetVersion:number;onReady:()=>void}){
- const host=useRef<HTMLDivElement>(null),control=useRef({lit,motion,resetVersion,onReady});
- control.current={lit,motion,resetVersion,onReady};
- const wake=useRef<()=>void>(()=>{}),[failed,setFailed]=useState(false);
- useEffect(()=>{wake.current();},[lit,motion,resetVersion]);
+export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady}:{lit:boolean;motion:boolean;gyro:boolean;onGyroData:()=>void;resetVersion:number;onReady:()=>void}){
+ const host=useRef<HTMLDivElement>(null),control=useRef({lit,motion,gyro,onGyroData,resetVersion,onReady});
+ control.current={lit,motion,gyro,onGyroData,resetVersion,onReady};
+ const wake=useRef<()=>void>(()=>{}),sensorSubscription=useRef<(enabled:boolean)=>void>(()=>{}),[failed,setFailed]=useState(false);
+ useEffect(()=>{sensorSubscription.current(gyro&&motion);wake.current();},[lit,motion,gyro,resetVersion]);
  useEffect(()=>{
   const el=host.current;if(!el)return;
   let disposed=false,cleanup=()=>{};
@@ -43,11 +45,13 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
    const scene=new T.Scene(),camera=new T.PerspectiveCamera(40,1,.1,40);
    camera.position.set(0,0,10);
    const textures:THREE.Texture[]=[],materials:THREE.Material[]=[],geometries:THREE.BufferGeometry[]=[];
-   const uniforms={power:{value:0},time:{value:0}},root=el.closest("main");
+   const uniforms={power:{value:0},time:{value:0},floorFade:{value:0}},root=el.closest("main");
    const reduced=window.matchMedia("(prefers-reduced-motion: reduce)");
    const loader=new T.TextureLoader();
    let frame=0,last=0,time=0,intro=0,power=0,loaded=false,mobile=false,baseZ=10;
    let lastInteraction=0;
+   let neutral:{x:number;y:number;screen:number}|null=null,sensorX=0,sensorY=0,sensorTime=0,gyroSeen=false,lastGyro=control.current.gyro;
+   const recalibrate=()=>{neutral=null;sensorX=sensorY=sensorTime=0;};
    let aimX=0,aimY=0,zoom=0,lastReset=control.current.resetVersion;
    let angle=0,velocity=0,pitch=0,pitchVelocity=0,previousPointerX:number|null=null,previousPointerY=0;
    let character:THREE.Mesh|undefined,lampMesh:THREE.Mesh|undefined,beamMesh:THREE.Mesh|undefined,blackCat:THREE.Mesh|undefined,orangeCat:THREE.Mesh|undefined;
@@ -71,15 +75,17 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
     const moving=control.current.motion&&!reduced.matches;
     if(last&&now-last<32&&moving){frame=requestAnimationFrame(render);return;}
     const dt=last?Math.min((now-last)/1000,.05):.016;last=now;time+=dt;
-    if(lastReset!==control.current.resetVersion){lastReset=control.current.resetVersion;zoom=0;aimX=aimY=0;angle=velocity=pitch=pitchVelocity=0;previousPointerX=null;root?.style.setProperty("--mouse-x","0px");root?.style.setProperty("--mouse-y","0px");}
+    if(lastGyro!==control.current.gyro){lastGyro=control.current.gyro;gyroSeen=false;recalibrate();aimX=aimY=0;}
+    if(lastReset!==control.current.resetVersion){lastReset=control.current.resetVersion;zoom=0;aimX=aimY=0;angle=velocity=pitch=pitchVelocity=0;previousPointerX=null;recalibrate();root?.style.setProperty("--mouse-x","0px");root?.style.setProperty("--mouse-y","0px");}
     if(loaded)intro=Math.min(3,intro+dt);
     let target=control.current.lit?(!moving?1:intro<.25?0:intro<.38?.8:intro<.48?.12:intro<.6?.9:intro<.66?.3:1):0;
     const idle=moving?T.MathUtils.smoothstep(time-lastInteraction,2,5):0;
     const phase=time%20;
-    if(moving&&control.current.lit&&time>=20&&phase<.28){target*=1-.24*Math.pow(Math.sin(phase/.28*Math.PI),2);el.dataset.lastFlicker=String(Math.floor(time/20)*20);}
-    power+=(target-power)*(reduced.matches?1:1-Math.exp(-dt*9));uniforms.power.value=power;
+    const flickering=moving&&control.current.lit&&time>=20&&phase<.65;
+    if(flickering){target*=phase<.18?.06:phase<.30?.85:phase<.53?.12:1;el.dataset.lastFlicker=String(Math.floor(time/20)*20);}
+    power+=(target-power)*(reduced.matches?1:1-Math.exp(-dt*(flickering?24:9)));uniforms.power.value=power;
     uniforms.time.value=moving?time:0;
-    if(!moving){aimX=aimY=0;angle=velocity=pitch=pitchVelocity=0;}
+    if(!moving){aimX=aimY=0;angle=velocity=pitch=pitchVelocity=0;recalibrate();}
     const cameraX=aimX+Math.sin(time*.23)*.045*idle,cameraY=aimY+Math.sin(time*.19)*.028*idle;
     camera.position.x+=(cameraX-camera.position.x)*(1-Math.exp(-dt*4));
     camera.position.y+=(cameraY-camera.position.y)*(1-Math.exp(-dt*4));
@@ -103,6 +109,7 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
    const start=()=>{if(!disposed&&!frame&&isPageActive()){last=0;frame=requestAnimationFrame(render);}};wake.current=start;
    const resize=()=>{
     const {width,height}=el.getBoundingClientRect();mobile=width<600;baseZ=mobile?15.2:10;
+    uniforms.floorFade.value=mobile?1:0;recalibrate();
     camera.aspect=width/height;camera.fov=mobile?44:40;camera.position.z=baseZ+zoom;camera.updateProjectionMatrix();
     // The pivot sits at the ceiling, rather than at the centre of the lampshade.
     pendulum.position.set(0,(baseZ-.7)*Math.tan(T.MathUtils.degToRad(camera.fov/2))+(mobile?-2:.12),.7);
@@ -121,23 +128,39 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
     root?.style.setProperty("--mouse-x",`${aimX*25}px`);root?.style.setProperty("--mouse-y",`${-aimY*25}px`);start();
    };
    const leave=()=>{lastInteraction=time;aimX=aimY=0;previousPointerX=null;root?.style.setProperty("--mouse-x","0px");root?.style.setProperty("--mouse-y","0px");start();};
+   const orientation=(event:DeviceOrientationEvent)=>{
+    if(!control.current.gyro||!control.current.motion||reduced.matches||!isPageActive()||(!mobile&&!window.matchMedia("(pointer:coarse)").matches))return;
+    if(event.beta===null||event.gamma===null||!Number.isFinite(event.beta)||!Number.isFinite(event.gamma))return;
+    if(!gyroSeen){gyroSeen=true;control.current.onGyroData();}
+    const screenAngle=window.screen.orientation?.angle??(window as Window&{orientation?:number}).orientation??0;
+    const pose=screenTilt(event.beta,event.gamma,screenAngle);
+    if(!neutral||neutral.screen!==screenAngle){neutral={...pose,screen:screenAngle};sensorX=sensorY=0;sensorTime=event.timeStamp;return;}
+    const dt=Math.max(.008,Math.min(.1,(event.timeStamp-sensorTime)/1000));sensorTime=event.timeStamp;
+    const follow=1-Math.exp(-dt/.12);
+    const x=sensorX+(relativeTilt(pose.x,neutral.x,28)-sensorX)*follow,y=sensorY+(relativeTilt(pose.y,neutral.y,25)-sensorY)*follow;
+    const dx=x-sensorX,dy=y-sensorY;
+    if(Math.abs(dx)>.002||Math.abs(dy)>.002){lastInteraction=time;velocity-=T.MathUtils.clamp(dx,-.06,.06)*1.8;pitchVelocity+=T.MathUtils.clamp(dy,-.06,.06)*1.1;}
+    sensorX=x;sensorY=y;aimX=x*.38;aimY=-y*.24;
+    root?.style.setProperty("--mouse-x",`${aimX*25}px`);root?.style.setProperty("--mouse-y",`${-aimY*25}px`);start();
+   };
    const wheel=(event:WheelEvent)=>{
     if(event.ctrlKey||!isPageActive()||(event.target as HTMLElement).closest("[data-room-settings]")||(mobile&&(event.target as HTMLElement).closest("nav[aria-label=\"Choose a world\"]")))return;
     event.preventDefault();
     const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?window.innerHeight:1);
     zoom=T.MathUtils.clamp(zoom+delta*.0015,-1.05,.7);start();
    };
-   const activity=()=>{if(root)root.dataset.active=String(isPageActive());previousPointerX=null;if(!isPageActive()){cancelAnimationFrame(frame);frame=0;el.dataset.animationActive="false";}else start();};
+   const activity=()=>{if(root)root.dataset.active=String(isPageActive());previousPointerX=null;recalibrate();if(!isPageActive()){cancelAnimationFrame(frame);frame=0;el.dataset.animationActive="false";}else start();};
    const observer=new ResizeObserver(resize);observer.observe(el);
    window.addEventListener("pointermove",pointer);document.addEventListener("pointerleave",leave);root?.addEventListener("wheel",wheel,{passive:false});
+   sensorSubscription.current=(enabled)=>{window.removeEventListener("deviceorientation",orientation);if(enabled)window.addEventListener("deviceorientation",orientation,{passive:true});};sensorSubscription.current(control.current.gyro&&control.current.motion);window.addEventListener("orientationchange",recalibrate);
    const stop=observePageActivity(activity);reduced.addEventListener("change",start);
    const lost=(event:Event)=>{event.preventDefault();setFailed(true);control.current.onReady();cancelAnimationFrame(frame);frame=0;};
    renderer.domElement.addEventListener("webglcontextlost",lost);
    let released=false;
-   cleanup=()=>{if(released)return;released=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener("pointermove",pointer);document.removeEventListener("pointerleave",leave);root?.removeEventListener("wheel",wheel);stop();reduced.removeEventListener("change",start);renderer.domElement.removeEventListener("webglcontextlost",lost);textures.forEach(t=>t.dispose());materials.forEach(m=>m.dispose());geometries.forEach(g=>g.dispose());renderer.dispose();renderer.domElement.remove();};
+   cleanup=()=>{if(released)return;released=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener("deviceorientation",orientation);window.removeEventListener("orientationchange",recalibrate);window.removeEventListener("pointermove",pointer);document.removeEventListener("pointerleave",leave);root?.removeEventListener("wheel",wheel);stop();reduced.removeEventListener("change",start);renderer.domElement.removeEventListener("webglcontextlost",lost);textures.forEach(t=>t.dispose());materials.forEach(m=>m.dispose());geometries.forEach(g=>g.dispose());renderer.dispose();renderer.domElement.remove();};
    try{
     await layer("plants",13,7.5,0,.1,-2.4,0);
-    await layer("rug",12,3,0,-2.5,-1.6,1);
+    await layer("rug",12,3,0,-2.5,-1.6,1,3);
     blackCat=await layer("cat",1.25,1.25,-2.73,-1.95,-1.2,2);
     orangeCat=await layer("cat-orange",1.3,1.3,2.95,-1.95,-1.2,2);
     character=await layer("character",4.55,5.6,0,-.65,0,4,1);
@@ -148,7 +171,7 @@ export function RoomScene({lit,motion,resetVersion,onReady}:{lit:boolean;motion:
     if(disposed)throw new Error("Scene disposed");loaded=true;resize();control.current.onReady();start();
    }catch{if(!disposed){cleanup();setFailed(true);control.current.onReady();}}
   }).catch(()=>{if(!disposed){setFailed(true);control.current.onReady();}});
-  return()=>{disposed=true;wake.current=()=>{};cleanup();};
+  return()=>{disposed=true;wake.current=()=>{};sensorSubscription.current=()=>{};cleanup();};
  },[]);
  return <div className={styles.canvas} ref={host} aria-hidden="true" data-animation-active="false">{failed&&<Image className={styles.fallback} src="/scene/fallback.webp" alt="" fill unoptimized/>}</div>;
 }
