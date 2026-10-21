@@ -83,7 +83,7 @@ export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady}:{lit
     const phase=time%20;
     const flickering=moving&&control.current.lit&&time>=20&&phase<.65;
     if(flickering){target*=phase<.18?.06:phase<.30?.85:phase<.53?.12:1;el.dataset.lastFlicker=String(Math.floor(time/20)*20);}
-    power+=(target-power)*(reduced.matches?1:1-Math.exp(-dt*(flickering?24:9)));uniforms.power.value=power;
+    power+=(target-power)*(reduced.matches?1:1-Math.exp(-dt*(flickering?24:9)));uniforms.power.value=power;root?.style.setProperty("--lamp-power",power.toFixed(3));
     uniforms.time.value=moving?time:0;
     if(!moving){aimX=aimY=0;angle=velocity=pitch=pitchVelocity=0;recalibrate();}
     const cameraX=aimX+Math.sin(time*.23)*.045*idle,cameraY=aimY+Math.sin(time*.19)*.028*idle;

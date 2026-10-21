@@ -46,7 +46,7 @@ export function PortfolioHome(){
  },[settings,drawerOpen]);
  const enter=(href:string)=>{
   if(leaving)return;router.prefetch(href);setLeaving(true);
-  exit.current=setTimeout(()=>router.push(href),window.matchMedia("(prefers-reduced-motion: reduce)").matches?0:420);
+  exit.current=setTimeout(()=>router.push(href),window.matchMedia("(prefers-reduced-motion: reduce)").matches?0:620);
  };
  return <main className={styles.room} data-ready={ready} data-lit={lit} data-motion={motion} data-retro={retro} data-leaving={leaving}>
   <h1 className={styles.srOnly}>SCREAM VISION — Cover art, illustrations and collectible worlds</h1>
@@ -66,7 +66,7 @@ export function PortfolioHome(){
    if(!["ArrowRight","ArrowLeft","ArrowUp","ArrowDown"].includes(event.key))return;
    const links=Array.from(event.currentTarget.querySelectorAll<HTMLAnchorElement>("a")),index=links.indexOf(document.activeElement as HTMLAnchorElement);
    event.preventDefault();links[(Math.max(0,index)+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+links.length)%links.length]?.focus();
-  }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} onEnter={enter}/>)}</nav>
+  }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} railActive={activePortal===index} onEnter={enter}/>)}</nav>
   <div className={styles.loading} role="status">{ready?"":"Loading the room"}<span/></div>
   {settings&&<section className={`${styles.settings} ${styles.desktopSettings}`} data-room-settings role="dialog" aria-label="Room settings">
    <div><h2>Room settings</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
