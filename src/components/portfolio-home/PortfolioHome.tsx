@@ -25,6 +25,7 @@ function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMoti
  return <div className={styles.gyroControl}><div><span>Phone tilt</span><button aria-label={phone.enabled?"Disable gyroscope":"Enable gyroscope"} aria-pressed={phone.enabled} disabled={!motion||phone.status==="requesting"||phone.status==="unavailable"} onClick={()=>void phone.toggle()}>{phone.status==="requesting"?"…":phone.enabled?"ON":"ENABLE"}</button></div><p role="status">{motion?phone.message:"Enable Motion / Parallax first"}</p></div>;
 }
 export function PortfolioHome(){
+ const [gearTurn,setGearTurn]=useState(0);
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(true),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
  const phone=usePhoneMotion();
@@ -78,7 +79,7 @@ export function PortfolioHome(){
   <footer className={styles.consoleBar}>
    <div className={styles.controls}><span>CLICK TO EXPLORE</span><span>SCROLL TO ZOOM</span></div>
    <div className={styles.footerLinks}><a href="mailto:screamvisionmfer@gmail.com"> screamvisionmfer@gmail.com</a><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE</a><Link href="/about">ABOUT</Link></div>
-   <button ref={settingsButton} className={styles.settingsGear} aria-label={settings?"Close room settings":"Open room settings"} aria-controls="room-settings" aria-expanded={settings} onClick={()=>setSettings(value=>!value)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="m9 3-.7 2.2-2 .9-2.1-.5-2 3.4 1.5 1.7v2.5L2.2 15l2 3.4 2.1-.5 2 .9L9 21h4l.7-2.2 2-.9 2.1.5 2-3.4-1.5-1.8v-2.5l1.5-1.7-2-3.4-2.1.5-2-.9L13 3Z"/><circle cx="11" cy="12" r="3.2"/></svg></button>
+   <button ref={settingsButton} className={styles.settingsGear} aria-label={settings?"Close room settings":"Open room settings"} aria-controls="room-settings" aria-expanded={settings} onClick={()=>{setGearTurn(value=>value+90);setSettings(value=>!value);}}><svg style={{transform:`rotate(${gearTurn}deg)`}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="m9 3-.7 2.2-2 .9-2.1-.5-2 3.4 1.5 1.7v2.5L2.2 15l2 3.4 2.1-.5 2 .9L9 21h4l.7-2.2 2-.9 2.1.5 2-3.4-1.5-1.8v-2.5l1.5-1.7-2-3.4-2.1.5-2-.9L13 3Z"/><circle cx="11" cy="12" r="3.2"/></svg></button>
   </footer>
  </main>;
 }

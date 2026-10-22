@@ -90,7 +90,10 @@ export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady}:{lit
     camera.position.x+=(cameraX-camera.position.x)*(1-Math.exp(-dt*4));
     camera.position.y+=(cameraY-camera.position.y)*(1-Math.exp(-dt*4));
     camera.position.z+=(baseZ+zoom-camera.position.z)*(reduced.matches?1:1-Math.exp(-dt*5));
-    camera.lookAt(0,mobile?-2.1:0,0);
+    camera.lookAt(control.current.gyro?-sensorX*.13:0,(mobile?-2.1:0)+(control.current.gyro?sensorY*.08:0),0);
+    const gx=moving&&control.current.gyro?sensorX:0,gy=moving&&control.current.gyro?sensorY:0;
+    root?.style.setProperty("--gyro-x",`${gx*9}px`);root?.style.setProperty("--gyro-y",`${gy*7}px`);
+    root?.style.setProperty("--gyro-rx",`${-gy*2}deg`);root?.style.setProperty("--gyro-ry",`${gx*3}deg`);
     if(moving){
      velocity+=(-angle*18-velocity*2.6)*dt;angle+=velocity*dt;
      pitchVelocity+=(-pitch*20-pitchVelocity*3)*dt;pitch+=pitchVelocity*dt;
@@ -140,7 +143,7 @@ export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady}:{lit
     const x=sensorX+(relativeTilt(pose.x,neutral.x,28)-sensorX)*follow,y=sensorY+(relativeTilt(pose.y,neutral.y,25)-sensorY)*follow;
     const dx=x-sensorX,dy=y-sensorY;
     if(Math.abs(dx)>.002||Math.abs(dy)>.002){lastInteraction=time;velocity-=T.MathUtils.clamp(dx,-.06,.06)*1.8;pitchVelocity+=T.MathUtils.clamp(dy,-.06,.06)*1.1;}
-    sensorX=x;sensorY=y;aimX=x*.38;aimY=-y*.24;
+    sensorX=x;sensorY=y;aimX=x*.6;aimY=-y*.34;
     root?.style.setProperty("--mouse-x",`${aimX*25}px`);root?.style.setProperty("--mouse-y",`${-aimY*25}px`);start();
    };
    const wheel=(event:WheelEvent)=>{

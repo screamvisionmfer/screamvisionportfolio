@@ -320,3 +320,7 @@
 .gallery[data-opening="true"] .cardPosition[data-active="true"] .cardFloat { animation:projectOpen .7s cubic-bezier(.3,0,.2,1) both; }
 .cardLoading { background:#04060644; }.cardLoadingFill { background:#ffffff0a;border:0;box-shadow:none; }.cardLoadingFill::after { content:"";position:absolute;left:8%;right:8%;bottom:8%;height:2px;background:#eee;transform:scaleX(var(--card-progress));transform-origin:left; }.cardLoadingFill { transform:none; }
 .cardLoading strong { font:400 clamp(42px,5vw,78px)/1 Arial;letter-spacing:-.05em; }.cardLoading strong i { font-size:.24em;margin-top:.18em; }
+
+/* Fill the entire artwork from bottom to top while the percentage advances. */
+.cardLoading { background:#05060626; }.cardLoadingFill { background:rgba(186,167,123,.34);transform:scaleY(var(--card-progress));transform-origin:center bottom;transition:transform .08s linear; }.cardLoadingFill::after { display:none; }
+.cardLoading strong { font:500 clamp(80px,10vw,160px)/.85 Arial,Helvetica,sans-serif;letter-spacing:-.075em;text-shadow:0 3px 30px #0005; }.cardLoading strong i { font-size:.18em;margin:.1em 0 0 .1em;letter-spacing:0; }

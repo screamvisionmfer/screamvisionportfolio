@@ -156,3 +156,13 @@
 .settings > .gyroControl { display:block; }
 
 @media(max-width:600px) { .settings > p { display:none; } }
+
+.consoleBar,.consoleBar a,.consoleBar button,.settingsGear,.settingsGear:hover,.settingsGear[aria-expanded="true"] { color:#baa77b; }.consoleBar a:hover,.consoleBar a:focus-visible { color:#decba0; }.settingsGear,.settingsGear:hover,.settingsGear[aria-expanded="true"] { transform:none; }.settingsGear svg { transition:transform .48s cubic-bezier(.2,.8,.2,1);pointer-events:none; }
+.settingsGear,.wallSwitch,.wallSwitch img,.settings input { -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none; }.wallSwitch img { -webkit-user-drag:none;pointer-events:none; }
+.scene { translate:calc(var(--gyro-x,0px) * -.45) calc(var(--gyro-y,0px) * -.45); }
+@media(max-width:600px),(pointer:coarse) {
+ .room[data-motion="true"] .world,.room[data-motion="true"] .world[data-position] { translate:var(--gyro-x,0px) var(--gyro-y,0px); }
+ .room[data-motion="true"] .portalBody { transform:perspective(1000px) rotateX(calc(var(--tilt-x,0deg) + var(--gyro-rx,0deg))) rotateY(calc(var(--tilt-y,0deg) + var(--gyro-ry,0deg))); }
+}
+@media(hover:none) and (pointer:coarse) { .settingsGear:focus,.settingsGear:focus-visible,.wallSwitch:focus,.wallSwitch:focus-visible,.settings input:focus:not(:focus-visible) { outline:none;box-shadow:none; } }
+@media(prefers-reduced-motion:reduce) { .settingsGear svg { transition:none; }.room[data-motion="true"] .world,.room[data-motion="true"] .world[data-position],.scene { translate:none; }.room[data-motion="true"] .portalBody { transform:none; } }

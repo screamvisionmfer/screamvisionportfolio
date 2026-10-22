@@ -73,3 +73,7 @@
 @media(prefers-reduced-motion:reduce) { .menuGlyph::before,.menuGlyph::after { transition:none; } }
 
 @media(max-width:800px) { .panel nav a > span,.menuHeading h2 { text-transform:uppercase;font-weight:600; }.menuHeading h2 { font-size:26px;letter-spacing:-.035em; } }
+
+.menuButton,.menuButton:hover,.menuGlyph,.logo > span,.location { color:#baa77b; }
+.panel nav .active,.panel nav a:hover,.panel nav a:focus-visible,.menuHeading h2,.menuFooter > a { color:#d1c19a; }.panel nav a { color:#9d9787; }.menuFooter > div { color:#a79e87; }
+@media(max-width:800px) { .logo { width:72px;height:43px; }.logo img { width:72px;height:72px;margin-top:-9px; } }
