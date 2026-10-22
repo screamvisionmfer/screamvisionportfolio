@@ -269,3 +269,5 @@
 @media (prefers-reduced-motion:reduce) { .shelfPack[data-hovered="true"] .wrapper { transform: none; } }
 
 .viewSwitch button { min-height:44px;font-size:12px; }.openButton { min-height:50px;font-size:13px; }.railControls button { min-width:44px;min-height:44px; }
+
+.viewSwitch { top:var(--section-toolbar-top);right:var(--section-toolbar-edge);min-height:54px;box-sizing:border-box;align-items:center; }

@@ -113,3 +113,7 @@
 }
 
 .viewSwitch button { min-height:44px;font-size:12px; }.hud button { min-height:44px;font-size:12px; }
+
+.viewSwitch { top:var(--section-toolbar-top);right:calc(var(--section-toolbar-edge) + 66px);min-height:54px;box-sizing:border-box;border-radius:8px;align-items:center; }
+.viewSwitch button { border-radius:4px;min-height:44px; }
+.archiveGrid { top:calc(var(--section-toolbar-top) + 70px); }

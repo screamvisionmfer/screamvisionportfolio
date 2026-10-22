@@ -47,3 +47,7 @@ html[data-noir="true"]::before {
   opacity: .65;
 }
 html[data-noir="true"]::after { background: radial-gradient(ellipse at 50% 42%, transparent 20%, #0004 64%, #000c 100%); }
+
+/* Shared second row beneath the logo and menu, including safe areas. */
+:root { --section-toolbar-top:calc(max(18px, env(safe-area-inset-top)) + 100px); --section-toolbar-edge:28px; }
+@media(max-width:800px) { :root { --section-toolbar-top:calc(max(12px, env(safe-area-inset-top)) + 84px); --section-toolbar-edge:18px; } }

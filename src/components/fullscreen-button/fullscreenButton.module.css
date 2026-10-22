@@ -3,3 +3,5 @@
 .button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: square; }
 @media (max-width: 760px) { .button { top: 72px; right: 14px; } }
 @media (prefers-reduced-motion: reduce) { .button { transition: none; } }
+
+.button { top:var(--section-toolbar-top);right:var(--section-toolbar-edge);width:54px;height:54px;border-radius:8px;background:#0b0e0ee8; }.button svg { width:20px;height:20px; }

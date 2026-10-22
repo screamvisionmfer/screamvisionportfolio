@@ -193,3 +193,5 @@
 @keyframes caseCurtain { 0%, 18% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
 @media (max-width: 760px) { .caseInfo { animation-duration: .44s; animation-delay: .1s; } }
 @media (prefers-reduced-motion: reduce) { .casePage::after { display: none; } }
+
+.backToArchive { top:var(--section-toolbar-top);left:var(--section-toolbar-edge);min-height:44px;display:inline-flex!important;align-items:center; }
