@@ -4,10 +4,10 @@ import { Children, type ReactNode, type RefObject, useEffect, useRef } from "rea
 import styles from "./cardArchive.module.css";
 import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
-type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode };
+type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode; wheelMode?: "continuous" | "steps" };
 
 /** Native touch scrolling, direct mouse dragging, and one animation only while settling. */
-export function CardRail({ rootRef, index, count, onActiveChange, children }: Props) {
+export function CardRail({ rootRef, index, count, onActiveChange, children, wheelMode = "continuous" }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const nearest = useRef(index);
   const desired = useRef(index);
@@ -22,7 +22,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
     if (!viewport || !root) return;
     const items = Array.from(viewport.querySelectorAll<HTMLElement>("[data-rail-item]"));
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let step = 1, base = 0, frame = 0, motion = 0, wheelTimer = 0;
+    let step = 1, base = 0, frame = 0, motion = 0, wheelTimer = 0, wheelUntil = 0;
     let down = false, dragged = false, dragX = 0, dragScroll = 0, lastX = 0, lastTime = 0, speed = 0;
     const clamp = (n: number) => Math.max(0, Math.min(count - 1, n));
     const paint = () => {
@@ -102,8 +102,15 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
     const click = (event: MouseEvent) => { if (dragged && event.detail !== 0) { event.preventDefault(); event.stopPropagation(); } };
     const wheel = (event: WheelEvent) => {
       if (event.ctrlKey) return;
-      event.preventDefault(); stop();
+      event.preventDefault();
       const delta = (Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY) * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? viewport.clientWidth : 1);
+      if (wheelMode === "steps") {
+        if (Math.abs(delta) < 2 || performance.now() < wheelUntil) return;
+        wheelUntil = performance.now() + 420;
+        goTo(clamp(desired.current + (delta > 0 ? 1 : -1)));
+        return;
+      }
+      stop();
       viewport.scrollLeft += delta * .85;
       window.clearTimeout(wheelTimer);
       wheelTimer = window.setTimeout(() => goTo(Math.round((viewport.scrollLeft - base) / step)), 150);
@@ -132,7 +139,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children }: Pr
       viewport.removeEventListener("click", click, true); viewport.removeEventListener("wheel", wheel);
       stopObservingActivity();
     };
-  }, [count, rootRef]);
+  }, [count, rootRef, wheelMode]);
 
   useEffect(() => { if (index !== nearest.current) navigate.current(index); }, [index]);
 

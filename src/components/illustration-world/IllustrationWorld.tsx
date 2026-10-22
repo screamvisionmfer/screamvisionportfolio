@@ -335,7 +335,7 @@ export function IllustrationWorld() {
           <span className={styles.gridCaption}><small>{String(index + 1).padStart(2, "0")}</small><strong>{art.title}</strong><span>↗</span></span>
         </button>)}</div>
       </div>}
-      <div className={styles.viewSwitch} data-ui role="group" aria-label="Illustration layout"><button type="button" aria-pressed={view === "world"} onClick={() => setView("world")}>Explore</button><button type="button" aria-pressed={view === "grid"} onClick={() => setView("grid")}>Grid</button></div>
+      <div className={styles.viewSwitch} data-ui><button type="button" onClick={() => setView(view === "world" ? "grid" : "world")} aria-label={view === "world" ? "Switch to grid view" : "Switch to explore view"}><span aria-hidden="true">{view === "world" ? "▦" : "⊹"}</span>{view === "world" ? "Grid" : "Explore"}</button></div>
       <div className={styles.vignette} aria-hidden="true" />
 
       <div data-ui><SiteNav /></div>

@@ -248,3 +248,9 @@
  .casePage .nextProject {margin:0 20px 30px;}
 }
 @media(prefers-reduced-motion:reduce){.caseRail .asset{transition:none;}}
+
+/* Route fading is handled by the shared cinematic curtain. */
+.casePage::after {display:none;}
+.casePage {animation:caseEnter .7s ease both;}
+@keyframes caseEnter {from{opacity:0;}to{opacity:1;}}
+@media(prefers-reduced-motion:reduce){.casePage{animation:none;}}

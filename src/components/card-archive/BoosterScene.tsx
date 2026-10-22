@@ -170,7 +170,8 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
           const tension = Math.sin(clamp(elapsed / .55) * Math.PI);
           const tear = ease((elapsed - .38) / .85);
           const burst = ease((elapsed - 1.05) / 1.25);
-          const exit = ease((elapsed - 1.35) / 1.15);
+          const exit = ease((elapsed - .95) / .5);
+          packGroup.visible = elapsed < 1.48;
           packGroup.rotation.z = -.08 + tension * .025;
           packGroup.rotation.y = -.14 * (1 - exit);
           packGroup.position.y = -exit * 1.2;
@@ -199,14 +200,14 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
           foil.opacity = 1 - exit;
           seam.visible = exit < .6;
           cards.forEach((card, i) => {
-            const local = ease((elapsed - .95 - i * .09) / 1.1);
-            const settle = ease((elapsed - 1.5 - i * .06) / .8);
-            card.visible = local > 0;
+            const local = ease((elapsed - 1.55 - i * .1) / .95);
+            const settle = local;
+            card.visible = elapsed >= 1.55 + i * .1;
             // Lift through the seal, then deal into the actual ribbon slots.
-            card.position.set((landing.x + i * landing.spacing) * settle, landing.y * settle + Math.sin(local * Math.PI) * .6, 0);
+            card.position.set((landing.x + i * landing.spacing) * settle, landing.y * settle + (1 - settle) * .65, (1 - settle) * .3);
             card.rotation.set((1 - local) * -.15,  .35 * (1 - settle) - Math.min(25, i * 12) * Math.PI / 180 * settle, 0);
             const sideScale = i === 0 ? 1 : (.94 - Math.min(i - 1, 2.5) * .07) / 1.28;
-            card.scale.setScalar(.75 + (landing.scale * sideScale - .75) * settle);
+            card.scale.setScalar(.35 + (landing.scale * sideScale - .35) * settle);
           });
           for (let i = 0; i < 64; i++) {
             const a = i * 2.399;
@@ -216,7 +217,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
           }
           particleGeometry.attributes.position.needsUpdate = true;
           particleMaterial.opacity = Math.sin(burst * Math.PI) * .9;
-          if (elapsed >= 3 || reduced.matches) {
+          if (elapsed >= 3.05 || reduced.matches) {
             completed = true;
             element.dataset.animationActive = "false";
             callbacks.current.onComplete();

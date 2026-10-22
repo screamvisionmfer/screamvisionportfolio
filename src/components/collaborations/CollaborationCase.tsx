@@ -153,7 +153,7 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
       </aside>
 
       <section className={styles.caseRail} aria-label={`${collaboration.title} artwork gallery`}>
-        <CardRail rootRef={railRef} index={active} count={collaboration.assets.length} onActiveChange={setActive}>
+        <CardRail wheelMode="steps" rootRef={railRef} index={active} count={collaboration.assets.length} onActiveChange={setActive}>
           {collaboration.assets.map((asset, index) => (
             <article key={asset.src} className={`${styles.asset} ${asset.kind === "video" ? styles.motionAsset : ""}`} data-asset-index={index} data-active={index === active}>
               <button type="button" onClick={() => { if (index === active) setPreview(index); else setActive(index); }} aria-label={`Open ${asset.label}`}><CollabMedia asset={asset} priority={index === 0} suspended={preview !== null} /></button>
