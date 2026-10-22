@@ -182,3 +182,5 @@
 @media (prefers-reduced-motion: reduce) { .entryTransition, .exitTransition { display: none; } }
 
 .back { border:0;background:none;font-size:11px;font-weight:400;letter-spacing:.12em;opacity:.65;transition:opacity .2s; }.back:hover { opacity:1; }
+
+.back {display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 15px;border:1px solid #baa77b40;border-radius:24px;color:#baa77b;background:#10120f80;opacity:1;font-size:11px;transition:background .25s,border-color .25s}.back:hover{background:#baa77b18;border-color:#baa77b99}.back span{font-size:19px}

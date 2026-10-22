@@ -208,6 +208,7 @@ export function IllustrationWorld() {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      if (!isPageActive()) return;
       if (selected !== null) {
         if (event.key === "Escape") setSelected(null);
         if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") switchArt(-1);
@@ -215,12 +216,38 @@ export function IllustrationWorld() {
         return;
       }
       if (view === "grid" || (event.target as HTMLElement).closest("button, a, input")) return;
-      const step = event.shiftKey ? 280 : 150;
-      velocity.current = { x: 0, y: 0 };
-      if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") target.current.x -= step;
-      if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") target.current.x += step;
-      if (event.key === "ArrowUp" || event.key.toLowerCase() === "w") target.current.y -= step;
-      if (event.key === "ArrowDown" || event.key.toLowerCase() === "s") target.current.y += step;
+      if (event.key.startsWith("Arrow")) {
+        event.preventDefault();
+        const stage = stageRef.current?.getBoundingClientRect();
+        if (!stage) return;
+        const center = { x: stage.left + stage.width / 2, y: stage.top + stage.height / 2 };
+        const destination = { x: center.x + target.current.x-current.current.x, y: center.y + target.current.y-current.current.y };
+        const tiles = Array.from(worldRef.current?.querySelectorAll<HTMLElement>("[data-tile-key]") ?? []).map(node => {
+          const r = node.getBoundingClientRect();
+          return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        });
+        const origin = tiles.reduce((best, tile) => Math.hypot(tile.x-destination.x,tile.y-destination.y) < Math.hypot(best.x-destination.x,best.y-destination.y) ? tile : best, tiles[0] ?? center);
+        const horizontal = event.key === "ArrowLeft" || event.key === "ArrowRight";
+        const sign = event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 1;
+        const next = tiles.map(tile => {
+          const forward = (horizontal ? tile.x-origin.x : tile.y-origin.y) * sign;
+          const cross = Math.abs(horizontal ? tile.y-origin.y : tile.x-origin.x);
+          return { ...tile, score: forward > 20 ? Math.hypot(forward,cross) + cross * 2 : Infinity };
+        }).sort((a,b) => a.score-b.score)[0];
+        if (next && Number.isFinite(next.score)) {
+          target.current = { x: current.current.x + next.x-center.x, y: current.current.y + next.y-center.y };
+          velocity.current = { x: 0, y: 0 };
+          motion.current.playMode = false;
+          setPlayMode(false);
+        }
+      } else {
+        const step = event.shiftKey ? 280 : 150;
+        velocity.current = { x: 0, y: 0 };
+        if (event.key.toLowerCase() === "a") target.current.x -= step;
+        if (event.key.toLowerCase() === "d") target.current.x += step;
+        if (event.key.toLowerCase() === "w") target.current.y -= step;
+        if (event.key.toLowerCase() === "s") target.current.y += step;
+      }
       wakeRef.current();
     };
     window.addEventListener("keydown", onKey);
@@ -317,7 +344,7 @@ export function IllustrationWorld() {
         <div><span>Illustration world</span><strong ref={coordinateRef}>0000 / 0000</strong></div>
         <button type="button" data-active={playMode} onClick={() => setPlayMode((value) => !value)}><i /> {playMode ? "Drift on" : "Drift off"}</button>
       </div>
-      <p className={styles.controls} data-ui><span>Drag / Scroll</span><span>W A S D</span><span>Click to inspect</span></p>
+      <p className={styles.controls} data-ui><span>Drag / Scroll</span><span>Arrow keys · Next artwork</span><span>Click to inspect</span></p>
       <div data-ui><FullscreenButton /></div>
 
       {selectedArt && <Preview art={selectedArt} index={selected!} total={illustrations.length} onClose={() => setSelected(null)} onSwitch={switchArt} />}

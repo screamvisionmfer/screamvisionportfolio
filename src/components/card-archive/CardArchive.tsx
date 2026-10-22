@@ -83,8 +83,8 @@ export function CardArchive() {
         {mode === "opening" && <button className={styles.skipOpening} onClick={reveal}>Skip to collection ↗</button>}
       </section>}
       {unlocked && <>
-        <aside className={styles.packDock}><button onClick={reset} aria-label="Repack collection"><PortfolioImage src={mediaSource(pack.artwork)} alt={`${pack.title} opened pack`} width={68} height={88} /><span>↶ Repack</span></button><span className={styles.dockLine} /><span>{pad(pack.cards.length)} ARTWORKS</span></aside>
-        <div className={styles.viewSwitch} aria-label="Collection layout"><button aria-pressed={view === "rail"} onClick={() => setView("rail")}><span>▥</span> Showcase</button><button aria-pressed={view === "grid"} onClick={() => setView("grid")}><span>▦</span> All cards</button></div>
+        <aside className={styles.packDock}><button onClick={reset} aria-label="Repack collection"><PortfolioImage src={mediaSource(pack.artwork)} alt={`${pack.title} opened pack`} width={68} height={88} /><span>← Packs</span></button><span className={styles.dockLine} /><span>{pad(pack.cards.length)} ARTWORKS</span></aside>
+        <div className={styles.viewSwitch} aria-label="Collection layout"><button aria-pressed={view === "rail"} onClick={() => setView("rail")}>Ribbon</button><button aria-pressed={view === "grid"} onClick={() => setView("grid")}>Grid</button></div>
         {view === "rail" ? <CardRail rootRef={gallery} index={active} count={pack.cards.length} onActiveChange={setActive}>
           {pack.cards.map((card, index) => <CardSlab key={card.id} card={card} index={index} pack={pack} active={index === active} onSelect={(button) => { if (index === active) inspectCard(index, button); else setActive(index); }} />)}
         </CardRail> : <div ref={gallery} className={styles.grid} tabIndex={0} aria-label="All cards">

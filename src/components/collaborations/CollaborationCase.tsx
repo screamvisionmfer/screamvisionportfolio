@@ -214,7 +214,7 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
       <aside className={styles.caseInfo}>
         <span className={styles.eyebrow}>SCREAM VISION × {collaboration.partner}</span>
         <h1>{collaboration.title}</h1>
-        <dl><div><dt>Year</dt><dd>{collaboration.year}</dd></div><div><dt>Role</dt><dd>{collaboration.role.join(" / ")}</dd></div><div><dt>Archive</dt><dd>{String(collaboration.assets.length).padStart(2, "0")} artworks</dd></div></dl>
+        <dl>{collaboration.year && <div><dt>Year</dt><dd>{collaboration.year}</dd></div>}<div><dt>Role</dt><dd>{collaboration.role.join(" / ")}</dd></div><div><dt>Archive</dt><dd>{String(collaboration.assets.length).padStart(2, "0")} artworks</dd></div></dl>
         {collaboration.externalUrl && <a className={styles.magicButton} href={collaboration.externalUrl} target="_blank" rel="noreferrer"><span>View on Magic Eden</span><i>↗</i></a>}
       </aside>
 
