@@ -5,6 +5,7 @@ import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
 import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
 
 import { PortfolioImage as Image } from "@/components/portfolio-image/PortfolioImage";
+import { CardRail } from "@/components/card-archive/CardRail";
 import { createPortal } from "react-dom";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState, WheelEvent as ReactWheelEvent } from "react";
 import { collaborations, type Collaboration } from "@/data/collaborations";
@@ -40,24 +41,18 @@ function CollabMedia({ asset, priority = false, preview = false, suspended = fal
 }
 
 export function CollaborationCase({ collaboration }: { collaboration: Collaboration }) {
-  const viewportRef = useRef<HTMLElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
   const stripRef = useRef<HTMLElement>(null);
   const wheelLockRef = useRef<number | null>(null);
   const closeTimerRef = useRef<number | null>(null);
   const gesture = useRef({ x: 0, y: 0, moved: false, active: false });
-  const galleryGesture = useRef({ x: 0, scroll: 0, moved: false, active: false });
   const [active, setActive] = useState(0);
   const [preview, setPreview] = useState<number | null>(null);
   const [previewClosing, setPreviewClosing] = useState(false);
   const modal = useModalFocus<HTMLDivElement>(preview !== null);
   const nextProject = collaborations[(collaborations.findIndex((item) => item.slug === collaboration.slug) + 1) % collaborations.length];
 
-  const selectAsset = useCallback((index: number, smooth = true) => {
-    const viewport = viewportRef.current;
-    const asset = viewport?.querySelector<HTMLElement>(`[data-asset-index="${index}"]`);
-    if (viewport && asset) viewport.scrollTo({ left: asset.offsetLeft + asset.offsetWidth / 2 - viewport.clientWidth / 2, behavior: smooth && !window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "smooth" : "instant" });
-    setActive(index);
-  }, []);
+  const selectAsset = useCallback((index: number) => setActive(index), []);
 
   useEffect(() => {
     const strip = stripRef.current;
@@ -72,7 +67,7 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
 
   const closePreview = useCallback(() => {
     if (preview === null || previewClosing) return;
-    selectAsset(preview, false);
+    selectAsset(preview);
     setPreviewClosing(true);
     closeTimerRef.current = window.setTimeout(() => {
       setPreview(null);
@@ -85,28 +80,6 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
     const next = Math.max(0, Math.min(collaboration.assets.length - 1, active + direction));
     selectAsset(next);
   }, [active, collaboration.assets.length, selectAsset]);
-
-  useEffect(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return;
-    let locked = false;
-    let timer = 0;
-    const onWheel = (event: WheelEvent) => {
-      if (window.matchMedia("(max-width: 760px)").matches || preview !== null) return;
-      event.preventDefault();
-      if (locked) return;
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-      if (Math.abs(delta) < 8) return;
-      locked = true;
-      move(delta > 0 ? 1 : -1);
-      timer = window.setTimeout(() => { locked = false; }, 620);
-    };
-    viewport.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      viewport.removeEventListener("wheel", onWheel);
-      window.clearTimeout(timer);
-    };
-  }, [move, preview]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -133,45 +106,6 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
     if (wheelLockRef.current !== null) window.clearTimeout(wheelLockRef.current);
     if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
   }, []);
-
-  const syncActive = () => {
-    const viewport = viewportRef.current;
-    if (!viewport) return;
-    const bounds = viewport.getBoundingClientRect();
-    const center = bounds.left + bounds.width / 2;
-    let closest = active;
-    let distance = Number.POSITIVE_INFINITY;
-    Array.from(viewport.querySelectorAll<HTMLElement>("[data-asset-index]")).forEach((asset, index) => {
-      const rect = asset.getBoundingClientRect();
-      const nextDistance = Math.abs(rect.left + rect.width / 2 - center);
-      if (nextDistance < distance) { distance = nextDistance; closest = index; }
-    });
-    if (closest !== active) setActive(closest);
-  };
-
-  const galleryPointerDown = (event: ReactPointerEvent<HTMLElement>) => {
-    if (window.matchMedia("(max-width: 760px)").matches) return;
-    const viewport = event.currentTarget;
-    galleryGesture.current = { x: event.clientX, scroll: viewport.scrollLeft, moved: false, active: true };
-  };
-  const galleryPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
-    if (!galleryGesture.current.active) return;
-    const dx = event.clientX - galleryGesture.current.x;
-    if (Math.abs(dx) > 6 && !galleryGesture.current.moved) {
-      galleryGesture.current.moved = true;
-      if (!event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.setPointerCapture(event.pointerId);
-      event.currentTarget.dataset.dragging = "true";
-    }
-    if (!galleryGesture.current.moved) return;
-    event.currentTarget.scrollLeft = galleryGesture.current.scroll - dx;
-  };
-  const galleryPointerUp = (event: ReactPointerEvent<HTMLElement>) => {
-    if (!galleryGesture.current.active) return;
-    galleryGesture.current.active = false;
-    event.currentTarget.dataset.dragging = "false";
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    syncActive();
-  };
 
   const previewWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -218,15 +152,15 @@ export function CollaborationCase({ collaboration }: { collaboration: Collaborat
         {collaboration.externalUrl && <a className={styles.magicButton} href={collaboration.externalUrl} target="_blank" rel="noreferrer"><span>View on Magic Eden</span><i>↗</i></a>}
       </aside>
 
-      <section ref={viewportRef} className={styles.caseViewport} onScroll={syncActive} onPointerDown={galleryPointerDown} onPointerMove={galleryPointerMove} onPointerUp={galleryPointerUp} onPointerCancel={galleryPointerUp} aria-label={`${collaboration.title} artwork gallery`}>
-        <div className={styles.assetGrid}>
+      <section className={styles.caseRail} aria-label={`${collaboration.title} artwork gallery`}>
+        <CardRail rootRef={railRef} index={active} count={collaboration.assets.length} onActiveChange={setActive}>
           {collaboration.assets.map((asset, index) => (
             <article key={asset.src} className={`${styles.asset} ${asset.kind === "video" ? styles.motionAsset : ""}`} data-asset-index={index} data-active={index === active}>
-              <button type="button" onClick={(event) => { if (event.detail !== 0 && galleryGesture.current.moved) return; setActive(index); setPreview(index); }} aria-label={`Open ${asset.label}`}><CollabMedia asset={asset} priority={index === 0} suspended={preview !== null} /></button>
+              <button type="button" onClick={() => { if (index === active) setPreview(index); else setActive(index); }} aria-label={`Open ${asset.label}`}><CollabMedia asset={asset} priority={index === 0} suspended={preview !== null} /></button>
               <p><span>{String(index + 1).padStart(2, "0")}</span><strong>{asset.label}</strong><span>{asset.kind}</span></p>
             </article>
           ))}
-        </div>
+        </CardRail>
       </section>
 
       <nav ref={stripRef} className={styles.filmstrip} aria-label="Collection previews">

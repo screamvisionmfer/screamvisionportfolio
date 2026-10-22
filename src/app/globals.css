@@ -28,7 +28,7 @@ button:disabled { cursor: default; }
   :root { --ui-fast: 0ms; --ui-normal: 0ms; --ui-reveal: 0ms; }
 }
 
-::selection { background: rgba(20, 20, 12, .86); color: #fff; }
+::selection { background: rgba(20, 20, 12, .86); color: #c5b48d; }
 
 html[data-navigation-open="true"] main * { animation-play-state: paused !important; }
 html[data-navigation-open="true"] main { touch-action: auto !important; }

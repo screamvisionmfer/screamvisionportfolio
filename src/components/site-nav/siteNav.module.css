@@ -43,9 +43,9 @@
 
 /* Quiet chrome: keep the room's colour in the artwork, not in the controls. */
 .header { color:#f0eeea; }.logo > span,.location,.location small { color:#bbb9b2; }.logo b,.menuButton i { color:inherit; }
-.menuButton { border:0;background:none;box-shadow:none;letter-spacing:.08em;padding:10px 4px;gap:12px;color:#eeede9; }.menuButton:hover { color:#fff; }
+.menuButton { border:0;background:none;box-shadow:none;letter-spacing:.08em;padding:10px 4px;gap:12px;color:#eeede9; }.menuButton:hover { color: #c5b48d; }
 .backdrop { background:linear-gradient(90deg,#090a0bf5,#090a0bdd 55%,#090a0b99);backdrop-filter:blur(8px); }
-.panel nav a { color:#a6a6a3;border-bottom-color:#ffffff12; }.panel nav a small,.panel nav a em,.panel nav a i { color:#777a79; }.panel nav .active { color:#f2f1ed; }.panel nav .active::before { background:#eee; }.panel nav a:hover,.panel nav a:focus-visible { background:linear-gradient(90deg,#ffffff0a,transparent);color:#fff; }
+.panel nav a { color:#a6a6a3;border-bottom-color:#ffffff12; }.panel nav a small,.panel nav a em,.panel nav a i { color:#777a79; }.panel nav .active { color:#f2f1ed; }.panel nav .active::before { background:#eee; }.panel nav a:hover,.panel nav a:focus-visible { background:linear-gradient(90deg,#ffffff0a,transparent);color: #c5b48d; }
 .menuHeading > span,.menuHeading p,.menuHeading h2 span,.previewCaption > span,.previewCaption p,.menuFooter > div,.menuFooter p { color:#90928f; }.menuHeading i,.location i { background:#c4c5bf;box-shadow:none; }.menuFooter > a { color:#deded7; }.menuFooter > div { border-bottom-color:#ffffff16; }.menuFooter a:hover { color:white; }
 .header a:focus-visible,.menuButton:focus-visible { outline-color:#ddd; }
 @media(max-width:800px) {

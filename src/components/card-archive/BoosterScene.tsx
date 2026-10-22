@@ -171,10 +171,10 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
           const tear = ease((elapsed - .38) / .85);
           const burst = ease((elapsed - 1.05) / 1.25);
           const exit = ease((elapsed - 1.35) / 1.15);
-          packGroup.rotation.z = -.08 + tension * .055 + exit * .35;
-          packGroup.rotation.y = -.14 - exit * 1.1;
-          packGroup.position.y = -exit * 3.8;
-          packGroup.position.x = -exit * 1.4;
+          packGroup.rotation.z = -.08 + tension * .025;
+          packGroup.rotation.y = -.14 * (1 - exit);
+          packGroup.position.y = -exit * 1.2;
+          packGroup.position.x = 0;
           packGroup.scale.set(1 + tension * .025, 1 - tension * .035, 1);
           // The tear travels across the sealed edge before the foil peels away.
           for (let i = 0; i < tearPositions.count; i++) {
@@ -204,8 +204,8 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
             card.visible = local > 0;
             // Lift through the seal, then deal into the actual ribbon slots.
             card.position.set((landing.x + i * landing.spacing) * settle, landing.y * settle + Math.sin(local * Math.PI) * .6, 0);
-            card.rotation.set((1 - local) * -.15, Math.PI * (1 - settle) - Math.min(25, i * 12) * Math.PI / 180 * settle, 0);
-            const sideScale = i === 0 ? 1 : (.87 - Math.min(i - 1, 2.5) * .07) / 1.1;
+            card.rotation.set((1 - local) * -.15,  .35 * (1 - settle) - Math.min(25, i * 12) * Math.PI / 180 * settle, 0);
+            const sideScale = i === 0 ? 1 : (.94 - Math.min(i - 1, 2.5) * .07) / 1.28;
             card.scale.setScalar(.75 + (landing.scale * sideScale - .75) * settle);
           });
           for (let i = 0; i < 64; i++) {
@@ -216,7 +216,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
           }
           particleGeometry.attributes.position.needsUpdate = true;
           particleMaterial.opacity = Math.sin(burst * Math.PI) * .9;
-          if (elapsed >= 2.7 || reduced.matches) {
+          if (elapsed >= 3 || reduced.matches) {
             completed = true;
             element.dataset.animationActive = "false";
             callbacks.current.onComplete();
@@ -248,7 +248,7 @@ export function BoosterScene({ pack, opening, onReady, onComplete, onUnavailable
           landing.x = (slot.left + slot.width / 2 - bounds.left - width / 2) * units;
           landing.y = (bounds.top + height / 2 - slot.top - slot.height / 2) * units;
           landing.scale = slot.height * units / 1.87;
-          landing.spacing = (slot.width / 1.1 + gap) * units;
+          landing.spacing = (slot.width / 1.28 + gap) * units;
         }
         wake();
       };
