@@ -34,7 +34,7 @@ export function WorldPortal({ title, href, images, note, index, position, motion
     {images.map((src,i)=><span key={src} data-active={i===active}><PortfolioImage src={src} alt="" fill sizes="(max-width:600px) 68vw, 295px" /></span>)}
     {position!=="cards"&&<span className={styles.portalGlare}/>}
    </span>
-   <span className={styles.portalLabel}><span>0{index+1} / {note}</span><strong>{title}<i>↗</i></strong></span>
+   <span className={styles.portalLabel}><span>0{index+1} / {note}</span><strong>{title}</strong></span>
 
   </span>
  </Link>;

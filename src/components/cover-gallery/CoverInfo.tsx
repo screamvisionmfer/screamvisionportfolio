@@ -12,7 +12,7 @@ export function CoverInfo({ item, total, onOpen }: { item: CoverItem; total: num
         <span>{item.artist} · {item.year}</span>
         <small>{project?.services.join(" / ")}</small>
       </div>
-      <button type="button" className={styles.viewProject} aria-label={`View ${item.title}`} onClick={onOpen}>View project <span>↗</span></button>
+      <button type="button" className={styles.viewProject} aria-label={`View ${item.title}`} onClick={onOpen}>View project <span>+</span></button>
     </div>
   );
 }

@@ -77,6 +77,7 @@ export function useGalleryController(
       wheelSpeed: 0.7,
       tolerance: 2,
       onPress: (self) => {
+        if(root.dataset.loading==="true")return;
         wake.current();
         if (self.event.type !== "wheel") {
           dragging.current = true;
@@ -89,6 +90,7 @@ export function useGalleryController(
         }
       },
       onChange: (self) => {
+        if(root.dataset.loading==="true")return;
         wake.current();
         const isWheel = self.event.type === "wheel";
         const raw = Math.abs(self.deltaX) > Math.abs(self.deltaY) ? self.deltaX : self.deltaY;
@@ -109,6 +111,7 @@ export function useGalleryController(
         }
       },
       onRelease: () => {
+        if(root.dataset.loading==="true")return;
         wake.current();
         dragging.current = false;
         const displacement = dragStartX - pointerX;
@@ -130,7 +133,7 @@ export function useGalleryController(
     });
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (!isPageActive()) return;
+      if (!isPageActive()||root.dataset.loading==="true") return;
       if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") {
         event.preventDefault();
         nudge(1);
@@ -147,7 +150,7 @@ export function useGalleryController(
 
     const tick = (now: number) => {
       raf = 0;
-      if (!isPageActive()) return;
+      if (!isPageActive()||root.dataset.loading==="true") return;
       const delta = lastTime ? Math.min(2, Math.max(0.5, (now - lastTime) / 16.667)) : 1;
       lastTime = now;
       if (!dragging.current) {

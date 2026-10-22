@@ -45,15 +45,10 @@ export function CoverCard({ item, index, active, positionRef, onSelect, loading,
         <div className={styles.cardBody} data-cover-face>
           <div className={styles.sleeveBack} />
           <div className={styles.cardFace}>
-            <Image className={`${styles.coverImage} ${hasImage ? styles.coverImageLoaded : ""}`} src={item.image} alt={`${item.title} — ${item.artist}`} fill sizes="(max-width: 679px) 59vw, (max-width: 1023px) 44vw, 34vw" priority={index < 2} draggable="false" unoptimized onLoad={() => setHasImage(true)} onError={() => setHasImage(false)} />
+            <Image className={`${styles.coverImage} ${hasImage ? styles.coverImageLoaded : ""}`} src={item.image} alt={`${item.title} — ${item.artist}`} fill sizes="(max-width: 679px) 74vw, (max-width: 1023px) 44vw, 34vw" priority={index < 2} draggable="false" onLoad={() => setHasImage(true)} onError={() => setHasImage(false)} />
             {active && item.motion && (
               <video ref={videoRef} className={`${styles.motionCover} ${motionReady ? styles.motionCoverReady : ""}`} src={item.motion} muted loop playsInline preload="metadata" onCanPlay={() => setMotionReady(true)} />
             )}
-            <div className={`${styles.placeholder} ${styles[`motif${item.placeholder.motif[0].toUpperCase()}${item.placeholder.motif.slice(1)}`]}`} aria-hidden="true">
-              <span className={styles.placeholderIndex}>{item.number}</span>
-              <span className={styles.placeholderMark} />
-              <span className={styles.placeholderLabel}>{item.placeholder.label}</span>
-            </div>
             <div className={styles.cardShade} />
             <div className={styles.cardShine} />
             <div className={styles.cardSweep} />
@@ -61,7 +56,7 @@ export function CoverCard({ item, index, active, positionRef, onSelect, loading,
             {loading && (
               <div className={styles.cardLoading} style={{ "--card-progress": progress / 100 } as CSSProperties} aria-label={showProgress ? `Loading project ${progress}%` : "Opening project"}>
                 <span className={styles.cardLoadingFill} />
-                {showProgress && <strong key={progress}>{String(progress).padStart(3, "0")}<i>%</i></strong>}
+                {showProgress && <strong>{String(progress).padStart(3, "0")}<i>%</i></strong>}
               </div>
             )}
           </div>

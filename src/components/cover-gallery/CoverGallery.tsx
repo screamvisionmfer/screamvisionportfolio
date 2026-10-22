@@ -121,13 +121,22 @@ export function CoverGallery() {
     if (openingIndex !== null) return;
     if (index !== activeIndex) { goTo(index); return; }
     setOpeningIndex(index);
-    setOpeningProgress(100);
-    setShowPreloader(false);
-    setCollapsing(true);
+    setOpeningProgress(0);
+    setShowPreloader(true);
     const href = `/projects/${covers[index].id}`;
     router.prefetch(href);
-    window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:href}));
   }, [activeIndex, goTo, openingIndex, router]);
+  useEffect(()=>{
+    if(openingIndex===null)return;
+    const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches,start=performance.now();
+    let frame=0,timer:ReturnType<typeof setTimeout>|undefined;
+    const tick=(now:number)=>{
+      const progress=reduced?100:Math.min(100,Math.floor((now-start)/9));setOpeningProgress(progress);
+      if(progress<100){frame=requestAnimationFrame(tick);return;}
+      timer=setTimeout(()=>{setCollapsing(true);window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:`/projects/${covers[openingIndex].id}`}));},reduced?0:180);
+    };
+    frame=requestAnimationFrame(tick);return()=>{cancelAnimationFrame(frame);if(timer)clearTimeout(timer);};
+  },[openingIndex]);
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -142,7 +151,7 @@ export function CoverGallery() {
   }, [openProject]);
 
   return (
-    <main ref={rootRef} id="gallery" className={styles.gallery} data-dragging="false" data-opening={collapsing ? "true" : "false"} data-arriving={arriving ? "true" : "false"}>
+    <main ref={rootRef} id="gallery" className={styles.gallery} data-loading={openingIndex!==null} data-dragging="false" data-opening={collapsing ? "true" : "false"} data-arriving={arriving ? "true" : "false"}>
       <BackgroundScene activeIndex={activeIndex} />
       <GalleryNavigation />
       <div className={styles.scene} aria-label="Cover art gallery">

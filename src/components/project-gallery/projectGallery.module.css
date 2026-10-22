@@ -180,3 +180,5 @@
 .project[data-leaving="true"] .infoPanel, .project[data-leaving="true"] .viewport, .project[data-leaving="true"] .footer, .project[data-leaving="true"] .projectSwitchers, .project[data-leaving="true"] .back { transition-duration: .45s; }
 @keyframes circleFadeIn { 0%, 12% { opacity: 1; } 100% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .entryTransition, .exitTransition { display: none; } }
+
+.back { border:0;background:none;font-size:11px;font-weight:400;letter-spacing:.12em;opacity:.65;transition:opacity .2s; }.back:hover { opacity:1; }

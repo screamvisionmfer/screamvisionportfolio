@@ -27,12 +27,11 @@ function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMoti
 export function PortfolioHome(){
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(true),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
- const [drawerOpen,setDrawerOpen]=useState(false);
  const phone=usePhoneMotion();
  const [noir,setNoir]=useState(false);
  useEffect(()=>{setNoir(readNoirMode());},[]);
  const changeNoir=(enabled:boolean)=>{setNoir(enabled);applyNoirMode(enabled);};
- const rail=useRef<HTMLElement>(null),drawerButton=useRef<HTMLButtonElement>(null),drawerDrag=useRef({y:0,moved:false});
+ const rail=useRef<HTMLElement>(null),settingsPanel=useRef<HTMLElement>(null);
  const activePortal=useMobilePortals(rail);
  const router=useRouter(),settingsButton=useRef<HTMLButtonElement>(null);
  useEffect(()=>{
@@ -40,10 +39,12 @@ export function PortfolioHome(){
   if(cover&&covers.some(item=>item.id===cover))router.replace(`/covers?cover=${encodeURIComponent(cover)}`);
  },[router]);
  useEffect(()=>{
-  if(!settings&&!drawerOpen)return;
-  const key=(event:KeyboardEvent)=>{if(event.key==="Escape"){setSettings(false);setDrawerOpen(false);(drawerOpen?drawerButton:settingsButton).current?.focus();}};
-  window.addEventListener("keydown",key);return()=>window.removeEventListener("keydown",key);
- },[settings,drawerOpen]);
+  if(!settings)return;
+  const close=(event:KeyboardEvent)=>{if(event.key==="Escape"){setSettings(false);settingsButton.current?.focus();}};
+  const outside=(event:PointerEvent)=>{const target=event.target as Node;if(!settingsPanel.current?.contains(target)&&!settingsButton.current?.contains(target))setSettings(false);};
+  window.addEventListener("keydown",close);window.addEventListener("pointerdown",outside);
+  return()=>{window.removeEventListener("keydown",close);window.removeEventListener("pointerdown",outside);};
+ },[settings]);
  const enter=(href:string)=>{
   if(leaving)return;router.prefetch(href);setLeaving(true);
   window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:href}));
@@ -65,39 +66,19 @@ export function PortfolioHome(){
    event.preventDefault();links[(Math.max(0,index)+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+links.length)%links.length]?.focus();
   }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} railActive={activePortal===index} onEnter={enter}/>)}</nav>
   <div className={styles.loading} role="status">{ready?"":"Loading the room"}<span/></div>
-  {settings&&<section className={`${styles.settings} ${styles.desktopSettings}`} data-room-settings role="dialog" aria-label="Room settings">
-   <div><h2>Room settings</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
+  {settings&&<section ref={settingsPanel} id="room-settings" className={styles.settings} data-room-settings role="dialog" aria-label="Room settings">
+   <div><h2>SETTINGS</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
    <label>Motion / Parallax<input type="checkbox" checked={motion} onChange={event=>setMotion(event.target.checked)}/></label>
    <label>Retro screen<input type="checkbox" checked={retro} onChange={event=>setRetro(event.target.checked)}/></label>
    <label>Noir mode<input type="checkbox" checked={noir} onChange={event=>changeNoir(event.target.checked)}/></label>
    <PhoneMotionControl phone={phone} motion={motion}/>
-   <button className={styles.resetView} onClick={()=>setResetVersion(value=>value+1)}>Reset camera <span>↶</span></button>
+   <button className={styles.resetView} onClick={()=>setResetVersion(value=>value+1)}>Reset camera</button>
    <p>Mouse to look · Wheel to zoom<br/>Arrow keys to select · Enter to open</p>
   </section>}
   <footer className={styles.consoleBar}>
    <div className={styles.controls}><span>CLICK TO EXPLORE</span><span>SCROLL TO ZOOM</span></div>
-   <div className={styles.footerLinks}><a href="mailto:screamvisionmfer@gmail.com"> screamvisionmfer@gmail.com</a><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a><Link href="/about">ABOUT</Link></div>
-   <button ref={settingsButton} aria-expanded={settings} onClick={()=>setSettings(value=>!value)}> SETTINGS</button>
+   <div className={styles.footerLinks}><a href="mailto:screamvisionmfer@gmail.com"> screamvisionmfer@gmail.com</a><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE</a><Link href="/about">ABOUT</Link></div>
+   <button ref={settingsButton} className={styles.settingsGear} aria-label={settings?"Close room settings":"Open room settings"} aria-controls="room-settings" aria-expanded={settings} onClick={()=>setSettings(value=>!value)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="m9 3-.7 2.2-2 .9-2.1-.5-2 3.4 1.5 1.7v2.5L2.2 15l2 3.4 2.1-.5 2 .9L9 21h4l.7-2.2 2-.9 2.1.5 2-3.4-1.5-1.8v-2.5l1.5-1.7-2-3.4-2.1.5-2-.9L13 3Z"/><circle cx="11" cy="12" r="3.2"/></svg></button>
   </footer>
-  <button className={styles.drawerBackdrop} data-open={drawerOpen} tabIndex={drawerOpen?0:-1} aria-hidden={!drawerOpen} aria-label="Dismiss room panel" onClick={()=>{setDrawerOpen(false);drawerButton.current?.focus();}}/>
-  <section className={styles.mobileConsole} data-open={drawerOpen} aria-label="Mobile room controls" data-room-settings>
-   <button ref={drawerButton} className={styles.drawerHandle} aria-expanded={drawerOpen} aria-controls="mobile-room-panel" aria-label={drawerOpen?"Close room panel":"Open room panel"}
-    onPointerDown={event=>{drawerDrag.current={y:event.clientY,moved:false};event.currentTarget.setPointerCapture(event.pointerId);}}
-    onPointerUp={event=>{const delta=event.clientY-drawerDrag.current.y;if(Math.abs(delta)>30){drawerDrag.current.moved=true;setDrawerOpen(delta<0);}}}
-    onClick={event=>{if(event.detail&&drawerDrag.current.moved){drawerDrag.current.moved=false;return;}drawerDrag.current.moved=false;setDrawerOpen(value=>!value);}}>
-    <i/><span> SYSTEM / CONTACTS</span><strong>{drawerOpen?"⌄":"⌃"}</strong>
-   </button>
-   <div id="mobile-room-panel" className={styles.drawerBody} inert={!drawerOpen} aria-hidden={!drawerOpen}>
-    <p className={styles.drawerTitle}>ROOM 01 / DISPLAY OPTIONS</p>
-    <label>Motion / Parallax<input type="checkbox" checked={motion} onChange={event=>setMotion(event.target.checked)}/></label>
-    <label>Retro screen<input type="checkbox" checked={retro} onChange={event=>setRetro(event.target.checked)}/></label>
-    <label>Noir mode<input type="checkbox" checked={noir} onChange={event=>changeNoir(event.target.checked)}/></label>
-    <PhoneMotionControl phone={phone} motion={motion}/>
-    <button className={styles.resetView} onClick={()=>setResetVersion(value=>value+1)}>Reset camera <span>↶</span></button>
-    <a className={styles.drawerEmail} href="mailto:screamvisionmfer@gmail.com"> screamvisionmfer@gmail.com <span>↗</span></a>
-    <div className={styles.drawerLinks}><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a><Link href="/about">ABOUT</Link></div>
-    <p className={styles.drawerHelp}> TAP TO ENTER <span>↔ SWIPE TO SELECT</span></p>
-   </div>
-  </section>
  </main>;
 }
