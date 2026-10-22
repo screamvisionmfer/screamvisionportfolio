@@ -53,7 +53,7 @@ export function SiteNav({ className = "" }: { className?: string }) {
       <Link className={styles.logo} href="/" aria-label={pathname==="/"?"SCREAM VISION home":"Return to room"}><Image src="/scream-logo.png" alt="" width={90} height={44} priority unoptimized />{pathname!=="/"&&<span><b>←</b> RETURN TO ROOM</span>}</Link>
       <span className={styles.location}><i/> {primary.find(item=>item.href===activeHref)?.label??(activeHref==="/about"?"About":"Contacts")} <small>/ SCREAM VISION</small></span>
       <button className={styles.menuButton} type="button" aria-expanded={menuOpen} aria-controls="site-world-menu" aria-label={menuOpen ? "Close menu" : "Open menu"} onClick={() => {setPreview(activeHref??"/");setMenuOpen(value=>!value);}}>
-        <span>{menuOpen?"RESUME":"MENU"}</span><i>{menuOpen?"×":"☰"}</i>
+        <span>{menuOpen?"RESUME":"MENU"}</span><i className={styles.menuGlyph} aria-hidden="true"/>
       </button>
       <div id="site-world-menu" className={styles.panel} inert={!menuOpen} aria-hidden={!menuOpen}>
         <button className={styles.backdrop} aria-label="Dismiss menu" onClick={()=>setMenuOpen(false)} tabIndex={menuOpen?0:-1}/>
