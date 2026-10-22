@@ -305,3 +305,13 @@
 }
 
 .viewProject { min-height:44px;font-size:13px;padding:8px 0; }.infoTitle strong { font-size:17px; }.infoTitle span,.infoTitle small { font-size:12px; }
+
+/* Let the artwork carry the gallery. */
+.sleeveBack,.cardGlow { display:none; }.cardFace { background:transparent;box-shadow:0 12px 35px #0003; }.controls { display:none; }.info { border-top:0; }.infoNumber,.infoTitle small { display:none; }.info { grid-template-columns:1fr auto; }.infoTitle strong { font-weight:500; }.infoTitle span { font-weight:400;letter-spacing:.03em; }.viewProject { font-weight:400;letter-spacing:.03em; }
+@media(max-width:679px) {
+ .cardPosition { width:min(74vw,390px);top:48%; }.cardFace { box-shadow:none; }.cardShade { display:none; }
+ .info { width:74vw;top:calc(48% + 40vw + 20px);bottom:auto;grid-template-columns:1fr 44px;align-items:center;padding:0;gap:12px; }.infoTitle strong { font-size:18px;line-height:1.25;text-transform:none;font-weight:500; }.infoTitle span { display:none; }
+ .viewProject { grid-column:auto;width:44px;height:44px;min-height:44px;justify-content:center;font-size:0;padding:0;gap:0; }.viewProject span { font-size:24px; }
+ .coverBackdrop { opacity:.65; }
+}
+@media(max-width:679px) and (max-height:650px) { .cardPosition { width:62vw;top:47%; }.info { top:calc(47% + 34vw + 16px);width:68vw; } }

@@ -117,3 +117,6 @@
 .viewSwitch { top:var(--section-toolbar-top);right:calc(var(--section-toolbar-edge) + 66px);min-height:54px;box-sizing:border-box;border-radius:8px;align-items:center; }
 .viewSwitch button { border-radius:4px;min-height:44px; }
 .archiveGrid { top:calc(var(--section-toolbar-top) + 70px); }
+
+.viewSwitch { border-color:#ffffff20;background:#111214d9; }.viewSwitch button[aria-pressed="true"] { background:#dedfda;color:#171917; }
+@media(max-width:800px) { .viewSwitch { right:20px; } }

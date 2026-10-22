@@ -271,3 +271,5 @@
 .viewSwitch button { min-height:44px;font-size:12px; }.openButton { min-height:50px;font-size:13px; }.railControls button { min-width:44px;min-height:44px; }
 
 .viewSwitch { top:var(--section-toolbar-top);right:var(--section-toolbar-edge);min-height:54px;box-sizing:border-box;align-items:center; }
+
+.viewSwitch { border-color:#ffffff24;background:#111214dc; }.viewSwitch button { color:#999d98; }.viewSwitch button[aria-pressed="true"] { color:#f1f1ec;background:#ffffff0d; }.openButton { color:#e6e7df;border-color:#ffffff30;background:#11121480; }.openButton:hover { color:#fff;border-color:#ffffff70; }
