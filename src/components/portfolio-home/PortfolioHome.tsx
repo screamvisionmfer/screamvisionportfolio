@@ -27,7 +27,7 @@ function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMoti
 export function PortfolioHome(){
  const [gearTurn,setGearTurn]=useState(0);
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
- const [motion,setMotion]=useState(true),[retro,setRetro]=useState(true),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
+ const [motion,setMotion]=useState(true),[retro,setRetro]=useState(false),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
  const phone=usePhoneMotion();
  const [noir,setNoir]=useState(false);
  useEffect(()=>{setNoir(readNoirMode());},[]);
