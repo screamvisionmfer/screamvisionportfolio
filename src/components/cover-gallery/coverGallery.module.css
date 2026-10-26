@@ -330,7 +330,7 @@
 .layoutToggle span {font-size:22px;line-height:1;}.layoutToggle:hover {background:#26291c;border-color:#baa77b99;}.layoutToggle:disabled{cursor:wait;}
 .gridCaption {display:none;}
 .gallery[data-view="grid"] {touch-action:pan-y;}
-.gallery[data-view="grid"] .scene {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:start;gap:70px clamp(28px,5vw,90px);padding:130px clamp(32px,8vw,150px) 110px;overflow-y:auto;overflow-x:hidden;perspective:1200px;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#baa77b50 transparent;}
+.gallery[data-view="grid"] .scene {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-content:start;gap:70px clamp(28px,5vw,90px);padding:130px clamp(32px,8vw,150px) 110px;overflow-y:auto;overflow-x:hidden;perspective:1200px;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#baa77b50 transparent;}
 .gallery[data-view="grid"] .cardPosition {position:relative;left:auto;top:auto;width:100%;height:auto;aspect-ratio:1;transform-origin:center;visibility:visible;opacity:1;cursor:pointer;}
 .gallery[data-view="grid"] .cardFloat {animation:none;transform:none;}
 .gallery[data-view="grid"] .cardBody {filter:brightness(.88);transition:filter .4s;}
