@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { HapticFeedback } from "@/components/haptics/HapticFeedback";
 import { NoirMode } from "@/components/site-settings/NoirMode";
 import { RoomArrival } from "@/components/portfolio-home/RoomArrival";
 
@@ -17,7 +18,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body><NoirMode />{children}<RoomArrival /></body>
+      <body><HapticFeedback /><NoirMode />{children}<RoomArrival /></body>
     </html>
   );
 }

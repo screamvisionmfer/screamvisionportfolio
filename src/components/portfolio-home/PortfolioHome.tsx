@@ -13,6 +13,7 @@ import { WorldPortal } from "./WorldPortal";
 import { useMobilePortals } from "./useMobilePortals";
 import { usePhoneMotion } from "./usePhoneMotion";
 import { applyNoirMode, readNoirMode } from "@/components/site-settings/NoirMode";
+import { haptic, readHaptics, setHaptics, supportsHaptics } from "@/components/haptics/haptics";
 import styles from "./portfolioHome.module.css";
 const RoomScene=dynamic(()=>import("./RoomScene").then(m=>m.RoomScene),{ssr:false});
 const sections=[
@@ -25,6 +26,8 @@ function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMoti
  return <div className={styles.gyroControl}><div><span>Phone tilt</span><button aria-label={phone.enabled?"Disable gyroscope":"Enable gyroscope"} aria-pressed={phone.enabled} disabled={!motion||phone.status==="requesting"||phone.status==="unavailable"} onClick={()=>void phone.toggle()}>{phone.status==="requesting"?"…":phone.enabled?"ON":"ENABLE"}</button></div><p role="status">{motion?phone.message:"Enable Motion / Parallax first"}</p></div>;
 }
 export function PortfolioHome(){
+ const [vibration,setVibration]=useState(true),[vibrationSupported,setVibrationSupported]=useState(false);
+ useEffect(()=>{setVibration(readHaptics());setVibrationSupported(supportsHaptics());},[]);
  const [gearTurn,setGearTurn]=useState(0);
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(false),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
@@ -72,6 +75,7 @@ export function PortfolioHome(){
    <label>Motion / Parallax<input type="checkbox" checked={motion} onChange={event=>setMotion(event.target.checked)}/></label>
    <label>Retro screen<input type="checkbox" checked={retro} onChange={event=>setRetro(event.target.checked)}/></label>
    <label>Noir mode<input type="checkbox" checked={noir} onChange={event=>changeNoir(event.target.checked)}/></label>
+   <label>Vibration{!vibrationSupported&&<small>Not supported</small>}<input type="checkbox" disabled={!vibrationSupported} checked={vibrationSupported&&vibration} onChange={event=>{const value=event.target.checked;setVibration(value);setHaptics(value);if(value)haptic("select");}}/></label>
    <PhoneMotionControl phone={phone} motion={motion}/>
    <button className={styles.resetView} onClick={()=>setResetVersion(value=>value+1)}>Reset camera</button>
    <p>Mouse to look · Wheel to zoom<br/>Arrow keys to select · Enter to open</p>

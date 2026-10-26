@@ -2,6 +2,7 @@
 
 import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
 
+import { haptic } from "@/components/haptics/haptics";
 import dynamic from "next/dynamic";
 import { CardRail } from "./CardRail";
 import { BoosterShelf } from "./BoosterShelf";
@@ -34,6 +35,7 @@ export function CardArchive() {
   const inspectTrigger = useRef<HTMLButtonElement | null>(null);
   const unlocked = mode === "collection";
   const reveal = useCallback(() => {
+    haptic("reveal");
     setMode("collection"); setView("rail"); setActive(0);
     setSeen(new Set([pack.cards[0]?.id].filter(Boolean)));
   }, [pack]);
@@ -55,6 +57,7 @@ export function CardArchive() {
   useEffect(() => { gallery.current?.scrollTo({ top: 0, left: 0 }); }, [view, unlocked]);
   const open = () => {
     if (mode !== "sealed") return;
+    haptic("unseal");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) reveal();
     else setMode("opening");
   };

@@ -1,6 +1,7 @@
 "use client";
 
 import { Children, type ReactNode, type RefObject, useEffect, useRef } from "react";
+import { haptic } from "@/components/haptics/haptics";
 import styles from "./cardArchive.module.css";
 import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
@@ -22,11 +23,15 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, whee
     if (!viewport || !root) return;
     const items = Array.from(viewport.querySelectorAll<HTMLElement>("[data-rail-item]"));
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let lastPaintScroll = 0, lastPaintTime = 0;
     let step = 1, base = 0, frame = 0, motion = 0, wheelTimer = 0, wheelUntil = 0;
     let down = false, dragged = false, dragX = 0, dragScroll = 0, lastX = 0, lastTime = 0, speed = 0;
     const clamp = (n: number) => Math.max(0, Math.min(count - 1, n));
     const paint = () => {
       frame = 0;
+      const now = performance.now();
+      const swipeSpeed = Math.abs(viewport.scrollLeft - lastPaintScroll) / Math.max(16, now-lastPaintTime);
+      lastPaintScroll = viewport.scrollLeft;lastPaintTime = now;
       const progress = (viewport.scrollLeft - base) / step;
       items.forEach((item, i) => {
         const relative = i - progress, distance = Math.abs(relative);
@@ -38,7 +43,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, whee
         item.style.opacity = String(Math.max(.25, 1 - distance * .13));
       });
       const next = clamp(Math.round(progress));
-      if (next !== nearest.current) { nearest.current = next; select.current(next); }
+      if (next !== nearest.current) { nearest.current = next; select.current(next); haptic("tick", swipeSpeed); }
       root.dataset.animationActive = String(down || Boolean(motion));
     };
     const requestPaint = () => { if (!frame && isPageActive()) frame = requestAnimationFrame(paint); };

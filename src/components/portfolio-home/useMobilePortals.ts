@@ -1,4 +1,5 @@
 "use client";
+import { haptic } from "@/components/haptics/haptics";
 import { useEffect, useState, type RefObject } from "react";
 
 /** Native touch momentum with snap points; pointer drag also works in a narrow desktop window. */
@@ -7,6 +8,7 @@ export function useMobilePortals(ref:RefObject<HTMLElement|null>){
  useEffect(()=>{
   const rail=ref.current;if(!rail)return;
   const media=window.matchMedia("(max-width: 600px)");
+  let selected=0,lastScroll=0,lastTime=0;
   let frame=0,down=false,moved=false,startX=0,startScroll=0;
   const cards=Array.from(rail.querySelectorAll<HTMLElement>("a"));
   const draw=()=>{
@@ -21,6 +23,9 @@ export function useMobilePortals(ref:RefObject<HTMLElement|null>){
     card.style.setProperty("--rail-opacity",String(Math.max(.48,1-Math.abs(distance)*.3)));
     if(Math.abs(distances[index])<Math.abs(distances[nearest]))nearest=index;
    });
+   const now=performance.now();
+   if(selected!==nearest){selected=nearest;haptic("tick",Math.abs(rail.scrollLeft-lastScroll)/Math.max(16,now-lastTime));}
+   lastScroll=rail.scrollLeft;lastTime=now;
    setActive(previous=>previous===nearest?previous:nearest);
   };
   const scroll=()=>{if(!frame)frame=requestAnimationFrame(draw);};

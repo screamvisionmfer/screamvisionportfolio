@@ -1,6 +1,7 @@
 "use client";
 
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { haptic } from "@/components/haptics/haptics";
 import gsap from "gsap";
 import { Observer } from "gsap/Observer";
 import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
@@ -163,6 +164,7 @@ export function useGalleryController(
         }
       }
 
+      const previousProgress = progress.current;
       if (dragging.current || reduced) {
         const baseFollow = reduced ? 0.34 : 0.42;
         const follow = 1 - Math.pow(1 - baseFollow, delta);
@@ -185,7 +187,7 @@ export function useGalleryController(
       const nearest = Math.round(progress.current);
       if (nearest !== lastActive && Math.abs(progress.current - nearest) < 0.42) {
         lastActive = nearest;
-        setActiveIndex(nearest);
+        setActiveIndex(nearest); haptic("tick", Math.abs(progress.current-previousProgress) * root.clientWidth / Math.max(16,delta*16.667));
       }
       const moving = dragging.current || Math.abs(target.current - progress.current) > .00005 || Math.abs(motionVelocity) > .00005 || Math.abs(target.current - Math.round(target.current)) > .00005;
       root.dataset.animationActive = String(moving);

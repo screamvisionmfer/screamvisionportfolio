@@ -3,13 +3,17 @@
 import { useRef, type CSSProperties } from "react";
 import { PortfolioImage } from "@/components/portfolio-image/PortfolioImage";
 import { cardPacks } from "@/data/card-packs";
+import { haptic } from "@/components/haptics/haptics";
 import styles from "./cardArchive.module.css";
 
 export function BoosterShelf({ selected, onSelect, onOpen }: { selected: number; onSelect: (index: number) => void; onOpen: () => void }) {
-  const drag = useRef({ x: 0, moved: false });
-  return <section className={styles.boosterShelf} aria-label="Choose a booster" onPointerDown={(event) => { drag.current = { x: event.clientX, moved: false }; }} onPointerMove={(event) => { if (event.buttons && Math.abs(event.clientX - drag.current.x) > 16) drag.current.moved = true; }} onPointerUp={(event) => {
+  const drag = useRef({ x: 0, time: 0, moved: false });
+  return <section className={styles.boosterShelf} aria-label="Choose a booster" onPointerDown={(event) => { drag.current = { x: event.clientX, time: event.timeStamp, moved: false }; }} onPointerMove={(event) => { if (event.buttons && Math.abs(event.clientX - drag.current.x) > 16) drag.current.moved = true; }} onPointerUp={(event) => {
     const delta = event.clientX - drag.current.x;
-    if (drag.current.moved && Math.abs(delta) > 45) onSelect(Math.max(0, Math.min(cardPacks.length - 1, selected + (delta < 0 ? 1 : -1))));
+    if (drag.current.moved && Math.abs(delta) > 45) {
+      const next = Math.max(0, Math.min(cardPacks.length - 1, selected + (delta < 0 ? 1 : -1)));
+      if (next !== selected) { haptic("tick", Math.abs(delta) / Math.max(16,event.timeStamp-drag.current.time));onSelect(next); }
+    }
   }}>
     <div className={styles.shelfTrack}>
       {cardPacks.map((pack, index) => <button key={pack.id} className={styles.shelfPack} data-selected={selected === index} aria-label={selected === index ? `Open ${pack.title} booster` : `Select ${pack.title} booster`} aria-pressed={selected === index}
