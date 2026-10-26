@@ -184,3 +184,11 @@
 .back { border:0;background:none;font-size:11px;font-weight:400;letter-spacing:.12em;opacity:.65;transition:opacity .2s; }.back:hover { opacity:1; }
 
 .back {display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 15px;border:1px solid #baa77b40;border-radius:24px;color:#baa77b;background:#10120f80;opacity:1;font-size:11px;transition:background .25s,border-color .25s}.back:hover{background:#baa77b18;border-color:#baa77b99}.back span{font-size:19px}
+
+/* The return target sits below the entire header hit area. */
+.back {top:128px;left:28px;display:grid;place-items:center;width:46px;height:46px;min-height:46px;padding:0;border-radius:50%;border-color:#baa77b35;background:#10120f88;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.back svg {display:block;pointer-events:none;transition:transform .25s ease;}
+.back:hover svg {transform:translateX(-3px);}
+.back:focus-visible {outline:1px solid #baa77b;outline-offset:4px;}
+@media(max-width:820px){.back{top:92px;left:20px;width:44px;height:44px;min-height:44px;}}
+@media(prefers-reduced-motion:reduce){.back svg{transition:none;}}

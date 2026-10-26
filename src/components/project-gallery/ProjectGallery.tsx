@@ -278,7 +278,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       <div className={styles.shade} aria-hidden="true" />
       <div className={styles.grain} aria-hidden="true" />
 
-      <button type="button" className={styles.back} onClick={() => navigate(`/covers?cover=${project.slug}`, "back")} aria-label="Back to cover gallery"><span aria-hidden="true">←</span> All covers</button>
+      <button type="button" className={styles.back} onClick={() => navigate(`/covers?cover=${project.slug}`, "back")} aria-label="Back to cover gallery" title="Back to covers"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M19 12H5m7-7-7 7 7 7" /></svg></button>
 
       <aside ref={infoRef} className={styles.infoPanel} onPointerMove={tiltInfo} onPointerLeave={resetInfoTilt}>
         <div className={styles.identity}>

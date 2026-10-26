@@ -46,11 +46,11 @@ export function useGalleryTilt(
       const pressure = Math.min(1, Math.hypot(currentX, currentY));
       if (face) {
         gsap.set(face, {
-          rotationX: currentY * -10,
-          rotationY: currentX * 14,
+          rotationX: currentY * -7,
+          rotationY: currentX * 10,
           transformPerspective: 720,
           transformOrigin: "50% 50%",
-          z: pressure * 24,
+          z: pressure * 16,
           scale: hoverScale + pressure * 0.009,
         });
         face.style.setProperty("--shine-x", `${50 + currentX * 36}%`);
@@ -92,7 +92,7 @@ export function useGalleryTilt(
         currentX = 0;
         currentY = 0;
       }
-      hoverScale = root.dataset.view === "grid" ? 1.07 : card.dataset.active === "true" ? 1.024 : 1.012;
+      hoverScale = root.dataset.view === "grid" ? 1.045 : card.dataset.active === "true" ? 1.024 : 1.012;
       const rect = card.getBoundingClientRect();
       targetX = gsap.utils.clamp(-1, 1, ((event.clientX - rect.left) / rect.width) * 2 - 1);
       targetY = gsap.utils.clamp(-1, 1, ((event.clientY - rect.top) / rect.height) * 2 - 1);
