@@ -62,6 +62,7 @@ export function useGalleryTilt(
     };
 
     const move = (event: PointerEvent) => {
+      if (root.dataset.morphing === "true" || root.dataset.loading === "true") { leave();return; }
       let card = (event.target as Element | null)?.closest?.("[data-index]") as HTMLButtonElement | null;
       if (!card) {
         let closestDistance = Number.POSITIVE_INFINITY;
@@ -91,7 +92,7 @@ export function useGalleryTilt(
         currentX = 0;
         currentY = 0;
       }
-      hoverScale = card.dataset.active === "true" ? 1.024 : 1.012;
+      hoverScale = root.dataset.view === "grid" ? 1.07 : card.dataset.active === "true" ? 1.024 : 1.012;
       const rect = card.getBoundingClientRect();
       targetX = gsap.utils.clamp(-1, 1, ((event.clientX - rect.left) / rect.width) * 2 - 1);
       targetY = gsap.utils.clamp(-1, 1, ((event.clientY - rect.top) / rect.height) * 2 - 1);

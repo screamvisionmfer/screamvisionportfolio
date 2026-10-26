@@ -14,6 +14,7 @@ export function useGalleryController(
   rootRef: RefObject<HTMLElement | null>,
   count: number,
   onFrame: FrameCallback,
+  enabled = true,
 ) {
   const progress = useRef(0);
   const target = useRef(0);
@@ -40,7 +41,7 @@ export function useGalleryController(
 
   useEffect(() => {
     const root = rootRef.current;
-    if (!root) return;
+    if (!root || !enabled) return;
 
     let raf = 0;
     let lastActive = 0;
@@ -134,7 +135,7 @@ export function useGalleryController(
     });
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (!isPageActive()||root.dataset.loading==="true") return;
+      if (!isPageActive()||root.dataset.loading==="true" || (event.target as HTMLElement).closest("button,a,input,select,textarea")) return;
       if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") {
         event.preventDefault();
         nudge(1);
@@ -217,7 +218,7 @@ export function useGalleryController(
       window.removeEventListener("resize", resize);
       wake.current = () => {};
     };
-  }, [clamp, count, nudge, rootRef]);
+  }, [clamp, count, nudge, rootRef, enabled]);
 
   return { activeIndex, goTo, nudge };
 }

@@ -1,6 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { Flip } from "gsap/Flip";
 import { useRouter } from "next/navigation";
 import { covers } from "@/data/covers";
 
@@ -12,9 +14,14 @@ import { useGalleryController } from "./useGalleryController";
 import { useGalleryTilt } from "./useGalleryTilt";
 import styles from "./coverGallery.module.css";
 
+gsap.registerPlugin(Flip);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export function CoverGallery() {
+  const [view, setView] = useState<"rail" | "grid">("rail");
+  const [morphing, setMorphing] = useState(false);
+  const viewRef = useRef<"rail" | "grid">("rail");
+  const flipState = useRef<ReturnType<typeof Flip.getState> | null>(null);
   const router = useRouter();
   const rootRef = useRef<HTMLElement>(null);
   const cardRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -38,7 +45,7 @@ export function CoverGallery() {
 
   const renderFrame = useCallback((progress: number) => {
     const root = rootRef.current;
-    if (!root) return;
+    if (!root || viewRef.current === "grid") return;
 
     const paletteIndex = Math.max(0, Math.min(covers.length - 1, Math.round(progress)));
     if (paletteIndex !== paletteIndexRef.current) {
@@ -104,7 +111,37 @@ export function CoverGallery() {
     });
   }, []);
 
-  const { activeIndex, goTo, nudge } = useGalleryController(rootRef, covers.length, renderFrame);
+  const { activeIndex, goTo, nudge } = useGalleryController(rootRef, covers.length, renderFrame, view === "rail" && !morphing);
+
+  const switchView = () => {
+    if (openingIndex !== null || morphing) return;
+    const cards = cardRefs.current.filter((card): card is HTMLButtonElement => Boolean(card));
+    flipState.current = Flip.getState(cards, { props: "opacity" });
+    const next = view === "rail" ? "grid" : "rail";
+    viewRef.current = next;
+    setMorphing(true);
+    setView(next);
+  };
+  useLayoutEffect(() => {
+    const state = flipState.current;
+    if (!state) return;
+    flipState.current = null;
+    const cards = cardRefs.current.filter((card): card is HTMLButtonElement => Boolean(card));
+    if (view === "grid") {
+      cards.forEach(card => {
+        ["transform","opacity","visibility","z-index","pointer-events","will-change"].forEach(name => card.style.removeProperty(name));
+        card.dataset.offscreen = "false";
+      });
+    } else {
+      rootRef.current?.querySelector<HTMLElement>(`.${styles.scene}`)?.scrollTo({ top:0 });
+      renderFrame(lastProgressRef.current);
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setMorphing(false);return; }
+    const animation = Flip.from(state, { duration:.85,ease:"power3.inOut",scale:true,fade:true,stagger:.025,
+      onComplete:() => { setMorphing(false); }
+    });
+    return () => { animation.kill(); };
+  }, [view, renderFrame]);
 
   useEffect(() => {
     const slug = new URLSearchParams(window.location.search).get("cover");
@@ -119,13 +156,13 @@ export function CoverGallery() {
 
   const openProject = useCallback((index: number) => {
     if (openingIndex !== null) return;
-    if (index !== activeIndex) { goTo(index); return; }
+    if (view === "rail" && index !== activeIndex) { goTo(index); return; }
     setOpeningIndex(index);
     setOpeningProgress(0);
     setShowPreloader(true);
     const href = `/projects/${covers[index].id}`;
     router.prefetch(href);
-  }, [activeIndex, goTo, openingIndex, router]);
+  }, [activeIndex, goTo, openingIndex, router, view]);
   useEffect(()=>{
     if(openingIndex===null)return;
     const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches,start=performance.now();
@@ -151,12 +188,13 @@ export function CoverGallery() {
   }, [openProject]);
 
   return (
-    <main ref={rootRef} id="gallery" className={styles.gallery} data-loading={openingIndex!==null} data-dragging="false" data-opening={collapsing ? "true" : "false"} data-arriving={arriving ? "true" : "false"}>
+    <main ref={rootRef} id="gallery" className={styles.gallery} data-view={view} data-morphing={morphing} data-loading={openingIndex!==null} data-dragging="false" data-opening={collapsing ? "true" : "false"} data-arriving={arriving ? "true" : "false"}>
       <BackgroundScene activeIndex={activeIndex} />
       <GalleryNavigation />
+      <button type="button" className={styles.layoutToggle} onClick={switchView} disabled={morphing || openingIndex !== null} aria-label={view === "rail" ? "Switch to cover grid" : "Switch to cover ribbon"}><span aria-hidden="true">{view === "rail" ? "▦" : "▥"}</span>{view === "rail" ? "Grid" : "Ribbon"}</button>
       <div className={styles.scene} aria-label="Cover art gallery">
         {covers.map((item, index) => (
-          <CoverCard key={item.id} item={item} index={index} active={index === activeIndex} positionRef={(node) => { cardRefs.current[index] = node; }} onSelect={() => openProject(index)} loading={openingIndex === index} progress={openingProgress} showProgress={showPreloader} />
+          <CoverCard key={item.id} item={item} index={index} active={view === "rail" && index === activeIndex} positionRef={(node) => { cardRefs.current[index] = node; }} onSelect={() => openProject(index)} loading={openingIndex === index} progress={openingProgress} showProgress={showPreloader} />
         ))}
       </div>
       <CoverInfo item={covers[activeIndex]} total={covers.length} onOpen={() => openProject(activeIndex)} />

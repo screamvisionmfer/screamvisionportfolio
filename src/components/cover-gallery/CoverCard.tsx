@@ -62,6 +62,7 @@ export function CoverCard({ item, index, active, positionRef, onSelect, loading,
           </div>
         </div>
       </div>
+      <span className={styles.gridCaption}><span>{String(index+1).padStart(2,"0")}</span><strong>{item.title}</strong><small>{item.artist}</small></span>
     </button>
   );
 }
