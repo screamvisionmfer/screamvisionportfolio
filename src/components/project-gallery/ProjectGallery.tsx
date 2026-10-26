@@ -10,6 +10,7 @@ import { createPortal } from "react-dom";
 import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
 import { CoverProject, ProjectAsset, projects } from "@/data/projects";
 import { SiteNav } from "@/components/site-nav/SiteNav";
+import { ArtistArchive } from "./ArtistArchive";
 import styles from "./projectGallery.module.css";
 
 const formatTime = (value: number) => {
@@ -95,6 +96,8 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   const dragActive = useRef(false);
   const dragMoved = useRef(false);
   const pendingAsset = useRef<number | null>(null);
+  const [artistOpen,setArtistOpen]=useState(false);
+  const artistProjects=projects.filter(item=>item.artistId===project.artistId);
   const [active, setActive] = useState(0);
   const [trackX, setTrackX] = useState(0);
   const [dragX, setDragX] = useState(0);
@@ -128,6 +131,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   }, [active]);
 
   useEffect(() => {
+    setArtistOpen(false);
     setActive(0);
     rootRef.current?.scrollTo({ top: 0, behavior: "instant" });
     setLeaving(false);
@@ -182,7 +186,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       window.setTimeout(() => { wheelLock = false; }, 620);
     };
     const onKey = (event: KeyboardEvent) => {
-      if (zoomed !== null || (event.target as HTMLElement).closest("input, button, a")) return;
+      if (artistOpen || zoomed !== null || (event.target as HTMLElement).closest("input, button, a")) return;
       if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") move(1);
       if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") move(-1);
     };
@@ -193,9 +197,9 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
       if (wheelGalleryEnabled) viewport.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKey);
     };
-  }, [move, zoomed]);
+  }, [move, zoomed, artistOpen]);
 
-  const navigate = (href: string, direction: "next" | "previous" | "back") => {
+  const navigate = (href: string, direction: "next" | "previous" | "back" | "default") => {
     if (leaving) return;
     setTransitionDirection(direction);
     setLeaving(true);
@@ -285,10 +289,11 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
           <p>Selected project · {String(projectIndex + 1).padStart(2, "0")}</p>
           <span className={styles.artistLabel}>Artist</span>
           <strong className={styles.artist}>{project.artist}</strong>
+          {artistProjects.length>1&&<button className={styles.artistArchiveButton} aria-haspopup="dialog" onClick={()=>setArtistOpen(true)}>{artistProjects.length} projects <span>↗</span></button>}
           <h1>{project.title}</h1>
         </div>
         <dl className={styles.meta}>
-          <div><dt>Year</dt><dd>{project.year}</dd></div>
+          {project.year&&<div><dt>Year</dt><dd>{project.year}</dd></div>}
           <div><dt>My role</dt><dd>{project.services.join(" / ")}</dd></div>
           <div><dt>Tools</dt><dd>{project.tools.join(" / ")}</dd></div>
           <div><dt>Materials</dt><dd>{String(project.assets.length).padStart(2, "0")}</dd></div>
@@ -304,7 +309,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
             <article key={`${asset.type}-${asset.src}`} ref={(node) => { slideRefs.current[index] = node; }} className={`${styles.slide} ${asset.type === "canvas" ? styles.canvasSlide : ""}`} data-active={index === active}>
               <div className={styles.media} data-asset-index={index} role="button" tabIndex={0} aria-label={`Open ${asset.label}`} onKeyDown={(event) => { if (event.target === event.currentTarget && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); openAsset(index); } }}>
                 {asset.type === "motion" || asset.type === "canvas"
-                  ? <VideoAsset asset={asset} active={index === active && zoomed === null && !leaving} poster={project.cover} />
+                  ? <VideoAsset asset={asset} active={index === active && zoomed === null && !artistOpen && !leaving} poster={project.cover} />
                   : <Image src={asset.src} alt={`${project.title} — ${asset.label}`} fill sizes="(max-width: 700px) 78vw, 52vw" priority={index === 0} draggable="false" unoptimized />}
               </div>
               <div className={styles.caption}><span>{String(index + 1).padStart(2, "0")}</span><strong>{asset.label}</strong><span>{asset.type}</span></div>
@@ -326,6 +331,8 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
           <span>Next project</span><strong>{nextProject.title}</strong><i>→</i>
         </button>
       </div>
+
+      {artistOpen&&<ArtistArchive items={artistProjects} current={project.slug} onClose={()=>setArtistOpen(false)} onSelect={slug=>{setArtistOpen(false);if(slug!==project.slug)navigate(`/projects/${slug}`,"default");}}/>}
 
       {zoomedAsset && createPortal(
         <div ref={modal} role="dialog" aria-modal="true" aria-label={`${project.title} artwork`} tabIndex={-1} className={styles.zoomOverlay} data-closing={zoomClosing} onPointerDown={(event) => event.stopPropagation()} onClick={closeZoom}>

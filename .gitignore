@@ -9,3 +9,7 @@ npm-debug.log*
 
 # Local agent reference material; not part of the website runtime.
 codex skills/
+
+# Local full-quality media archive.
+assets/originals/
+artifacts/media-tools/

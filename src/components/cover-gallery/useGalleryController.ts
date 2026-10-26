@@ -28,9 +28,10 @@ export function useGalleryController(
 
   const clamp = useCallback((value: number) => Math.max(0, Math.min(count - 1, value)), [count]);
 
-  const goTo = useCallback((index: number) => {
+  const goTo = useCallback((index: number, immediate = false) => {
     const next = clamp(index);
     target.current = next;
+    if (immediate) { progress.current = next;setActiveIndex(next);frameCallback.current(next,0); }
     velocity.current = 0;
     wake.current();
   }, [clamp]);

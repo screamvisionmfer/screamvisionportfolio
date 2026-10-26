@@ -9,7 +9,7 @@ export function CoverInfo({ item, total, onOpen }: { item: CoverItem; total: num
       <span className={styles.infoNumber}>{item.number} / {String(total).padStart(2, "0")}</span>
       <div className={styles.infoTitle}>
         <strong>{item.title}</strong>
-        <span>{item.artist} · {item.year}</span>
+        <span>{item.artist}{item.year && ` · ${item.year}`}</span>
         <small>{project?.services.join(" / ")}</small>
       </div>
       <button type="button" className={styles.viewProject} aria-label={`View ${item.title}`} onClick={onOpen}>View project <span>+</span></button>

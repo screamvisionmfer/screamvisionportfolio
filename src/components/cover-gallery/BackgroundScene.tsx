@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { covers } from "@/data/covers";
+import { type CoverItem } from "@/data/covers";
 import { mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import styles from "./coverGallery.module.css";
 
 type BackdropLayers = { front: number; back: number };
 
-export function BackgroundScene({ activeIndex }: { activeIndex: number }) {
+export function BackgroundScene({ activeIndex, items: covers }: { activeIndex: number;items:CoverItem[] }) {
   const [layers, setLayers] = useState<BackdropLayers>({ front: activeIndex, back: activeIndex });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function BackgroundScene({ activeIndex }: { activeIndex: number }) {
         : { back: current.front, front: activeIndex });
     }).catch(() => { /* Keep the last successfully loaded background. */ });
     return () => { cancelled = true; };
-  }, [activeIndex]);
+  }, [activeIndex,covers]);
 
   return (
     <div className={styles.background} aria-hidden="true">

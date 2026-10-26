@@ -1,4 +1,4 @@
-import { readdir, mkdir, stat, writeFile } from "node:fs/promises";
+import { readdir, mkdir, stat, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
@@ -9,7 +9,7 @@ const publicDir = path.join(root, "public");
 const output = path.join(publicDir, "optimized");
 await mkdir(output, { recursive: true });
 sharp.concurrency(2);
-const manifest = {};
+const manifest = JSON.parse(await readFile(path.join(root, "src/data/optimized-media.json"), "utf8").catch(() => "{}"));
 const totals = {};
 async function walk(dir, group) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -35,7 +35,8 @@ async function walk(dir, group) {
     manifest[`/${relative}`] = variants;
   }
 }
-for (const group of ["illustrations", "covers", "collabs", "cards"]) {
+// Covers are prepared separately with artist/project metadata and video compression.
+for (const group of ["illustrations", "collabs", "cards"]) {
   await walk(path.join(publicDir, group), group);
   console.log(group, totals[group]);
 }

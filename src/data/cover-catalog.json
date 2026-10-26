@@ -1,0 +1,932 @@
+[
+  {
+    "id": "hottest-otw",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Hottest OTW",
+    "year": "2022",
+    "image": "/covers/crash-rarri/hottest-otw/cover.webp",
+    "motion": "/covers/crash-rarri/hottest-otw/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/crash-rarri/hottest-otw/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/crash-rarri/hottest-otw/motion.mp4"
+      },
+      {
+        "type": "tracklist",
+        "label": "Tracklist",
+        "src": "/covers/crash-rarri/hottest-otw/tracklist.webp"
+      }
+    ]
+  },
+  {
+    "id": "with-or-without-you",
+    "artistId": "94fatso",
+    "artist": "94FATSO",
+    "title": "With Or Without You",
+    "year": "2024",
+    "image": "/covers/94fatso/with-or-without-you/cover.webp",
+    "motion": "/covers/94fatso/with-or-without-you/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/94fatso/with-or-without-you/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/94fatso/with-or-without-you/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "crabs-in-a-barrel",
+    "artistId": "big-head-bandz",
+    "artist": "BIG HEAD BANDZ",
+    "title": "Crabs In A Barrel",
+    "year": "",
+    "image": "/covers/big-head-bandz/crabs-in-a-barrel/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/big-head-bandz/crabs-in-a-barrel/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "bump",
+    "artistId": "3comma",
+    "artist": "3COMMA$",
+    "title": "Bump",
+    "year": "2024",
+    "image": "/covers/3comma/bump/cover.webp",
+    "motion": "/covers/3comma/bump/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/3comma/bump/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/3comma/bump/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "cameos",
+    "artistId": "94fatso",
+    "artist": "94FATSO",
+    "title": "Cameos",
+    "year": "",
+    "image": "/covers/94fatso/cameos/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/94fatso/cameos/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "understood",
+    "artistId": "dre-drilla-ft-basket-case",
+    "artist": "DRE DRILLA FT. BASKET CASE",
+    "title": "Understood",
+    "year": "2024",
+    "image": "/covers/dre-drilla-ft-basket-case/understood/cover.webp",
+    "motion": "/covers/dre-drilla-ft-basket-case/understood/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/dre-drilla-ft-basket-case/understood/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/dre-drilla-ft-basket-case/understood/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "clench-your-fist",
+    "artistId": "cruel-world",
+    "artist": "CRUEL WORLD",
+    "title": "Clench Your Fist",
+    "year": "2024",
+    "image": "/covers/cruel-world/clench-your-fist/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/cruel-world/clench-your-fist/cover.webp"
+      },
+      {
+        "type": "canvas",
+        "label": "Spotify Canvas",
+        "src": "/covers/cruel-world/clench-your-fist/canvas.mp4",
+        "hasAudio": false
+      },
+      {
+        "type": "tracklist",
+        "label": "Tracklist",
+        "src": "/covers/cruel-world/clench-your-fist/tracklist.webp"
+      },
+      {
+        "type": "tracklist",
+        "label": "Tracklist 2",
+        "src": "/covers/cruel-world/clench-your-fist/tracklist-2.webp"
+      }
+    ]
+  },
+  {
+    "id": "im-lit",
+    "artistId": "scream-vision",
+    "artist": "SCREAM VISION",
+    "title": "Im Lit",
+    "year": "2021",
+    "image": "/covers/scream-vision/im-lit/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/scream-vision/im-lit/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "motorbound-2",
+    "artistId": "defficit",
+    "artist": "DEFFICIT",
+    "title": "Motorbound Part 2",
+    "year": "2023",
+    "image": "/covers/defficit/motorbound-2/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/defficit/motorbound-2/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "94fatso-hard-times-ait-over",
+    "artistId": "94fatso",
+    "artist": "94FATSO",
+    "title": "Hard Times Ait Over",
+    "year": "2024",
+    "image": "/covers/94fatso/94fatso-hard-times-ait-over/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/94fatso/94fatso-hard-times-ait-over/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "crash-rarri-lets-keep-it-100",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Lets Keep It 100",
+    "year": "2024",
+    "image": "/covers/crash-rarri/crash-rarri-lets-keep-it-100/cover.webp",
+    "motion": "/covers/crash-rarri/crash-rarri-lets-keep-it-100/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/crash-rarri/crash-rarri-lets-keep-it-100/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/crash-rarri/crash-rarri-lets-keep-it-100/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "crash-rarri-motion-sicc",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Motion Sicc",
+    "year": "2024",
+    "image": "/covers/crash-rarri/crash-rarri-motion-sicc/cover.webp",
+    "motion": "/covers/crash-rarri/crash-rarri-motion-sicc/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/crash-rarri/crash-rarri-motion-sicc/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/crash-rarri/crash-rarri-motion-sicc/motion.mp4"
+      },
+      {
+        "type": "tracklist",
+        "label": "Tracklist",
+        "src": "/covers/crash-rarri/crash-rarri-motion-sicc/tracklist.webp"
+      }
+    ]
+  },
+  {
+    "id": "crash-rarri-gladys-knight",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Gladys Knight",
+    "year": "2024",
+    "image": "/covers/crash-rarri/crash-rarri-gladys-knight/cover.webp",
+    "motion": "/covers/crash-rarri/crash-rarri-gladys-knight/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/crash-rarri/crash-rarri-gladys-knight/cover.webp"
+      },
+      {
+        "type": "canvas",
+        "label": "Spotify Canvas",
+        "src": "/covers/crash-rarri/crash-rarri-gladys-knight/canvas.mp4",
+        "hasAudio": false
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/crash-rarri/crash-rarri-gladys-knight/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "crash-rarri-take-hoes-sip-juice",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Take Hoes Sip Juice",
+    "year": "",
+    "image": "/covers/crash-rarri/crash-rarri-take-hoes-sip-juice/cover.webp",
+    "motion": "/covers/crash-rarri/crash-rarri-take-hoes-sip-juice/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/crash-rarri/crash-rarri-take-hoes-sip-juice/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/crash-rarri/crash-rarri-take-hoes-sip-juice/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "crokas-in-crokas-we-trust",
+    "artistId": "crokas",
+    "artist": "CROKAS",
+    "title": "In Crokas We Trust",
+    "year": "",
+    "image": "/covers/crokas/crokas-in-crokas-we-trust/cover.webp",
+    "motion": "/covers/crokas/crokas-in-crokas-we-trust/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/crokas/crokas-in-crokas-we-trust/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/crokas/crokas-in-crokas-we-trust/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "eastside-juan-ape-camp",
+    "artistId": "eastside-juan",
+    "artist": "EASTSIDE JUAN",
+    "title": "Ape Camp",
+    "year": "",
+    "image": "/covers/eastside-juan/eastside-juan-ape-camp/cover.webp",
+    "motion": "/covers/eastside-juan/eastside-juan-ape-camp/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/eastside-juan/eastside-juan-ape-camp/cover.webp"
+      },
+      {
+        "type": "cover",
+        "label": "Alternate cover",
+        "src": "/covers/eastside-juan/eastside-juan-ape-camp/cover-2.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/eastside-juan/eastside-juan-ape-camp/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "eastside-juan-crush-on-her",
+    "artistId": "eastside-juan",
+    "artist": "EASTSIDE JUAN",
+    "title": "Crush On Her",
+    "year": "",
+    "image": "/covers/eastside-juan/eastside-juan-crush-on-her/cover.webp",
+    "motion": "/covers/eastside-juan/eastside-juan-crush-on-her/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/eastside-juan/eastside-juan-crush-on-her/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/eastside-juan/eastside-juan-crush-on-her/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "elixthamc-rubi-rose-freestyle",
+    "artistId": "elixthamc",
+    "artist": "ELIXTHAMC",
+    "title": "Rubi Rose Freestyle",
+    "year": "",
+    "image": "/covers/elixthamc/elixthamc-rubi-rose-freestyle/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover · With Kuado",
+        "src": "/covers/elixthamc/elixthamc-rubi-rose-freestyle/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "elixthamc-sucks-to-be-you",
+    "artistId": "elixthamc",
+    "artist": "ELIXTHAMC",
+    "title": "Sucks To Be You",
+    "year": "",
+    "image": "/covers/elixthamc/elixthamc-sucks-to-be-you/cover.webp",
+    "motion": "/covers/elixthamc/elixthamc-sucks-to-be-you/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/elixthamc/elixthamc-sucks-to-be-you/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/elixthamc/elixthamc-sucks-to-be-you/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "fatt-macc-trap-life",
+    "artistId": "fatt-macc",
+    "artist": "FATT MACC",
+    "title": "Trap Life",
+    "year": "",
+    "image": "/covers/fatt-macc/fatt-macc-trap-life/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/fatt-macc/fatt-macc-trap-life/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "fedos-dopamina",
+    "artistId": "fedos",
+    "artist": "FEDOS",
+    "title": "Dopamina",
+    "year": "",
+    "image": "/covers/fedos/fedos-dopamina/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/fedos/fedos-dopamina/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "flare-delgado-box-music",
+    "artistId": "flare-delgado",
+    "artist": "FLARE DELGADO",
+    "title": "Box Music",
+    "year": "",
+    "image": "/covers/flare-delgado/flare-delgado-box-music/cover.webp",
+    "motion": "/covers/flare-delgado/flare-delgado-box-music/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/flare-delgado/flare-delgado-box-music/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/flare-delgado/flare-delgado-box-music/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "fmchauncy-scotty-storch",
+    "artistId": "fmchauncy",
+    "artist": "FMCHAUNCY",
+    "title": "Scotty Storch",
+    "year": "",
+    "image": "/covers/fmchauncy/fmchauncy-scotty-storch/cover.webp",
+    "motion": "/covers/fmchauncy/fmchauncy-scotty-storch/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/fmchauncy/fmchauncy-scotty-storch/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/fmchauncy/fmchauncy-scotty-storch/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "fs-rudy-bui",
+    "artistId": "fs-rudy",
+    "artist": "FS RUDY",
+    "title": "BUI",
+    "year": "2022",
+    "image": "/covers/fs-rudy/fs-rudy-bui/cover.webp",
+    "motion": "/covers/fs-rudy/fs-rudy-bui/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/fs-rudy/fs-rudy-bui/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/fs-rudy/fs-rudy-bui/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "fs-rudy-i-dont-give-a-fuck",
+    "artistId": "fs-rudy",
+    "artist": "FS RUDY",
+    "title": "I Dont Give A Fuck",
+    "year": "2023",
+    "image": "/covers/fs-rudy/fs-rudy-i-dont-give-a-fuck/cover.webp",
+    "motion": "/covers/fs-rudy/fs-rudy-i-dont-give-a-fuck/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/fs-rudy/fs-rudy-i-dont-give-a-fuck/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/fs-rudy/fs-rudy-i-dont-give-a-fuck/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "fs-rudy-like-p",
+    "artistId": "fs-rudy",
+    "artist": "FS RUDY",
+    "title": "Like P",
+    "year": "2023",
+    "image": "/covers/fs-rudy/fs-rudy-like-p/cover.webp",
+    "motion": "/covers/fs-rudy/fs-rudy-like-p/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/fs-rudy/fs-rudy-like-p/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/fs-rudy/fs-rudy-like-p/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "hitta-j3-hittaman",
+    "artistId": "hitta-j3",
+    "artist": "HITTA J3",
+    "title": "Hittaman",
+    "year": "2022",
+    "image": "/covers/hitta-j3/hitta-j3-hittaman/cover.webp",
+    "motion": "/covers/hitta-j3/hitta-j3-hittaman/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/hitta-j3/hitta-j3-hittaman/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/hitta-j3/hitta-j3-hittaman/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "hitta-j3-the-wake-up-call",
+    "artistId": "hitta-j3",
+    "artist": "HITTA J3",
+    "title": "The Wake Up Call",
+    "year": "2022",
+    "image": "/covers/hitta-j3/hitta-j3-the-wake-up-call/cover.webp",
+    "motion": "/covers/hitta-j3/hitta-j3-the-wake-up-call/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/hitta-j3/hitta-j3-the-wake-up-call/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/hitta-j3/hitta-j3-the-wake-up-call/motion.mp4"
+      },
+      {
+        "type": "tracklist",
+        "label": "Tracklist",
+        "src": "/covers/hitta-j3/hitta-j3-the-wake-up-call/tracklist.webp"
+      }
+    ]
+  },
+  {
+    "id": "infinite-nemo-just-say-that",
+    "artistId": "infinite-nemo",
+    "artist": "INFINITE NEMO",
+    "title": "Just Say That",
+    "year": "",
+    "image": "/covers/infinite-nemo/infinite-nemo-just-say-that/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/infinite-nemo/infinite-nemo-just-say-that/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "inspire-alma-gemela",
+    "artistId": "inspire",
+    "artist": "INSPIRE",
+    "title": "Alma Gemela",
+    "year": "",
+    "image": "/covers/inspire/inspire-alma-gemela/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/inspire/inspire-alma-gemela/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "inspire-luciernaga",
+    "artistId": "inspire",
+    "artist": "INSPIRE",
+    "title": "Luciernaga",
+    "year": "",
+    "image": "/covers/inspire/inspire-luciernaga/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/inspire/inspire-luciernaga/cover.webp"
+      },
+      {
+        "type": "cover",
+        "label": "Alternate cover",
+        "src": "/covers/inspire/inspire-luciernaga/cover-2.webp"
+      }
+    ]
+  },
+  {
+    "id": "inspire-desconocidos-con-recuerdos",
+    "artistId": "inspire",
+    "artist": "INSPIRE",
+    "title": "Desconocidos Con Recuerdos",
+    "year": "",
+    "image": "/covers/inspire/inspire-desconocidos-con-recuerdos/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/inspire/inspire-desconocidos-con-recuerdos/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "inspire-melancolia",
+    "artistId": "inspire",
+    "artist": "INSPIRE",
+    "title": "Melancolia",
+    "year": "",
+    "image": "/covers/inspire/inspire-melancolia/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/inspire/inspire-melancolia/cover.webp"
+      },
+      {
+        "type": "cover",
+        "label": "Alternate cover",
+        "src": "/covers/inspire/inspire-melancolia/cover-2.webp"
+      }
+    ]
+  },
+  {
+    "id": "jaydabee-look-alive",
+    "artistId": "jaydabee",
+    "artist": "JAYDABEE",
+    "title": "Look Alive",
+    "year": "",
+    "image": "/covers/jaydabee/jaydabee-look-alive/cover.webp",
+    "motion": "/covers/jaydabee/jaydabee-look-alive/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/jaydabee/jaydabee-look-alive/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/jaydabee/jaydabee-look-alive/motion.mp4"
+      },
+      {
+        "type": "cover",
+        "label": "Typography",
+        "src": "/covers/jaydabee/jaydabee-look-alive/cover-2.webp"
+      },
+      {
+        "type": "tracklist",
+        "label": "Tracklist",
+        "src": "/covers/jaydabee/jaydabee-look-alive/tracklist.webp"
+      }
+    ]
+  },
+  {
+    "id": "keno-bombino-getcha-right-2",
+    "artistId": "keno-bombino",
+    "artist": "KENO BOMBINO",
+    "title": "Getcha Right 2",
+    "year": "",
+    "image": "/covers/keno-bombino/keno-bombino-getcha-right-2/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/keno-bombino/keno-bombino-getcha-right-2/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "keno-bombino-real-life-ii",
+    "artistId": "keno-bombino",
+    "artist": "KENO BOMBINO",
+    "title": "Real Life II",
+    "year": "",
+    "image": "/covers/keno-bombino/keno-bombino-real-life-ii/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/keno-bombino/keno-bombino-real-life-ii/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "keno-bombino-packs-in",
+    "artistId": "keno-bombino",
+    "artist": "KENO BOMBINO",
+    "title": "Packs In",
+    "year": "",
+    "image": "/covers/keno-bombino/keno-bombino-packs-in/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/keno-bombino/keno-bombino-packs-in/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "kooly-bros-free-you",
+    "artistId": "kooly-bros",
+    "artist": "KOOLY BROS",
+    "title": "Free You",
+    "year": "",
+    "image": "/covers/kooly-bros/kooly-bros-free-you/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/kooly-bros/kooly-bros-free-you/cover.webp"
+      }
+    ]
+  },
+  {
+    "id": "lil-blade-piss-me-off",
+    "artistId": "lil-blade",
+    "artist": "LIL BLADE",
+    "title": "Piss Me Off",
+    "year": "",
+    "image": "/covers/lil-blade/lil-blade-piss-me-off/cover.webp",
+    "motion": "/covers/lil-blade/lil-blade-piss-me-off/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/lil-blade/lil-blade-piss-me-off/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/lil-blade/lil-blade-piss-me-off/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "lou-got-cash-back-to-the-basics",
+    "artistId": "lou-got-cash",
+    "artist": "LOU GOT CASH",
+    "title": "Back To The Basics",
+    "year": "",
+    "image": "/covers/lou-got-cash/lou-got-cash-back-to-the-basics/cover.webp",
+    "motion": "/covers/lou-got-cash/lou-got-cash-back-to-the-basics/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/lou-got-cash/lou-got-cash-back-to-the-basics/cover.webp"
+      },
+      {
+        "type": "tracklist",
+        "label": "Tracklist",
+        "src": "/covers/lou-got-cash/lou-got-cash-back-to-the-basics/tracklist.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/lou-got-cash/lou-got-cash-back-to-the-basics/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "mbk-richy-no-facades",
+    "artistId": "mbk-richy",
+    "artist": "MBK RICHY",
+    "title": "No Facades",
+    "year": "",
+    "image": "/covers/mbk-richy/mbk-richy-no-facades/cover.webp",
+    "motion": "/covers/mbk-richy/mbk-richy-no-facades/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/mbk-richy/mbk-richy-no-facades/cover.webp"
+      },
+      {
+        "type": "canvas",
+        "label": "Spotify Canvas",
+        "src": "/covers/mbk-richy/mbk-richy-no-facades/canvas.mp4",
+        "hasAudio": false
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/mbk-richy/mbk-richy-no-facades/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "paid-pat-chase-the-money",
+    "artistId": "paid-pat",
+    "artist": "PAID PAT",
+    "title": "Chase The Money",
+    "year": "",
+    "image": "/covers/paid-pat/paid-pat-chase-the-money/cover.webp",
+    "motion": "/covers/paid-pat/paid-pat-chase-the-money/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/paid-pat/paid-pat-chase-the-money/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/paid-pat/paid-pat-chase-the-money/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "paid-pat-lost-me",
+    "artistId": "paid-pat",
+    "artist": "PAID PAT",
+    "title": "Lost Me",
+    "year": "",
+    "image": "/covers/paid-pat/paid-pat-lost-me/cover.webp",
+    "motion": "/covers/paid-pat/paid-pat-lost-me/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/paid-pat/paid-pat-lost-me/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/paid-pat/paid-pat-lost-me/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "ruby-modine-ruby-modine-angles-ii",
+    "artistId": "ruby-modine",
+    "artist": "RUBY MODINE",
+    "title": "Ruby Modine / Angles II",
+    "year": "",
+    "image": "/covers/ruby-modine/ruby-modine-ruby-modine-angles-ii/cover.webp",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/ruby-modine/ruby-modine-ruby-modine-angles-ii/cover.webp"
+      },
+      {
+        "type": "cover",
+        "label": "Angles II",
+        "src": "/covers/ruby-modine/ruby-modine-ruby-modine-angles-ii/cover-2.webp"
+      }
+    ]
+  },
+  {
+    "id": "shaniya-wtf",
+    "artistId": "shaniya",
+    "artist": "SHANIYA",
+    "title": "WTF",
+    "year": "",
+    "image": "/covers/shaniya/shaniya-wtf/cover.webp",
+    "motion": "/covers/shaniya/shaniya-wtf/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/shaniya/shaniya-wtf/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/shaniya/shaniya-wtf/motion.mp4"
+      }
+    ]
+  },
+  {
+    "id": "waka-flocka-flame-ft-jimmy-rocket-100-bands",
+    "artistId": "waka-flocka-flame-ft-jimmy-rocket",
+    "artist": "WAKA FLOCKA FLAME FT. JIMMY ROCKET",
+    "title": "100 Bands",
+    "year": "2024",
+    "image": "/covers/waka-flocka-flame-ft-jimmy-rocket/waka-flocka-flame-ft-jimmy-rocket-100-bands/cover.webp",
+    "motion": "/covers/waka-flocka-flame-ft-jimmy-rocket/waka-flocka-flame-ft-jimmy-rocket-100-bands/motion.mp4",
+    "assets": [
+      {
+        "type": "cover",
+        "label": "Final cover",
+        "src": "/covers/waka-flocka-flame-ft-jimmy-rocket/waka-flocka-flame-ft-jimmy-rocket-100-bands/cover.webp"
+      },
+      {
+        "type": "motion",
+        "label": "Motion cover",
+        "src": "/covers/waka-flocka-flame-ft-jimmy-rocket/waka-flocka-flame-ft-jimmy-rocket-100-bands/motion.mp4"
+      }
+    ]
+  }
+]

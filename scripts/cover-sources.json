@@ -1,0 +1,658 @@
+[
+  {
+    "id": "hottest-otw",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Hottest OTW",
+    "year": "2022",
+    "source": "Crash Rarri/Hottest OTW/Crash Rarri -hottest otw cover 2022.jpg",
+    "assets": [
+      {
+        "source": "Crash Rarri/Hottest OTW/Crash Rarri -hottest otw motion.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      },
+      {
+        "source": "Crash Rarri/Hottest OTW/Crash Rarri -hottest otw tracklist.jpg",
+        "type": "tracklist",
+        "label": "Tracklist"
+      }
+    ]
+  },
+  {
+    "id": "with-or-without-you",
+    "artistId": "94fatso",
+    "artist": "94FATSO",
+    "title": "With Or Without You",
+    "year": "2024",
+    "source": "94Fatso/94Fatso - With Or Without You 2024.jpg",
+    "assets": [
+      {
+        "source": "94Fatso/94Fatso - With Or Without You 2024 Motion.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "crabs-in-a-barrel",
+    "artistId": "big-head-bandz",
+    "artist": "BIG HEAD BANDZ",
+    "title": "Crabs In A Barrel",
+    "year": "",
+    "source": "Big Head Bandz - Crabs In A Barrel/#6224crabs-in-a-barrel.jpg",
+    "assets": []
+  },
+  {
+    "id": "bump",
+    "artistId": "3comma",
+    "artist": "3COMMA$",
+    "title": "Bump",
+    "year": "2024",
+    "source": "3COMMA$ - BUMP 2024/3COMMA$ - BUMP 2024.jpg",
+    "assets": [
+      {
+        "source": "3COMMA$ - BUMP 2024/MOTION.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "cameos",
+    "artistId": "94fatso",
+    "artist": "94FATSO",
+    "title": "Cameos",
+    "year": "",
+    "source": "94Fatso/94Fatso - CAMEOS.jpg",
+    "assets": []
+  },
+  {
+    "id": "understood",
+    "artistId": "dre-drilla-ft-basket-case",
+    "artist": "DRE DRILLA FT. BASKET CASE",
+    "title": "Understood",
+    "year": "2024",
+    "source": "DRE DRILLA BASKET CASE - UNDERSTOOD 2024/#8346UNDERSTOOD.jpg",
+    "assets": [
+      {
+        "source": "DRE DRILLA BASKET CASE - UNDERSTOOD 2024/motion.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "clench-your-fist",
+    "artistId": "cruel-world",
+    "artist": "CRUEL WORLD",
+    "title": "Clench Your Fist",
+    "year": "2024",
+    "source": "Clench Your Fist - Cruel World 2024/CLENCH-YOUR-FIST-—-CRUEL-WORLD-FRONT-COVER-BY-KULTSAINTS.jpg",
+    "assets": [
+      {
+        "source": "Clench Your Fist - Cruel World 2024/CLENCH-YOUR-FIST - Spotify Canvas-2x-RIFE-RIFE4.0-50fps.old.mp4",
+        "type": "canvas",
+        "label": "Spotify Canvas"
+      },
+      {
+        "source": "Clench Your Fist - Cruel World 2024/CLENCH-YOUR-FIST-—-CRUEL-WORLD-BACKSIDE-(TRACKLIST 2)--BY-KULTSAINTS.jpg",
+        "type": "tracklist",
+        "label": "Tracklist"
+      },
+      {
+        "source": "Clench Your Fist - Cruel World 2024/CLENCH-YOUR-FIST-—-CRUEL-WORLD-BACKSIDE-(TRACKLIST)--BY-KULTSAINTS.jpg",
+        "type": "tracklist",
+        "label": "Tracklist"
+      }
+    ]
+  },
+  {
+    "id": "im-lit",
+    "artistId": "scream-vision",
+    "artist": "SCREAM VISION",
+    "title": "Im Lit",
+    "year": "2021",
+    "source": "IM LIT.jpg",
+    "assets": []
+  },
+  {
+    "id": "motorbound-2",
+    "artistId": "defficit",
+    "artist": "DEFFICIT",
+    "title": "Motorbound Part 2",
+    "year": "2023",
+    "source": "Defficit/Defficit - Motorbound Part 2 2023.jpg",
+    "assets": []
+  },
+  {
+    "id": "94fatso-hard-times-ait-over",
+    "artistId": "94fatso",
+    "artist": "94FATSO",
+    "title": "Hard Times Ait Over",
+    "year": "2024",
+    "source": "94Fatso/94Fatso - Hard Times Ait Over 2024.jpg",
+    "assets": []
+  },
+  {
+    "id": "crash-rarri-lets-keep-it-100",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Lets Keep It 100",
+    "year": "2024",
+    "source": "Crash Rarri/Crash Rarri - Lets Keep It 100 2024/CRASH RARRI - Let’s Keep It 100.jpg",
+    "assets": [
+      {
+        "source": "Crash Rarri/Crash Rarri - Lets Keep It 100 2024/motion lets keep it.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "crash-rarri-motion-sicc",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Motion Sicc",
+    "year": "2024",
+    "source": "Crash Rarri/Crash Rarri - Motion Sicc 2024/cover.jpg",
+    "assets": [
+      {
+        "source": "Crash Rarri/Crash Rarri - Motion Sicc 2024/motion.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      },
+      {
+        "source": "Crash Rarri/Crash Rarri - Motion Sicc 2024/tracklist.jpg",
+        "type": "tracklist",
+        "label": "Tracklist"
+      }
+    ]
+  },
+  {
+    "id": "crash-rarri-gladys-knight",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Gladys Knight",
+    "year": "2024",
+    "source": "Crash Rarri/Gladys Knight/Crash Rarri - Gladys Knight 2024.jpg",
+    "assets": [
+      {
+        "source": "Crash Rarri/Gladys Knight/Crash Rarri - Gladys Knight 2024 spotify.mp4",
+        "type": "canvas",
+        "label": "Spotify Canvas"
+      },
+      {
+        "source": "Crash Rarri/Gladys Knight/Crash Rarri - Gladys Knight 2024.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "crash-rarri-take-hoes-sip-juice",
+    "artistId": "crash-rarri",
+    "artist": "CRASH RARRI",
+    "title": "Take Hoes Sip Juice",
+    "year": "",
+    "source": "Crash Rarri/TAKE HOES SIP JUICE/TKSJ2-1.jpg",
+    "assets": [
+      {
+        "source": "Crash Rarri/TAKE HOES SIP JUICE/MOTION COVER ART BY @KULTSAINTS-2x-RIFE-RIFE4.0-50fps.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "crokas-in-crokas-we-trust",
+    "artistId": "crokas",
+    "artist": "CROKAS",
+    "title": "In Crokas We Trust",
+    "year": "",
+    "source": "CROKAS - IN CROKAS WE TRUST/crokas.jpg",
+    "assets": [
+      {
+        "source": "CROKAS - IN CROKAS WE TRUST/motion.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "eastside-juan-ape-camp",
+    "artistId": "eastside-juan",
+    "artist": "EASTSIDE JUAN",
+    "title": "Ape Camp",
+    "year": "",
+    "source": "Eastside Juan/APE CAMP/6497business2.jpg",
+    "assets": [
+      {
+        "source": "Eastside Juan/APE CAMP/6497business-OLD-CARTOON-STYLE.jpg",
+        "type": "cover",
+        "label": "Alternate cover"
+      },
+      {
+        "source": "Eastside Juan/APE CAMP/COVER ART BY @KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "eastside-juan-crush-on-her",
+    "artistId": "eastside-juan",
+    "artist": "EASTSIDE JUAN",
+    "title": "Crush On Her",
+    "year": "",
+    "source": "Eastside Juan/Crush On Her/#6592CRUSH ON HER.jpg",
+    "assets": [
+      {
+        "source": "Eastside Juan/Crush On Her/COVER ART BY @KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "elixthamc-rubi-rose-freestyle",
+    "artistId": "elixthamc",
+    "artist": "ELIXTHAMC",
+    "title": "Rubi Rose Freestyle",
+    "year": "",
+    "source": "ElixThaMC/ElixThaMc - Rubi Rose Freestyle (collaboration with Kuado)/rubi-rose-freestyle.jpg",
+    "assets": [],
+    "credit": "With Kuado"
+  },
+  {
+    "id": "elixthamc-sucks-to-be-you",
+    "artistId": "elixthamc",
+    "artist": "ELIXTHAMC",
+    "title": "Sucks To Be You",
+    "year": "",
+    "source": "ElixThaMC/sucks to be you/2.jpg",
+    "assets": [
+      {
+        "source": "ElixThaMC/sucks to be you/stby motion.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "fatt-macc-trap-life",
+    "artistId": "fatt-macc",
+    "artist": "FATT MACC",
+    "title": "Trap Life",
+    "year": "",
+    "source": "Fatt Macc - Trap Life/#7622TRAPLIFE.jpg",
+    "assets": []
+  },
+  {
+    "id": "fedos-dopamina",
+    "artistId": "fedos",
+    "artist": "FEDOS",
+    "title": "Dopamina",
+    "year": "",
+    "source": "Fedos - Dopamina/FEDOS - DOPAMINA RETRO TEXTURE.jpg",
+    "assets": []
+  },
+  {
+    "id": "flare-delgado-box-music",
+    "artistId": "flare-delgado",
+    "artist": "FLARE DELGADO",
+    "title": "Box Music",
+    "year": "",
+    "source": "Flare Delgado - Box Music/#6030BOX-MUSIC.jpg",
+    "assets": [
+      {
+        "source": "Flare Delgado - Box Music/#6030boxmusic COVER ART BY @KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "fmchauncy-scotty-storch",
+    "artistId": "fmchauncy",
+    "artist": "FMCHAUNCY",
+    "title": "Scotty Storch",
+    "year": "",
+    "source": "FMCHAUNCY - SCOTTY STORCH/SCOTTY-STORCH.jpg",
+    "assets": [
+      {
+        "source": "FMCHAUNCY - SCOTTY STORCH/SCOTTY STORCH MOTION ARTWORK by kultsaints.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "fs-rudy-bui",
+    "artistId": "fs-rudy",
+    "artist": "FS RUDY",
+    "title": "BUI",
+    "year": "2022",
+    "source": "FS RUDY/BUI (2022)/#6427bui3.jpg",
+    "assets": [
+      {
+        "source": "FS RUDY/BUI (2022)/COVER ART BY @KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "fs-rudy-i-dont-give-a-fuck",
+    "artistId": "fs-rudy",
+    "artist": "FS RUDY",
+    "title": "I Dont Give A Fuck",
+    "year": "2023",
+    "source": "FS RUDY/I DONT GIVE A FUCK  (2023)/#6495-I-DONT-GIVE-A-FUCK.jpg",
+    "assets": [
+      {
+        "source": "FS RUDY/I DONT GIVE A FUCK  (2023)/COVER ART BY @KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "fs-rudy-like-p",
+    "artistId": "fs-rudy",
+    "artist": "FS RUDY",
+    "title": "Like P",
+    "year": "2023",
+    "source": "FS RUDY/LIKE P  (2023)/#6737LIKE-P.jpg",
+    "assets": [
+      {
+        "source": "FS RUDY/LIKE P  (2023)/#6737COVER ART BY @KULTSAINTS-2x-RIFE-RIFE4.0-50fps.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "hitta-j3-hittaman",
+    "artistId": "hitta-j3",
+    "artist": "HITTA J3",
+    "title": "Hittaman",
+    "year": "2022",
+    "source": "HITTA J3/HITTAMAN  (2022)/#6878HITTAMAN.jpg",
+    "assets": [
+      {
+        "source": "HITTA J3/HITTAMAN  (2022)/COVER ART BY @KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "hitta-j3-the-wake-up-call",
+    "artistId": "hitta-j3",
+    "artist": "HITTA J3",
+    "title": "The Wake Up Call",
+    "year": "2022",
+    "source": "HITTA J3/THE WAKE UP CALL  (2022)/#6148The-Wake-Up-Call-2.jpg",
+    "assets": [
+      {
+        "source": "HITTA J3/THE WAKE UP CALL  (2022)/#6148BY @KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      },
+      {
+        "source": "HITTA J3/THE WAKE UP CALL  (2022)/The-Wake-Up-Call-2-TRACKLIST.jpg",
+        "type": "tracklist",
+        "label": "Tracklist"
+      }
+    ]
+  },
+  {
+    "id": "infinite-nemo-just-say-that",
+    "artistId": "infinite-nemo",
+    "artist": "INFINITE NEMO",
+    "title": "Just Say That",
+    "year": "",
+    "source": "INFINITE NEMO/JUST SAY THAT/#7121JUST-STAY-THAT.jpg",
+    "assets": []
+  },
+  {
+    "id": "inspire-alma-gemela",
+    "artistId": "inspire",
+    "artist": "INSPIRE",
+    "title": "Alma Gemela",
+    "year": "",
+    "source": "INSPIRE/Alma Gemela/INSPIRE — ALMA GAMELA.jpg",
+    "assets": []
+  },
+  {
+    "id": "inspire-luciernaga",
+    "artistId": "inspire",
+    "artist": "INSPIRE",
+    "title": "Luciernaga",
+    "year": "",
+    "source": "INSPIRE/Depression/Luciérnaga.jpg",
+    "assets": [
+      {
+        "source": "INSPIRE/Depression/Luciérnaga Alt Version.jpg",
+        "type": "cover",
+        "label": "Alternate cover"
+      }
+    ]
+  },
+  {
+    "id": "inspire-desconocidos-con-recuerdos",
+    "artistId": "inspire",
+    "artist": "INSPIRE",
+    "title": "Desconocidos Con Recuerdos",
+    "year": "",
+    "source": "INSPIRE/Desconocidos con Recuerdo/Desconocidos con Recuerdos.jpg",
+    "assets": []
+  },
+  {
+    "id": "inspire-melancolia",
+    "artistId": "inspire",
+    "artist": "INSPIRE",
+    "title": "Melancolia",
+    "year": "",
+    "source": "INSPIRE/Melancolia/Melancolia.jpg",
+    "assets": [
+      {
+        "source": "INSPIRE/Melancolia/Melancolia 3.jpg",
+        "type": "cover",
+        "label": "Alternate cover"
+      }
+    ]
+  },
+  {
+    "id": "jaydabee-look-alive",
+    "artistId": "jaydabee",
+    "artist": "JAYDABEE",
+    "title": "Look Alive",
+    "year": "",
+    "source": "Jaydabee/Look Alive!/LOOKALIVE!.jpg",
+    "assets": [
+      {
+        "source": "Jaydabee/Look Alive!/Jaydabee Motion Art by KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      },
+      {
+        "source": "Jaydabee/Look Alive!/LOOK ALIVE TYPO.png",
+        "type": "cover",
+        "label": "Typography"
+      },
+      {
+        "source": "Jaydabee/Look Alive!/LOOK-ALIVE!-tracklist.jpg",
+        "type": "tracklist",
+        "label": "Tracklist"
+      }
+    ]
+  },
+  {
+    "id": "keno-bombino-getcha-right-2",
+    "artistId": "keno-bombino",
+    "artist": "KENO BOMBINO",
+    "title": "Getcha Right 2",
+    "year": "",
+    "source": "Keno Bombino/Getcha Right 2 - Keno Bambino.jpg",
+    "assets": []
+  },
+  {
+    "id": "keno-bombino-real-life-ii",
+    "artistId": "keno-bombino",
+    "artist": "KENO BOMBINO",
+    "title": "Real Life II",
+    "year": "",
+    "source": "Keno Bombino/Keno Bambino - Real Life II.jpg",
+    "assets": []
+  },
+  {
+    "id": "keno-bombino-packs-in",
+    "artistId": "keno-bombino",
+    "artist": "KENO BOMBINO",
+    "title": "Packs In",
+    "year": "",
+    "source": "Keno Bombino/PACKS IN.jpg",
+    "assets": []
+  },
+  {
+    "id": "kooly-bros-free-you",
+    "artistId": "kooly-bros",
+    "artist": "KOOLY BROS",
+    "title": "Free You",
+    "year": "",
+    "source": "Kooly Bros/#8098FREE YOU2.jpg",
+    "assets": []
+  },
+  {
+    "id": "lil-blade-piss-me-off",
+    "artistId": "lil-blade",
+    "artist": "LIL BLADE",
+    "title": "Piss Me Off",
+    "year": "",
+    "source": "Lil Blade/#7064PISS-ME-OFF.jpg",
+    "assets": [
+      {
+        "source": "Lil Blade/COVER ART BY @KULTSAINTS-2x-RIFE-RIFE4.0-50fps.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "lou-got-cash-back-to-the-basics",
+    "artistId": "lou-got-cash",
+    "artist": "LOU GOT CASH",
+    "title": "Back To The Basics",
+    "year": "",
+    "source": "Lou Got Cash/#6204BACKTOTHE-BASICS.jpg",
+    "assets": [
+      {
+        "source": "Lou Got Cash/#6204back-to-the-basics-tracklist.jpg",
+        "type": "tracklist",
+        "label": "Tracklist"
+      },
+      {
+        "source": "Lou Got Cash/Motion cover art Back To The Basics by KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "mbk-richy-no-facades",
+    "artistId": "mbk-richy",
+    "artist": "MBK RICHY",
+    "title": "No Facades",
+    "year": "",
+    "source": "MBK RICHY/MBK RICHY.jpg",
+    "assets": [
+      {
+        "source": "MBK RICHY/canvas mbk richy 2.mp4",
+        "type": "canvas",
+        "label": "Spotify Canvas"
+      },
+      {
+        "source": "MBK RICHY/motion.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "paid-pat-chase-the-money",
+    "artistId": "paid-pat",
+    "artist": "PAID PAT",
+    "title": "Chase The Money",
+    "year": "",
+    "source": "PAID PAT/Chase The Money/#6492chase-the-money.jpg",
+    "assets": [
+      {
+        "source": "PAID PAT/Chase The Money/COVER ART BY @KULTSAINTS.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "paid-pat-lost-me",
+    "artistId": "paid-pat",
+    "artist": "PAID PAT",
+    "title": "Lost Me",
+    "year": "",
+    "source": "PAID PAT/Lost me/#6359LOST-ME.jpg",
+    "assets": [
+      {
+        "source": "PAID PAT/Lost me/#6359COVER ART BY @KULTSAINTS-2x-RIFE-RIFE4.0-50fps.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "ruby-modine-ruby-modine-angles-ii",
+    "artistId": "ruby-modine",
+    "artist": "RUBY MODINE",
+    "title": "Ruby Modine / Angles II",
+    "year": "",
+    "source": "Ruby Modine/RUBY.jpg",
+    "assets": [
+      {
+        "source": "Ruby Modine/angels II.jpg",
+        "type": "cover",
+        "label": "Angles II"
+      }
+    ]
+  },
+  {
+    "id": "shaniya-wtf",
+    "artistId": "shaniya",
+    "artist": "SHANIYA",
+    "title": "WTF",
+    "year": "",
+    "source": "SHANIYA/#6813wtf.jpg",
+    "assets": [
+      {
+        "source": "SHANIYA/COVER ART BY @KULTSAINTS-2x-RIFE-RIFE4.0-50fps.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  },
+  {
+    "id": "waka-flocka-flame-ft-jimmy-rocket-100-bands",
+    "artistId": "waka-flocka-flame-ft-jimmy-rocket",
+    "artist": "WAKA FLOCKA FLAME FT. JIMMY ROCKET",
+    "title": "100 Bands",
+    "year": "2024",
+    "source": "Waka Flocka Flame ft Jimmy Rocket - 100 bands 2024/100 BANDS.jpg",
+    "assets": [
+      {
+        "source": "Waka Flocka Flame ft Jimmy Rocket - 100 bands 2024/MOTION COVER ART BY @KULTSAINTS-2x-RIFE-RIFE4.0-50fps.mp4",
+        "type": "motion",
+        "label": "Motion cover"
+      }
+    ]
+  }
+]
