@@ -706,5 +706,285 @@
   "/collabs/Seeds From The Memetic Garden for Jungle Bay/Uniswap Bank.jpg": {
     "640": "/optimized/seeds-556e69737761702042616e6b2e6a7067-640.webp",
     "1600": "/optimized/seeds-556e69737761702042616e6b2e6a7067-1600.webp"
+  },
+  "/cards/stray-club/cover.webp": {
+    "640": "/optimized/stray-club-cover-640.webp",
+    "1600": "/cards/stray-club/cover.webp"
+  },
+  "/cards/stray-club/1.webp": {
+    "640": "/optimized/stray-club-1-640.webp",
+    "1600": "/cards/stray-club/1.webp"
+  },
+  "/cards/stray-club/2.webp": {
+    "640": "/optimized/stray-club-2-640.webp",
+    "1600": "/cards/stray-club/2.webp"
+  },
+  "/cards/stray-club/3.webp": {
+    "640": "/optimized/stray-club-3-640.webp",
+    "1600": "/cards/stray-club/3.webp"
+  },
+  "/cards/stray-club/4.webp": {
+    "640": "/optimized/stray-club-4-640.webp",
+    "1600": "/cards/stray-club/4.webp"
+  },
+  "/cards/stray-club/5.webp": {
+    "640": "/optimized/stray-club-5-640.webp",
+    "1600": "/cards/stray-club/5.webp"
+  },
+  "/cards/stray-club/6.webp": {
+    "640": "/optimized/stray-club-6-640.webp",
+    "1600": "/cards/stray-club/6.webp"
+  },
+  "/cards/stray-club/7.webp": {
+    "640": "/optimized/stray-club-7-640.webp",
+    "1600": "/cards/stray-club/7.webp"
+  },
+  "/cards/stray-club/8.webp": {
+    "640": "/optimized/stray-club-8-640.webp",
+    "1600": "/cards/stray-club/8.webp"
+  },
+  "/cards/stray-club/9.webp": {
+    "640": "/optimized/stray-club-9-640.webp",
+    "1600": "/cards/stray-club/9.webp"
+  },
+  "/cards/stray-club/10.webp": {
+    "640": "/optimized/stray-club-10-640.webp",
+    "1600": "/cards/stray-club/10.webp"
+  },
+  "/cards/stray-club/11.webp": {
+    "640": "/optimized/stray-club-11-640.webp",
+    "1600": "/cards/stray-club/11.webp"
+  },
+  "/cards/stray-club/12.webp": {
+    "640": "/optimized/stray-club-12-640.webp",
+    "1600": "/cards/stray-club/12.webp"
+  },
+  "/cards/stray-club/13.webp": {
+    "640": "/optimized/stray-club-13-640.webp",
+    "1600": "/cards/stray-club/13.webp"
+  },
+  "/cards/stray-club/14.webp": {
+    "640": "/optimized/stray-club-14-640.webp",
+    "1600": "/cards/stray-club/14.webp"
+  },
+  "/cards/stray-club/15.webp": {
+    "640": "/optimized/stray-club-15-640.webp",
+    "1600": "/cards/stray-club/15.webp"
+  },
+  "/cards/stray-club/16.webp": {
+    "640": "/optimized/stray-club-16-640.webp",
+    "1600": "/cards/stray-club/16.webp"
+  },
+  "/cards/stray-club/17.webp": {
+    "640": "/optimized/stray-club-17-640.webp",
+    "1600": "/cards/stray-club/17.webp"
+  },
+  "/cards/stray-club/18.webp": {
+    "640": "/optimized/stray-club-18-640.webp",
+    "1600": "/cards/stray-club/18.webp"
+  },
+  "/cards/stray-club/19.webp": {
+    "640": "/optimized/stray-club-19-640.webp",
+    "1600": "/cards/stray-club/19.webp"
+  },
+  "/cards/stray-club/20.webp": {
+    "640": "/optimized/stray-club-20-640.webp",
+    "1600": "/cards/stray-club/20.webp"
+  },
+  "/cards/stray-club/21.webp": {
+    "640": "/optimized/stray-club-21-640.webp",
+    "1600": "/cards/stray-club/21.webp"
+  },
+  "/cards/stray-club/22.webp": {
+    "640": "/optimized/stray-club-22-640.webp",
+    "1600": "/cards/stray-club/22.webp"
+  },
+  "/cards/stray-club/23.webp": {
+    "640": "/optimized/stray-club-23-640.webp",
+    "1600": "/cards/stray-club/23.webp"
+  },
+  "/cards/stray-club/24.webp": {
+    "640": "/optimized/stray-club-24-640.webp",
+    "1600": "/cards/stray-club/24.webp"
+  },
+  "/cards/stray-club/25.webp": {
+    "640": "/optimized/stray-club-25-640.webp",
+    "1600": "/cards/stray-club/25.webp"
+  },
+  "/cards/stray-club/26.webp": {
+    "640": "/optimized/stray-club-26-640.webp",
+    "1600": "/cards/stray-club/26.webp"
+  },
+  "/cards/stray-club/27.webp": {
+    "640": "/optimized/stray-club-27-640.webp",
+    "1600": "/cards/stray-club/27.webp"
+  },
+  "/cards/stray-club/28.webp": {
+    "640": "/optimized/stray-club-28-640.webp",
+    "1600": "/cards/stray-club/28.webp"
+  },
+  "/cards/stray-club/29.webp": {
+    "640": "/optimized/stray-club-29-640.webp",
+    "1600": "/cards/stray-club/29.webp"
+  },
+  "/cards/stray-club/30.webp": {
+    "640": "/optimized/stray-club-30-640.webp",
+    "1600": "/cards/stray-club/30.webp"
+  },
+  "/cards/stray-club/31.webp": {
+    "640": "/optimized/stray-club-31-640.webp",
+    "1600": "/cards/stray-club/31.webp"
+  },
+  "/cards/stray-club/32.webp": {
+    "640": "/optimized/stray-club-32-640.webp",
+    "1600": "/cards/stray-club/32.webp"
+  },
+  "/cards/stray-till-goat/cover.webp": {
+    "640": "/optimized/stray-till-goat-cover-640.webp",
+    "1600": "/cards/stray-till-goat/cover.webp"
+  },
+  "/cards/stray-till-goat/1.webp": {
+    "640": "/optimized/stray-till-goat-1-640.webp",
+    "1600": "/cards/stray-till-goat/1.webp"
+  },
+  "/cards/stray-till-goat/2.webp": {
+    "640": "/optimized/stray-till-goat-2-640.webp",
+    "1600": "/cards/stray-till-goat/2.webp"
+  },
+  "/cards/stray-till-goat/3.webp": {
+    "640": "/optimized/stray-till-goat-3-640.webp",
+    "1600": "/cards/stray-till-goat/3.webp"
+  },
+  "/cards/stray-till-goat/4.webp": {
+    "640": "/optimized/stray-till-goat-4-640.webp",
+    "1600": "/cards/stray-till-goat/4.webp"
+  },
+  "/cards/stray-till-goat/5.webp": {
+    "640": "/optimized/stray-till-goat-5-640.webp",
+    "1600": "/cards/stray-till-goat/5.webp"
+  },
+  "/cards/stray-till-goat/6.webp": {
+    "640": "/optimized/stray-till-goat-6-640.webp",
+    "1600": "/cards/stray-till-goat/6.webp"
+  },
+  "/cards/stray-till-goat/7.webp": {
+    "640": "/optimized/stray-till-goat-7-640.webp",
+    "1600": "/cards/stray-till-goat/7.webp"
+  },
+  "/cards/stray-till-goat/8.webp": {
+    "640": "/optimized/stray-till-goat-8-640.webp",
+    "1600": "/cards/stray-till-goat/8.webp"
+  },
+  "/cards/stray-till-goat/9.webp": {
+    "640": "/optimized/stray-till-goat-9-640.webp",
+    "1600": "/cards/stray-till-goat/9.webp"
+  },
+  "/cards/stray-till-goat/10.webp": {
+    "640": "/optimized/stray-till-goat-10-640.webp",
+    "1600": "/cards/stray-till-goat/10.webp"
+  },
+  "/cards/stray-till-goat/11.webp": {
+    "640": "/optimized/stray-till-goat-11-640.webp",
+    "1600": "/cards/stray-till-goat/11.webp"
+  },
+  "/cards/stray-till-nine/cover.webp": {
+    "640": "/optimized/stray-till-nine-cover-640.webp",
+    "1600": "/cards/stray-till-nine/cover.webp"
+  },
+  "/cards/stray-till-nine/1.webp": {
+    "640": "/optimized/stray-till-nine-1-640.webp",
+    "1600": "/cards/stray-till-nine/1.webp"
+  },
+  "/cards/stray-till-nine/2.webp": {
+    "640": "/optimized/stray-till-nine-2-640.webp",
+    "1600": "/cards/stray-till-nine/2.webp"
+  },
+  "/cards/stray-till-nine/3.webp": {
+    "640": "/optimized/stray-till-nine-3-640.webp",
+    "1600": "/cards/stray-till-nine/3.webp"
+  },
+  "/cards/stray-till-nine/4.webp": {
+    "640": "/optimized/stray-till-nine-4-640.webp",
+    "1600": "/cards/stray-till-nine/4.webp"
+  },
+  "/cards/stray-till-nine/5.webp": {
+    "640": "/optimized/stray-till-nine-5-640.webp",
+    "1600": "/cards/stray-till-nine/5.webp"
+  },
+  "/cards/stray-till-nine/6.webp": {
+    "640": "/optimized/stray-till-nine-6-640.webp",
+    "1600": "/cards/stray-till-nine/6.webp"
+  },
+  "/cards/stray-till-nine/7.webp": {
+    "640": "/optimized/stray-till-nine-7-640.webp",
+    "1600": "/cards/stray-till-nine/7.webp"
+  },
+  "/cards/stray-till-nine/8.webp": {
+    "640": "/optimized/stray-till-nine-8-640.webp",
+    "1600": "/cards/stray-till-nine/8.webp"
+  },
+  "/cards/stray-till-nine/9.webp": {
+    "640": "/optimized/stray-till-nine-9-640.webp",
+    "1600": "/cards/stray-till-nine/9.webp"
+  },
+  "/cards/stray-till-nine/10.webp": {
+    "640": "/optimized/stray-till-nine-10-640.webp",
+    "1600": "/cards/stray-till-nine/10.webp"
+  },
+  "/cards/stray-till-nine/11.webp": {
+    "640": "/optimized/stray-till-nine-11-640.webp",
+    "1600": "/cards/stray-till-nine/11.webp"
+  },
+  "/cards/stray-till-nine/12.webp": {
+    "640": "/optimized/stray-till-nine-12-640.webp",
+    "1600": "/cards/stray-till-nine/12.webp"
+  },
+  "/cards/stray-till-nine/13.webp": {
+    "640": "/optimized/stray-till-nine-13-640.webp",
+    "1600": "/cards/stray-till-nine/13.webp"
+  },
+  "/cards/stray-till-nine/14.webp": {
+    "640": "/optimized/stray-till-nine-14-640.webp",
+    "1600": "/cards/stray-till-nine/14.webp"
+  },
+  "/cards/stray-till-nine/15.webp": {
+    "640": "/optimized/stray-till-nine-15-640.webp",
+    "1600": "/cards/stray-till-nine/15.webp"
+  },
+  "/cards/stray-till-nine/16.webp": {
+    "640": "/optimized/stray-till-nine-16-640.webp",
+    "1600": "/cards/stray-till-nine/16.webp"
+  },
+  "/cards/stray-till-nine/17.webp": {
+    "640": "/optimized/stray-till-nine-17-640.webp",
+    "1600": "/cards/stray-till-nine/17.webp"
+  },
+  "/cards/stray-till-nine/18.webp": {
+    "640": "/optimized/stray-till-nine-18-640.webp",
+    "1600": "/cards/stray-till-nine/18.webp"
+  },
+  "/cards/stray-till-nine/19.webp": {
+    "640": "/optimized/stray-till-nine-19-640.webp",
+    "1600": "/cards/stray-till-nine/19.webp"
+  },
+  "/cards/stray-till-nine/20.webp": {
+    "640": "/optimized/stray-till-nine-20-640.webp",
+    "1600": "/cards/stray-till-nine/20.webp"
+  },
+  "/cards/stray-till-nine/21.webp": {
+    "640": "/optimized/stray-till-nine-21-640.webp",
+    "1600": "/cards/stray-till-nine/21.webp"
+  },
+  "/cards/stray-till-nine/22.webp": {
+    "640": "/optimized/stray-till-nine-22-640.webp",
+    "1600": "/cards/stray-till-nine/22.webp"
+  },
+  "/cards/stray-till-nine/23.webp": {
+    "640": "/optimized/stray-till-nine-23-640.webp",
+    "1600": "/cards/stray-till-nine/23.webp"
+  },
+  "/cards/stray-till-nine/24.webp": {
+    "640": "/optimized/stray-till-nine-24-640.webp",
+    "1600": "/cards/stray-till-nine/24.webp"
   }
 }

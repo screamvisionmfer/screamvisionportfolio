@@ -7,8 +7,20 @@ import { haptic } from "@/components/haptics/haptics";
 import styles from "./cardArchive.module.css";
 
 export function BoosterShelf({ selected, onSelect, onOpen }: { selected: number; onSelect: (index: number) => void; onOpen: () => void }) {
+  const lastWheel = useRef(0);
+  const select = (direction: number) => {
+    const next = Math.max(0, Math.min(cardPacks.length - 1, selected + direction));
+    if (next !== selected) onSelect(next);
+  };
   const drag = useRef({ x: 0, time: 0, moved: false });
-  return <section className={styles.boosterShelf} aria-label="Choose a booster" onPointerDown={(event) => { drag.current = { x: event.clientX, time: event.timeStamp, moved: false }; }} onPointerMove={(event) => { if (event.buttons && Math.abs(event.clientX - drag.current.x) > 16) drag.current.moved = true; }} onPointerUp={(event) => {
+  return <section className={styles.boosterShelf} aria-label="Choose a booster" tabIndex={0} onKeyDown={(event) => {
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") { event.preventDefault();select(event.key === "ArrowRight" ? 1 : -1); }
+  }} onWheel={(event) => {
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    const now = performance.now();
+    if (event.ctrlKey || Math.abs(delta) < 4 || now-lastWheel.current < 420) return;
+    lastWheel.current = now;select(delta > 0 ? 1 : -1);
+  }} onPointerDown={(event) => { drag.current = { x: event.clientX, time: event.timeStamp, moved: false }; }} onPointerMove={(event) => { if (event.buttons && Math.abs(event.clientX - drag.current.x) > 16) drag.current.moved = true; }} onPointerUp={(event) => {
     const delta = event.clientX - drag.current.x;
     if (drag.current.moved && Math.abs(delta) > 45) {
       const next = Math.max(0, Math.min(cardPacks.length - 1, selected + (delta < 0 ? 1 : -1)));
@@ -17,7 +29,7 @@ export function BoosterShelf({ selected, onSelect, onOpen }: { selected: number;
   }}>
     <div className={styles.shelfTrack}>
       {cardPacks.map((pack, index) => <button key={pack.id} className={styles.shelfPack} data-selected={selected === index} aria-label={selected === index ? `Open ${pack.title} booster` : `Select ${pack.title} booster`} aria-pressed={selected === index}
-        style={{ "--offset": index - selected, "--slot": index - (cardPacks.length - 1) / 2, "--foil-accent": pack.accent } as CSSProperties}
+        style={{ "--offset": index - selected, "--foil-accent": pack.accent } as CSSProperties}
         onClick={(event) => { if (event.detail && drag.current.moved) return; if (selected === index) onOpen(); else onSelect(index); }}
         onPointerMove={(event) => {
           if (event.buttons || event.pointerType === "touch") return;

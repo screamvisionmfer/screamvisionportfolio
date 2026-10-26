@@ -38,4 +38,21 @@ export const cardPacks: CardPack[] = [{
     title: `DFC #${String(index + 1).padStart(2, "0")}`,
     image: `/cards/${encodeURIComponent("DFC (DEGEN FIGHT CLUB)")}/${index + 1}.jpg`,
   })),
-}];
+}, ...[
+  { id: "stray-club", title: "STRAY CLUB", cardTitle: "STRAY", count: 32, accent: "#e0a86c" },
+  { id: "stray-till-goat", title: "STRAY TILL GOAT", cardTitle: "GOAT", count: 11, accent: "#bcabdf", marketUrl: "https://vibechain.com/market/packs/stray-till-goat" },
+  { id: "stray-till-nine", title: "STRAY TILL NINE", cardTitle: "NINE", count: 24, accent: "#b6c78e" },
+].map((pack) => ({
+  id: pack.id,
+  title: pack.title,
+  subtitle: pack.title,
+  edition: "Vibechain special edition",
+  artwork: `/cards/${pack.id}/cover.webp`,
+  accent: pack.accent,
+  marketUrl: pack.marketUrl,
+  cards: Array.from({ length: pack.count }, (_, index) => ({
+    id: `${pack.id}-${index + 1}`,
+    title: `${pack.cardTitle} #${String(index + 1).padStart(2, "0")}`,
+    image: `/cards/${pack.id}/${index + 1}.webp`,
+  })),
+}))];
