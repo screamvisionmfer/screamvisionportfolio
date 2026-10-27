@@ -28,9 +28,9 @@ void main(){
  #include <colorspace_fragment>
 }`;
 
-export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady}:{lit:boolean;motion:boolean;gyro:boolean;onGyroData:()=>void;resetVersion:number;onReady:()=>void}){
- const host=useRef<HTMLDivElement>(null),control=useRef({lit,motion,gyro,onGyroData,resetVersion,onReady});
- control.current={lit,motion,gyro,onGyroData,resetVersion,onReady};
+export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady,onProgress}:{lit:boolean;motion:boolean;gyro:boolean;onGyroData:()=>void;resetVersion:number;onReady:()=>void;onProgress?:(progress:number)=>void}){
+ const host=useRef<HTMLDivElement>(null),control=useRef({lit,motion,gyro,onGyroData,resetVersion,onReady,onProgress});
+ control.current={lit,motion,gyro,onGyroData,resetVersion,onReady,onProgress};
  const wake=useRef<()=>void>(()=>{}),sensorSubscription=useRef<(enabled:boolean)=>void>(()=>{}),[failed,setFailed]=useState(false);
  useEffect(()=>{sensorSubscription.current(gyro&&motion);wake.current();},[lit,motion,gyro,resetVersion]);
  useEffect(()=>{
@@ -60,7 +60,7 @@ export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady}:{lit
     if(disposed)throw new Error("Scene disposed");
     const texture=await loader.loadAsync(`/scene/${file}.webp`);
     if(disposed){texture.dispose();throw new Error("Scene disposed");}
-    texture.colorSpace=T.SRGBColorSpace;texture.minFilter=T.LinearFilter;texture.magFilter=T.NearestFilter;textures.push(texture);
+    texture.colorSpace=T.SRGBColorSpace;texture.minFilter=T.LinearFilter;texture.magFilter=T.NearestFilter;textures.push(texture);control.current.onProgress?.(Math.round(textures.length/6*100));
     const geometry=new T.PlaneGeometry(w,h);geometries.push(geometry);
     const material=new T.ShaderMaterial({uniforms:{...uniforms,art:{value:texture},kind:{value:kind}},vertexShader:vertex,fragmentShader:fragment,transparent:true,depthWrite:false});materials.push(material);
     const mesh=new T.Mesh(geometry,material);mesh.position.set(x,y,z);mesh.renderOrder=order;parent.add(mesh);return mesh;

@@ -20,6 +20,7 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 export function CoverGallery() {
   const [covers,setCovers]=useState(coverCatalog);
   useLayoutEffect(()=>{
+    try { if(sessionStorage.getItem("covers:layout-v1")==="grid"){viewRef.current="grid";setView("grid");} } catch {}
     let saved:string[]=[];
     try{const value=JSON.parse(sessionStorage.getItem("covers:order-v1")??"[]");if(Array.isArray(value))saved=value.filter(id=>typeof id==="string");}catch{}
     const remaining=coverCatalog.filter(item=>!saved.includes(item.id));
@@ -64,7 +65,7 @@ export function CoverGallery() {
       root.style.setProperty("--bg-to", palette.backgroundTo);
       root.style.setProperty("--blob", palette.blobColor);
       root.style.setProperty("--accent", palette.accentColor);
-      root.style.setProperty("--ink", "#f5f2ed");
+      root.style.setProperty("--ink", "#c5b48d");
       paletteIndexRef.current = paletteIndex;
     }
 
@@ -130,13 +131,13 @@ export function CoverGallery() {
     const cards = cardRefs.current.filter((card): card is HTMLButtonElement => Boolean(card));
     flipState.current = Flip.getState(cards, { props: "opacity" });
     const next = view === "rail" ? "grid" : "rail";
+    try { sessionStorage.setItem("covers:layout-v1",next); } catch {}
     viewRef.current = next;
     setMorphing(true);
     setView(next);
   };
   useLayoutEffect(() => {
     const state = flipState.current;
-    if (!state) return;
     flipState.current = null;
     const cards = cardRefs.current.filter((card): card is HTMLButtonElement => Boolean(card));
     if (view === "grid") {
@@ -144,10 +145,11 @@ export function CoverGallery() {
         ["transform","opacity","visibility","z-index","pointer-events","will-change"].forEach(name => card.style.removeProperty(name));
         card.dataset.offscreen = "false";
       });
-    } else {
+    } else if (state) {
       rootRef.current?.querySelector<HTMLElement>(`.${styles.scene}`)?.scrollTo({ top:0 });
       renderFrame(lastProgressRef.current);
     }
+    if (!state) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setMorphing(false);return; }
     const animation = Flip.from(state, { duration:.85,ease:"power3.inOut",scale:true,fade:true,stagger:{amount:.2,from:"center"},
       onComplete:() => { setMorphing(false); }

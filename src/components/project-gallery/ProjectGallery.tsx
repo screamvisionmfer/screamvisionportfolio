@@ -7,7 +7,7 @@ import { ViewerClose } from "@/components/viewer-controls/ViewerClose";
 import { PortfolioImage as Image, mediaSource } from "@/components/portfolio-image/PortfolioImage";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
-import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from "react";
+import { CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CoverProject, ProjectAsset, projects } from "@/data/projects";
 import { SiteNav } from "@/components/site-nav/SiteNav";
 import { ArtistArchive } from "./ArtistArchive";
@@ -96,6 +96,25 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   const dragActive = useRef(false);
   const dragMoved = useRef(false);
   const pendingAsset = useRef<number | null>(null);
+  const titleRef=useRef<HTMLHeadingElement>(null);
+  useLayoutEffect(()=>{
+    const title=titleRef.current;if(!title)return;
+    const context=document.createElement("canvas").getContext("2d");if(!context)return;
+    let lastWidth=-1;
+    const fit=()=>{
+      title.style.fontSize="";
+      const style=getComputedStyle(title),base=parseFloat(style.fontSize),width=title.clientWidth;
+      context.font=`${style.fontWeight} ${base}px ${style.fontFamily}`;
+      const spacing=parseFloat(style.letterSpacing)||0;
+      const longest=Math.max(1,...project.title.split(/\s+/).map(word=>context.measureText(word).width+Math.max(0,word.length-1)*spacing));
+      title.style.fontSize=`${Math.floor(Math.min(base,base*(width-2)/longest))}px`;
+      lastWidth=width;
+    };
+    fit();
+    const observer=new ResizeObserver(()=>{if(title.clientWidth!==lastWidth)fit();});observer.observe(title);
+    window.addEventListener("resize",fit);
+    return()=>{observer.disconnect();window.removeEventListener("resize",fit);};
+  },[project.title]);
   const [artistOpen,setArtistOpen]=useState(false);
   const artistProjects=projects.filter(item=>item.artistId===project.artistId);
   const [active, setActive] = useState(0);
@@ -290,7 +309,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
           <span className={styles.artistLabel}>Artist</span>
           <strong className={styles.artist}>{project.artist}</strong>
           {artistProjects.length>1&&<button className={styles.artistArchiveButton} aria-haspopup="dialog" onClick={()=>setArtistOpen(true)}>{artistProjects.length} projects <span>↗</span></button>}
-          <h1>{project.title}</h1>
+          <h1 ref={titleRef}>{project.title}</h1>
         </div>
         <dl className={styles.meta}>
           {project.year&&<div><dt>Year</dt><dd>{project.year}</dd></div>}

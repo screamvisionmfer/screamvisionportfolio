@@ -347,3 +347,8 @@
 @media(max-width:800px){.gallery[data-view="grid"] .scene{grid-template-columns:repeat(2,minmax(0,1fr));padding:105px 24px 105px;gap:66px 24px;}.layoutToggle{right:16px;bottom:max(18px,env(safe-area-inset-bottom));}.gridCaption strong{font-size:11px;}.gridCaption small{font-size:8px;}}
 @media(hover:none){.gallery[data-view="grid"] .cardPosition:active .cardBody{transform:scale(.96);transition:transform .18s;}}
 @media(prefers-reduced-motion:reduce){.gallery[data-view="grid"] .cardBody,.gallery[data-view="grid"] .cardFace{transition:none;}}
+
+.gallery {--ink:#c5b48d;}
+.info,.infoTitle,.infoTitle strong,.infoTitle span,.infoTitle small,.viewProject,.gridCaption {color:#c5b48d;}
+.motionCover {transition:opacity .45s ease;}
+.motionCoverReady {opacity:1;animation:none;}

@@ -1,5 +1,6 @@
 "use client";
 
+import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 import { PortfolioImage as Image } from "@/components/portfolio-image/PortfolioImage";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { CoverItem } from "@/data/covers";
@@ -22,14 +23,16 @@ export function CoverCard({ item, index, active, positionRef, onSelect, loading,
   const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const video = videoRef.current;
+    if (!active) setMotionReady(false);
     if (!video) return;
     const sync = () => {
-      if (active && !document.hidden) void video.play().catch(() => undefined);
+      if (active && isPageActive()) void video.play().catch(() => undefined);
       else video.pause();
     };
     sync();
-    document.addEventListener("visibilitychange", sync);
-    return () => { document.removeEventListener("visibilitychange", sync); video.pause(); };
+    video.addEventListener("canplay",sync);
+    const stop = observePageActivity(sync);
+    return () => { stop();video.removeEventListener("canplay",sync);video.pause(); };
   }, [active]);
   const initialScale = index === 0 ? 1 : Math.max(0.44, 0.68 - (index - 1) * 0.12);
   const initialStyle = {
@@ -47,7 +50,7 @@ export function CoverCard({ item, index, active, positionRef, onSelect, loading,
           <div className={styles.cardFace}>
             <Image className={`${styles.coverImage} ${hasImage ? styles.coverImageLoaded : ""}`} src={item.image} alt={`${item.title} — ${item.artist}`} fill sizes="(max-width: 679px) 74vw, (max-width: 1023px) 44vw, 34vw" priority={index < 2} draggable="false" onLoad={() => setHasImage(true)} onError={() => setHasImage(false)} />
             {active && item.motion && (
-              <video ref={videoRef} className={`${styles.motionCover} ${motionReady ? styles.motionCoverReady : ""}`} src={item.motion} muted loop playsInline preload="metadata" onCanPlay={() => setMotionReady(true)} />
+              <video ref={videoRef} className={`${styles.motionCover} ${motionReady ? styles.motionCoverReady : ""}`} src={item.motion} autoPlay muted loop playsInline preload="auto" onPlaying={() => setMotionReady(true)} />
             )}
             <div className={styles.cardShade} />
             <div className={styles.cardShine} />

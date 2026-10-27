@@ -28,9 +28,23 @@ function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMoti
 export function PortfolioHome(){
  const [vibration,setVibration]=useState(true),[vibrationSupported,setVibrationSupported]=useState(false);
  useEffect(()=>{setVibration(readHaptics());setVibrationSupported(supportsHaptics());},[]);
+ const [loadProgress,setLoadProgress]=useState(0),[introStage,setIntroStage]=useState(0),[portalCount,setPortalCount]=useState(0);
+ const loadedPortals=useRef(new Set<number>());
+ const portalLoaded=(index:number)=>{if(!loadedPortals.current.has(index)){loadedPortals.current.add(index);setPortalCount(loadedPortals.current.size);}};
  const [gearTurn,setGearTurn]=useState(0);
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(false),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
+ useEffect(()=>{
+  if(!ready)return;
+  setIntroStage(1);
+  const timer=setTimeout(()=>setIntroStage(2),700);
+  return()=>clearTimeout(timer);
+ },[ready]);
+ useEffect(()=>{
+  if(introStage!==2||portalCount<sections.length)return;
+  const timer=setTimeout(()=>setIntroStage(3),350);
+  return()=>clearTimeout(timer);
+ },[introStage,portalCount]);
  const phone=usePhoneMotion();
  const [noir,setNoir]=useState(false);
  useEffect(()=>{setNoir(readNoirMode());},[]);
@@ -53,9 +67,9 @@ export function PortfolioHome(){
   if(leaving)return;router.prefetch(href);setLeaving(true);
   window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:href}));
  };
- return <main className={styles.room} data-ready={ready} data-lit={lit} data-motion={motion} data-retro={retro} data-leaving={leaving}>
+ return <main className={styles.room} data-ready={ready} data-stage={introStage} aria-busy={introStage<3} data-lit={lit} data-motion={motion} data-retro={retro} data-leaving={leaving}>
   <h1 className={styles.srOnly}>SCREAM VISION — Cover art, illustrations and collectible worlds</h1>
-  <div className={styles.scene}><RoomScene lit={lit} motion={motion} gyro={phone.enabled} onGyroData={phone.onData} resetVersion={resetVersion} onReady={()=>setReady(true)}/></div>
+  <div className={styles.scene}><RoomScene lit={lit} motion={motion} gyro={phone.enabled} onGyroData={phone.onData} resetVersion={resetVersion} onReady={()=>setReady(true)} onProgress={setLoadProgress}/></div>
   <div className={styles.focusVeil} aria-hidden="true"/>
   <div className={styles.screen} aria-hidden="true"/>
   <SiteNav />
@@ -68,8 +82,11 @@ export function PortfolioHome(){
    if(!["ArrowRight","ArrowLeft","ArrowUp","ArrowDown"].includes(event.key))return;
    const links=Array.from(event.currentTarget.querySelectorAll<HTMLAnchorElement>("a")),index=links.indexOf(document.activeElement as HTMLAnchorElement);
    event.preventDefault();links[(Math.max(0,index)+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+links.length)%links.length]?.focus();
-  }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} railActive={activePortal===index} onEnter={enter}/>)}</nav>
-  <div className={styles.loading} role="status">{ready?"":"Loading the room"}<span/></div>
+  }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} onReady={()=>portalLoaded(index)} railActive={activePortal===index} onEnter={enter}/>)}</nav>
+  <div className={styles.bootScreen} aria-hidden={introStage>0}>
+   <div className={styles.bootEmblem}><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="88"/><circle cx="100" cy="100" r="88" strokeDasharray="553" strokeDashoffset={553*(1-(ready?100:loadProgress)/100)}/></svg><Image src="/scream-logo.png" alt="SCREAM VISION" width={170} height={170} priority unoptimized/></div>
+   <p>ROOM 01 / SCREAM VISION</p><strong>{String(ready?100:loadProgress).padStart(3,"0")}<small>%</small></strong><span role="status">Preparing the room</span>
+  </div>
   {settings&&<section ref={settingsPanel} id="room-settings" className={styles.settings} data-room-settings role="dialog" aria-label="Room settings">
    <div><h2>SETTINGS</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
    <label>Motion / Parallax<input type="checkbox" checked={motion} onChange={event=>setMotion(event.target.checked)}/></label>

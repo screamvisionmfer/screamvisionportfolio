@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import Link from "next/link";
 import { PortfolioImage } from "@/components/portfolio-image/PortfolioImage";
 import styles from "./portfolioHome.module.css";
 
-export function WorldPortal({ title, href, images, note, index, position, motion, railActive, onEnter }: {
- title:string; href:string; images:string[]; note:string; index:number; position:string; motion:boolean; railActive:boolean; onEnter:(href:string)=>void;
+export function WorldPortal({ title, href, images, note, index, position, motion, railActive, onEnter, onReady }: {
+ title:string; href:string; images:string[]; note:string; index:number; position:string; motion:boolean; railActive:boolean; onEnter:(href:string)=>void;onReady?:()=>void;
 }) {
  const [active,setActive]=useState(0),[hovered,setHovered]=useState(false),[focused,setFocused]=useState(false);
  const element=useRef<HTMLAnchorElement>(null),[entering,setEntering]=useState(false);
@@ -26,16 +26,16 @@ export function WorldPortal({ title, href, images, note, index, position, motion
   event.currentTarget.style.setProperty("--art-x",`${-x*14}px`);
   event.currentTarget.style.setProperty("--art-y",`${-y*12}px`);
  };
- return <Link ref={element} href={href} className={styles.world} data-position={position} data-entering={entering} data-rail-active={railActive} aria-label={`Explore ${title}`}
+ return <Link ref={element} href={href} className={styles.world} style={{"--portal-index":index} as CSSProperties} data-position={position} data-entering={entering} data-rail-active={railActive} aria-label={`Explore ${title}`}
   onPointerEnter={()=>{spotlight();setHovered(true);}} onPointerMove={pointer} onPointerLeave={()=>{setHovered(false);reset();}} onFocus={()=>{spotlight();setFocused(true);}} onBlur={()=>{setFocused(false);reset();}}
   onClick={event=>{if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();setEntering(true);onEnter(href);}}>
-  <span className={styles.portalBody}>
+  <span className={styles.portalArrival}><span className={styles.portalBody}>
    <span className={styles.portalArt} data-portal-art>
-    {images.map((src,i)=><span key={src} data-active={i===active}><PortfolioImage src={src} alt="" fill sizes="(max-width:600px) 68vw, 295px" /></span>)}
+    {images.map((src,i)=><span key={src} data-active={i===active}><PortfolioImage src={src} alt="" fill sizes="(max-width:600px) 68vw, 295px" priority={i===0} onLoad={i===0?onReady:undefined} onError={i===0?onReady:undefined} /></span>)}
     {position!=="cards"&&<span className={styles.portalGlare}/>}
    </span>
    <span className={styles.portalLabel}><span>0{index+1} / {note}</span><strong>{title}</strong></span>
 
-  </span>
+  </span></span>
  </Link>;
 }

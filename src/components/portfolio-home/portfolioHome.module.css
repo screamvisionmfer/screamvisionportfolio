@@ -173,3 +173,29 @@ html[data-navigation-open="true"] .screen::before,html[data-navigation-open="tru
 }
 @media(hover:none) and (pointer:coarse) { .settingsGear:focus,.settingsGear:focus-visible,.wallSwitch:focus,.wallSwitch:focus-visible,.settings input:focus:not(:focus-visible) { outline:none;box-shadow:none; } }
 @media(prefers-reduced-motion:reduce) { .settingsGear svg { transition:none; }.room[data-motion="true"] .world,.room[data-motion="true"] .world[data-position],.scene { translate:none; }.room[data-motion="true"] .portalBody { transform:none; } }
+
+/* The loader follows actual scene textures; scene, controls, then worlds enter in order. */
+.bootScreen {position:absolute;z-index:5000;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#171b14,#060806 65%);color:#c5b48d;transition:opacity .6s ease,visibility 0s .6s;}
+.bootEmblem {position:relative;width:210px;height:210px;display:grid;place-items:center;}
+.bootEmblem svg {position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:#baa77b20;stroke-width:1;transform:rotate(-90deg);}
+.bootEmblem svg circle:last-child {stroke:#baa77b;stroke-linecap:round;transition:stroke-dashoffset .4s ease;}
+.bootEmblem img {width:170px;height:170px;object-fit:contain;animation:bootBreath 2.5s ease-in-out infinite alternate;}
+.bootScreen p {font:9px monospace;letter-spacing:.2em;margin:20px 0 12px;opacity:.6;}
+.bootScreen > strong {font:40px/1 monospace;letter-spacing:-.07em;font-weight:400;}
+.bootScreen small {font-size:14px;margin-left:4px;opacity:.5;}
+.bootScreen > span {font:9px monospace;letter-spacing:.12em;text-transform:uppercase;opacity:.4;margin-top:16px;}
+.room:not([data-stage="0"]) .bootScreen {opacity:0;visibility:hidden;pointer-events:none;}
+.room .scene {transition:opacity 1.1s ease;}
+.room[data-stage="0"] .scene {opacity:0;}
+.room > header,.room .wallSwitch,.room .consoleBar,.room .railHint {transition:opacity .6s ease;}
+.room[data-stage="0"] > header,.room[data-stage="1"] > header,.room[data-stage="0"] .wallSwitch,.room[data-stage="1"] .wallSwitch,.room[data-stage="0"] .consoleBar,.room[data-stage="1"] .consoleBar {opacity:0;visibility:hidden;}
+.room:not([data-stage="3"]) .railHint {opacity:0;visibility:hidden;}
+.room .worlds {opacity:1;transition:none;}
+.room:not([data-stage="3"]) .worlds {visibility:hidden;pointer-events:none;}
+.portalArrival {display:block;opacity:0;filter:blur(6px);transform:translateY(22px) scale(.95);transition:opacity .75s ease,filter .75s ease,transform .75s cubic-bezier(.16,1,.3,1);}
+.room[data-stage="3"] .portalArrival {opacity:1;filter:blur(0);transform:none;transition-delay:calc(var(--portal-index) * .17s);}
+@keyframes bootBreath {from{opacity:.6;transform:scale(.97);}to{opacity:1;transform:scale(1);}}
+@media(prefers-reduced-motion:reduce){.bootEmblem img{animation:none;}.bootScreen,.room .scene,.portalArrival{transition:none;}.room[data-stage="3"] .portalArrival{transition-delay:0s;}}
+.room .world,.room .portalLabel strong,.room .settings,.room .gyroControl > div button {color:#c5b48d;}
+.room .settings p,.room .gyroControl p {color:#92856b;}
+.room:not([data-stage="0"]) .bootEmblem img {animation:none;}
