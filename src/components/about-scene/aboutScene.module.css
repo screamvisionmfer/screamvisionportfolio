@@ -1,0 +1,45 @@
+.page {--look-x:0px;--look-y:0px;--scene-scroll:0px;position:relative;isolation:isolate;width:100%;height:100svh;overflow-x:hidden;overflow-y:auto;background:#080b0c;color:#c5b48d;scrollbar-width:thin;scrollbar-color:#655f4b #080b0c;overscroll-behavior-y:contain;}
+.scene {position:sticky;top:0;width:100%;height:100svh;min-height:620px;margin-bottom:-100svh;overflow:hidden;pointer-events:none;}
+.city {position:absolute;inset:-4%;transform:translate3d(calc(var(--look-x) * -.32),calc(var(--look-y) * -.32),0) scale(1.03);}
+.city img {object-fit:cover;object-position:40% center;filter:saturate(.65) brightness(.65);}
+.cityShade {position:absolute;inset:0;background:linear-gradient(90deg,#070b1010 0%,#080b0c30 40%,#080b0ce8 69%,#080b0cf7 100%),linear-gradient(0deg,#080b0c 0%,#080b0c00 30%,#080b0c18 70%,#080b0c55 100%);}
+.subject {position:absolute;left:-8%;bottom:2%;width:75%;height:min(82svh,920px);opacity:0;transition:opacity 1.2s ease;}
+.subjectMotion {position:absolute;inset:0;transform:translate3d(var(--look-x),calc(var(--look-y) - var(--scene-scroll)),0);}
+.subject img {object-fit:contain;object-position:center bottom;filter:brightness(.83) saturate(.8);}
+.vignette {position:absolute;inset:0;background:radial-gradient(ellipse at 37% 47%,transparent 24%,#04070938 64%,#040709b3 100%),linear-gradient(0deg,#080b0c 0%,transparent 13%);}
+.sceneCaption {position:absolute;bottom:34px;left:32px;display:flex;gap:26px;font:9px monospace;letter-spacing:.14em;opacity:.4;}
+.sceneCaption span:last-child {opacity:.65;}
+.dossier {position:relative;z-index:2;width:39%;max-width:640px;margin-left:59%;padding:140px clamp(28px,3.8vw,72px) 36px 0;}
+.eyebrow {display:flex;align-items:center;gap:9px;margin:0 0 30px;font:10px/1.4 monospace;letter-spacing:.13em;color:#a3987f;}
+.eyebrow i {width:4px;height:4px;background:#c5b48d;}.eyebrow span {margin-left:auto;font-size:9px;opacity:.5;white-space:nowrap;}
+.dossier h1 {margin:0 0 30px;font-size:clamp(52px,5.2vw,88px);font-weight:700;line-height:.93;letter-spacing:-.065em;text-transform:uppercase;}
+.dossier h1 em {font-style:normal;color:#ddcca4;}
+.intro {max-width:390px;margin:0 0 18px;font-size:clamp(17px,1.3vw,21px);line-height:1.5;letter-spacing:-.025em;}
+.bio {max-width:390px;margin:0;font-size:14px;line-height:1.75;color:#9a947f;}
+.practice {margin-top:36px;}.smallLabel {font:9px/1.6 monospace;letter-spacing:.12em;color:#7d7c6c;margin:0 0 14px;}
+.disciplines {display:flex;flex-direction:column;}.disciplines button {display:flex;align-items:center;gap:16px;width:100%;min-height:48px;padding:10px 0;border-bottom:1px solid #c5b48d1a;background:transparent;color:#8e8975;text-align:left;cursor:pointer;transition:color .25s ease,padding .35s ease;}
+.disciplines small {font:10px monospace;opacity:.5;}.disciplines button>span {font-size:clamp(15px,1.2vw,19px);text-transform:uppercase;font-weight:600;letter-spacing:-.025em;}.disciplines i {margin-left:auto;font-size:20px;font-style:normal;opacity:0;transform:translate(-5px,5px);transition:opacity .25s,transform .35s;}
+.disciplines button[aria-selected="true"] {color:#ddcca4;padding-left:8px;}.disciplines button[aria-selected="true"] i {opacity:1;transform:none;}
+.practiceDescription {display:flex;align-items:flex-start;gap:20px;min-height:100px;padding-top:18px;}.practiceDescription p {flex:1;margin:0;font-size:12px;line-height:1.65;color:#938d79;animation:descriptionIn .35s ease both;}.practiceDescription a {display:flex;align-items:center;gap:12px;min-height:32px;flex-shrink:0;font:9px monospace;letter-spacing:.08em;color:#c5b48d;text-decoration:none;}.practiceDescription a span {font-size:17px;transition:transform .25s;}.practiceDescription a:hover span {transform:translate(2px,-2px);}
+.contact {margin-top:28px;padding-top:22px;border-top:1px solid #c5b48d26;}.contact>span {font:9px monospace;letter-spacing:.12em;color:#827f6e;}.contact>a {display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:13px;min-height:40px;font-size:clamp(23px,2vw,32px);letter-spacing:-.045em;font-weight:600;text-decoration:none;transition:color .2s;}.contact>a>span {transition:transform .3s;}.contact>a:hover {color:#ead6ab;}.contact>a:hover>span {transform:translate(3px,-3px);}
+.footer {display:flex;flex-wrap:wrap;gap:22px;margin-top:30px;}.footer a,.footer button {display:inline-flex;align-items:center;min-height:36px;font:9px monospace;letter-spacing:.08em;color:#8f8975;text-decoration:none;background:none;padding:0;cursor:pointer;transition:color .2s;}.footer a:hover,.footer button:hover {color:#ddcca4;}.footer button {display:none;}
+.page[data-ready="true"] .subject {opacity:1;}.dossier>p,.dossier h1,.practice,.contact,.footer {animation:copyIn .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:.35s;}.dossier h1 {animation-delay:.45s;}.intro {animation-delay:.55s!important;}.bio {animation-delay:.65s!important;}.practice {animation-delay:.75s;}.contact,.footer {animation-delay:.85s;}
+@keyframes copyIn {from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}@keyframes descriptionIn {from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+@media(min-width:1700px){.dossier{padding-top:17svh;}.subject{left:-4%;width:70%;}}
+@media(min-width:701px) and (max-width:1000px){.subject{width:84%;left:-23%;}.dossier{width:46%;margin-left:52%;padding-right:28px;}.dossier h1{font-size:55px;}.eyebrow span{display:none;}.sceneCaption{gap:12px;font-size:8px;}}
+@media(max-width:700px){
+ .scene {position:relative;height:65svh;min-height:460px;max-height:650px;margin:0;}
+ .city {inset:-18px -22%;}.city img {object-position:44% center;filter:saturate(.65) brightness(.66);}
+ .cityShade {background:linear-gradient(180deg,#080b0c55,transparent 25%,#080b0c18 65%,#080b0c 100%);}
+ .subject {left:50%;bottom:15px;width:125%;max-width:690px;height:78%;transform:translateX(-50%);}
+ .subject img {filter:brightness(.88) saturate(.85);}
+ .vignette {background:radial-gradient(ellipse at 50% 48%,transparent 25%,#04070955 85%,#080b0caa),linear-gradient(0deg,#080b0c 0%,transparent 19%);}
+ .sceneCaption {left:22px;right:22px;bottom:17px;justify-content:space-between;font-size:8px;opacity:.5;}
+ .dossier {width:100%;max-width:none;margin:0;padding:28px 24px max(28px,env(safe-area-inset-bottom));}
+ .eyebrow {margin-bottom:26px;font-size:10px;}.eyebrow span {font-size:9px;}
+ .dossier h1 {font-size:clamp(52px,13vw,76px);line-height:.94;margin-bottom:25px;}.dossier h1 br:nth-child(2) {display:none;}.dossier h1 em::before{content:" ";}
+ .intro {max-width:440px;font-size:19px;}.bio {max-width:440px;font-size:14px;line-height:1.8;}
+ .practice {margin-top:32px;}.smallLabel {font-size:9px;}.disciplines button {min-height:54px;}.disciplines button>span {font-size:18px;}.practiceDescription {min-height:114px;}.practiceDescription p {font-size:13px;}.practiceDescription a {min-height:40px;font-size:10px;}
+ .contact {margin-top:16px;}.contact>a {font-size:29px;}.footer {gap:24px;margin-top:24px;}.footer a,.footer button {min-height:44px;font-size:10px;}.footer button {display:inline-flex;}
+}
+@media(prefers-reduced-motion:reduce){.page *{animation:none!important;transition:none!important;}.city,.subjectMotion{transform:none;}.subject{opacity:1;}}
