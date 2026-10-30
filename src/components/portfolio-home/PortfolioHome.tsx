@@ -41,7 +41,7 @@ export function PortfolioHome(){
   const start=performance.now();let previous=start,value=0,frame=0;
   const tick=(now:number)=>{
    const delta=Math.min(64,now-previous);previous=now;
-   const target=Math.min((now-start)/3000*100,bootTarget.current.ready?100:Math.min(94,bootTarget.current.progress+8));
+   const target=Math.min((now-start)/2000*100,bootTarget.current.ready?100:Math.min(94,bootTarget.current.progress+8));
    value=Math.min(target,value+delta*.065);setBootProgress(value);
    if(value>=100){setBootComplete(true);return;}
    frame=requestAnimationFrame(tick);

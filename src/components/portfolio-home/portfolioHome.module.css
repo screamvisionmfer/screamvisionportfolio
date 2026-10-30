@@ -176,7 +176,7 @@ html[data-navigation-open="true"] .screen::before,html[data-navigation-open="tru
 
 /* The loader follows actual scene textures; scene, controls, then worlds enter in order. */
 .bootScreen {position:absolute;z-index:5000;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:#080907;color:#c5b48d;transition:opacity .85s ease,visibility 0s .85s;}
-.bootEmblem {position:relative;width:clamp(220px,28vw,360px);aspect-ratio:238 / 138;animation:bootFloat 3.8s ease-in-out infinite;}
+.bootEmblem {position:relative;width:clamp(185px,23vw,300px);aspect-ratio:238 / 138;animation:bootFloat 3.8s ease-in-out infinite;}
 .bootEmblem img {position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;}
 .bootLogoBase {opacity:.09;filter:grayscale(1);}
 .bootLogoFill {filter:sepia(.4) saturate(.65);mask-image:linear-gradient(to top,#000 calc(var(--boot-fill) - 2%),transparent calc(var(--boot-fill) + 2%));-webkit-mask-image:linear-gradient(to top,#000 calc(var(--boot-fill) - 2%),transparent calc(var(--boot-fill) + 2%));}
