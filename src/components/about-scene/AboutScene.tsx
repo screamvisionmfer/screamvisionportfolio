@@ -56,7 +56,7 @@ export function AboutScene(){
   <div ref={scene} className={styles.scene} role="img" aria-label="SCREAM VISION beside a green car, with a low-poly city skyline at night">
    <div className={styles.city}><Image src="/scene/about/night-city.webp" alt="" fill sizes="100vw" priority unoptimized onLoad={()=>setLoaded(value=>value|1)} onError={()=>setLoaded(value=>value|1)}/><div className={styles.shootingStars} aria-hidden="true"><span/><span/></div></div>
    <div className={styles.cityShade}/>
-   <div className={styles.subject}><div className={styles.subjectMotion}><Image src="/scene/about/artist-car.webp" alt="" fill sizes="(max-width: 700px) 125vw, 74vw" priority unoptimized onLoad={()=>setLoaded(value=>value|2)} onError={()=>setLoaded(value=>value|2)}/></div></div>
+   <div className={styles.subject}><div className={styles.subjectMotion}><Image src="/scene/about/artist-sedan.webp" alt="" fill sizes="(max-width: 700px) 210vw, 85vw" priority unoptimized onLoad={()=>setLoaded(value=>value|2)} onError={()=>setLoaded(value=>value|2)}/></div></div>
    <div className={styles.vignette}/>
    <div className={styles.sceneCaption} aria-hidden="true"><span>SCREAM VISION</span><span>AFTER HOURS / 02</span></div>
   </div>
