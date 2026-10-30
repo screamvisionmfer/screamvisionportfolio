@@ -30,19 +30,30 @@ export function PortfolioHome(){
  useEffect(()=>{setVibration(readHaptics());setVibrationSupported(supportsHaptics());},[]);
  const [loadProgress,setLoadProgress]=useState(0),[introStage,setIntroStage]=useState(0),[portalCount,setPortalCount]=useState(0);
  const loadedPortals=useRef(new Set<number>());
- const bootStarted=useRef(0);
- useEffect(()=>{bootStarted.current=performance.now();},[]);
+ const [bootProgress,setBootProgress]=useState(0),[bootComplete,setBootComplete]=useState(false);
+ const bootTarget=useRef({ready:false,progress:0});
  const portalLoaded=(index:number)=>{if(!loadedPortals.current.has(index)){loadedPortals.current.add(index);setPortalCount(loadedPortals.current.size);}};
  const [gearTurn,setGearTurn]=useState(0);
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(false),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
+ useEffect(()=>{bootTarget.current={ready,progress:loadProgress};},[ready,loadProgress]);
  useEffect(()=>{
-  if(!ready)return;
-  const delay=Math.max(0,1800-(performance.now()-bootStarted.current));
-  const reveal=setTimeout(()=>setIntroStage(1),delay);
-  const timer=setTimeout(()=>setIntroStage(2),delay+850);
+  const start=performance.now();let previous=start,value=0,frame=0;
+  const tick=(now:number)=>{
+   const delta=Math.min(64,now-previous);previous=now;
+   const target=Math.min((now-start)/3000*100,bootTarget.current.ready?100:Math.min(94,bootTarget.current.progress+8));
+   value=Math.min(target,value+delta*.065);setBootProgress(value);
+   if(value>=100){setBootComplete(true);return;}
+   frame=requestAnimationFrame(tick);
+  };
+  frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame);
+ },[]);
+ useEffect(()=>{
+  if(!bootComplete)return;
+  const reveal=setTimeout(()=>setIntroStage(1),180);
+  const timer=setTimeout(()=>setIntroStage(2),1030);
   return()=>{clearTimeout(reveal);clearTimeout(timer);};
- },[ready]);
+ },[bootComplete]);
  useEffect(()=>{
   if(introStage!==2||portalCount<sections.length)return;
   const timer=setTimeout(()=>setIntroStage(3),350);
@@ -87,16 +98,12 @@ export function PortfolioHome(){
    event.preventDefault();links[(Math.max(0,index)+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+links.length)%links.length]?.focus();
   }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} onReady={()=>portalLoaded(index)} railActive={activePortal===index} onEnter={enter}/>)}</nav>
   <div className={styles.bootScreen} aria-hidden={introStage>0}>
-   <div className={styles.bootAtmosphere} aria-hidden="true"/>
-   <div className={styles.bootEmblem} style={{"--boot-fill":`${ready?100:loadProgress}%`} as React.CSSProperties}>
-    <div className={styles.bootLogoDepth} aria-hidden="true"/>
-    <div className={styles.bootLogoBase} aria-hidden="true"/>
-    <div className={styles.bootLogoFill} aria-hidden="true"/>
-    <div className={styles.bootLogoGlint} aria-hidden="true"/>
-    <span className={styles.srOnly}>SCREAM VISION</span>
+   <div className={styles.bootEmblem} style={{"--boot-fill":`${bootProgress}%`} as React.CSSProperties}>
+    <Image className={styles.bootLogoBase} src="/scream-logo-loader.webp" alt="" width={360} height={209} priority unoptimized/>
+    <Image className={styles.bootLogoFill} src="/scream-logo-loader.webp" alt="SCREAM VISION" width={360} height={209} priority unoptimized/>
    </div>
-   <div className={styles.bootReadout}><span>SCREAM VISION <i>/</i> ROOM 01</span><strong>{String(ready?100:loadProgress).padStart(3,"0")}<small>%</small></strong></div>
-   <span className={styles.srOnly} role="status">Loading room {ready?100:loadProgress}%</span>
+   <strong className={styles.bootPercent} aria-hidden="true">{Math.floor(bootProgress)}<small>%</small></strong>
+   <span className={styles.srOnly} role="status">Loading room</span>
   </div>
   {settings&&<section ref={settingsPanel} id="room-settings" className={styles.settings} data-room-settings role="dialog" aria-label="Room settings">
    <div><h2>SETTINGS</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
