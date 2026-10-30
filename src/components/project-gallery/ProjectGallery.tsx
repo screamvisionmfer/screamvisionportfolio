@@ -296,10 +296,7 @@ export function ProjectGallery({ project }: { project: CoverProject }) {
   };
 
   return (
-    <main ref={rootRef} className={styles.project} style={{ "--accent": project.accent, "--cover": `url("${mediaSource(project.cover)}")` } as CSSProperties} data-dragging={dragging} data-leaving={leaving} data-direction={transitionDirection} data-arrival={arrivalDirection}>
-      <div className={styles.backdrop} aria-hidden="true" />
-      <div className={styles.shade} aria-hidden="true" />
-      <div className={styles.grain} aria-hidden="true" />
+    <main ref={rootRef} className={styles.project} style={{ "--accent": project.accent } as CSSProperties} data-dragging={dragging} data-leaving={leaving} data-direction={transitionDirection} data-arrival={arrivalDirection}>
 
       <button type="button" className={styles.back} onClick={() => navigate(`/covers?cover=${project.slug}`, "back")} aria-label="Back to cover gallery" title="Back to covers"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M19 12H5m7-7-7 7 7 7" /></svg></button>
 
