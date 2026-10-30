@@ -30,15 +30,18 @@ export function PortfolioHome(){
  useEffect(()=>{setVibration(readHaptics());setVibrationSupported(supportsHaptics());},[]);
  const [loadProgress,setLoadProgress]=useState(0),[introStage,setIntroStage]=useState(0),[portalCount,setPortalCount]=useState(0);
  const loadedPortals=useRef(new Set<number>());
+ const bootStarted=useRef(0);
+ useEffect(()=>{bootStarted.current=performance.now();},[]);
  const portalLoaded=(index:number)=>{if(!loadedPortals.current.has(index)){loadedPortals.current.add(index);setPortalCount(loadedPortals.current.size);}};
  const [gearTurn,setGearTurn]=useState(0);
  const [ready,setReady]=useState(false),[lit,setLit]=useState(true),[leaving,setLeaving]=useState(false);
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(false),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
  useEffect(()=>{
   if(!ready)return;
-  setIntroStage(1);
-  const timer=setTimeout(()=>setIntroStage(2),700);
-  return()=>clearTimeout(timer);
+  const delay=Math.max(0,1800-(performance.now()-bootStarted.current));
+  const reveal=setTimeout(()=>setIntroStage(1),delay);
+  const timer=setTimeout(()=>setIntroStage(2),delay+850);
+  return()=>{clearTimeout(reveal);clearTimeout(timer);};
  },[ready]);
  useEffect(()=>{
   if(introStage!==2||portalCount<sections.length)return;
@@ -84,8 +87,16 @@ export function PortfolioHome(){
    event.preventDefault();links[(Math.max(0,index)+(event.key==="ArrowLeft"||event.key==="ArrowUp"?-1:1)+links.length)%links.length]?.focus();
   }}>{sections.map((section,index)=><WorldPortal key={section.href} {...section} index={index} motion={motion} onReady={()=>portalLoaded(index)} railActive={activePortal===index} onEnter={enter}/>)}</nav>
   <div className={styles.bootScreen} aria-hidden={introStage>0}>
-   <div className={styles.bootEmblem}><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="88"/><circle cx="100" cy="100" r="88" strokeDasharray="553" strokeDashoffset={553*(1-(ready?100:loadProgress)/100)}/></svg><Image src="/scream-logo.png" alt="SCREAM VISION" width={170} height={170} priority unoptimized/></div>
-   <p>ROOM 01 / SCREAM VISION</p><strong>{String(ready?100:loadProgress).padStart(3,"0")}<small>%</small></strong><span role="status">Preparing the room</span>
+   <div className={styles.bootAtmosphere} aria-hidden="true"/>
+   <div className={styles.bootEmblem} style={{"--boot-fill":`${ready?100:loadProgress}%`} as React.CSSProperties}>
+    <div className={styles.bootLogoDepth} aria-hidden="true"/>
+    <div className={styles.bootLogoBase} aria-hidden="true"/>
+    <div className={styles.bootLogoFill} aria-hidden="true"/>
+    <div className={styles.bootLogoGlint} aria-hidden="true"/>
+    <span className={styles.srOnly}>SCREAM VISION</span>
+   </div>
+   <div className={styles.bootReadout}><span>SCREAM VISION <i>/</i> ROOM 01</span><strong>{String(ready?100:loadProgress).padStart(3,"0")}<small>%</small></strong></div>
+   <span className={styles.srOnly} role="status">Loading room {ready?100:loadProgress}%</span>
   </div>
   {settings&&<section ref={settingsPanel} id="room-settings" className={styles.settings} data-room-settings role="dialog" aria-label="Room settings">
    <div><h2>SETTINGS</h2><button aria-label="Close settings" onClick={()=>{setSettings(false);settingsButton.current?.focus();}}>×</button></div>
