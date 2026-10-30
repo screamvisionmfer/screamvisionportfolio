@@ -39,7 +39,7 @@ export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady,onPro
   import("three").then(async T=>{
    if(disposed)throw new Error("Scene disposed");
    let renderer:THREE.WebGLRenderer;
-   try{renderer=new T.WebGLRenderer({alpha:true,antialias:false,powerPreference:"low-power"});}
+   try{renderer=new T.WebGLRenderer({alpha:true,antialias:true,powerPreference:"default"});}
    catch{setFailed(true);control.current.onReady();return;}
    renderer.outputColorSpace=T.SRGBColorSpace;renderer.setPixelRatio(1);renderer.setClearColor(0x000000,0);el.appendChild(renderer.domElement);
    const scene=new T.Scene(),camera=new T.PerspectiveCamera(40,1,.1,40);
@@ -60,7 +60,7 @@ export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady,onPro
     if(disposed)throw new Error("Scene disposed");
     const texture=await loader.loadAsync(`/scene/${file}.webp`);
     if(disposed){texture.dispose();throw new Error("Scene disposed");}
-    texture.colorSpace=T.SRGBColorSpace;texture.minFilter=T.LinearFilter;texture.magFilter=T.NearestFilter;textures.push(texture);control.current.onProgress?.(Math.round(textures.length/6*100));
+    texture.colorSpace=T.SRGBColorSpace;texture.minFilter=T.LinearMipmapLinearFilter;texture.magFilter=T.LinearFilter;texture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());textures.push(texture);control.current.onProgress?.(Math.round(textures.length/6*100));
     const geometry=new T.PlaneGeometry(w,h);geometries.push(geometry);
     const material=new T.ShaderMaterial({uniforms:{...uniforms,art:{value:texture},kind:{value:kind}},vertexShader:vertex,fragmentShader:fragment,transparent:true,depthWrite:false});materials.push(material);
     const mesh=new T.Mesh(geometry,material);mesh.position.set(x,y,z);mesh.renderOrder=order;parent.add(mesh);return mesh;
@@ -119,7 +119,10 @@ export function RoomScene({lit,motion,gyro,onGyroData,resetVersion,onReady,onPro
     const lift=20*(2*(baseZ-.7)*Math.tan(T.MathUtils.degToRad(camera.fov/2)))/height;
     if(lampMesh)lampMesh.position.y=-.93+lift;if(beamMesh)beamMesh.position.y=-4.5+lift;
     if(blackCat)blackCat.position.x=mobile?-2.5:-2.73;if(orangeCat)orangeCat.position.x=mobile?2.5:2.95;
-    renderer.setSize(Math.max(1,Math.round(width*.8)),Math.max(1,Math.round(height*.8)),false);start();
+    const renderWidth=Math.max(1,Math.round(width)),renderHeight=Math.max(1,Math.round(height));
+    // Render Retina phones sharply, while bounding GPU cost on large displays.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2,Math.sqrt(4_000_000/(renderWidth*renderHeight))));
+    renderer.setSize(renderWidth,renderHeight,false);start();
    };
    const pointer=(event:PointerEvent)=>{
     if(reduced.matches||!control.current.motion||event.pointerType==="touch")return;

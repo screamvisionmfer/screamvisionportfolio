@@ -44,7 +44,7 @@ export function AboutScene(){
    element.style.setProperty("--scene-scroll",`${(scroll*.09).toFixed(2)}px`);
    frame=requestAnimationFrame(tick);
   };
-  const sync=()=>{cancelAnimationFrame(frame);if(!reduced.matches&&visible&&isPageActive()){last=performance.now();frame=requestAnimationFrame(tick);}else if(reduced.matches){element.style.setProperty("--look-x","0px");element.style.setProperty("--look-y","0px");element.style.setProperty("--scene-scroll","0px");}};
+  const sync=()=>{visual.dataset.animate=String(!reduced.matches&&visible&&isPageActive());cancelAnimationFrame(frame);if(!reduced.matches&&visible&&isPageActive()){last=performance.now();frame=requestAnimationFrame(tick);}else if(reduced.matches){element.style.setProperty("--look-x","0px");element.style.setProperty("--look-y","0px");element.style.setProperty("--scene-scroll","0px");}};
   const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync();});observer.observe(visual);
   const stop=observePageActivity(sync);reduced.addEventListener("change",sync);
   window.addEventListener("pointermove",pointer,{passive:true});window.addEventListener("blur",reset);window.addEventListener("deviceorientation",orientation,{passive:true});window.addEventListener("orientationchange",recalibrate);
@@ -54,7 +54,7 @@ export function AboutScene(){
  return <main ref={root} className={styles.page} data-ready={loaded===3}>
   <SiteNav/>
   <div ref={scene} className={styles.scene} role="img" aria-label="SCREAM VISION beside a green car, with a low-poly city skyline at night">
-   <div className={styles.city}><Image src="/scene/about/night-city.webp" alt="" fill sizes="100vw" priority unoptimized onLoad={()=>setLoaded(value=>value|1)} onError={()=>setLoaded(value=>value|1)}/></div>
+   <div className={styles.city}><Image src="/scene/about/night-city.webp" alt="" fill sizes="100vw" priority unoptimized onLoad={()=>setLoaded(value=>value|1)} onError={()=>setLoaded(value=>value|1)}/><div className={styles.shootingStars} aria-hidden="true"><span/><span/></div></div>
    <div className={styles.cityShade}/>
    <div className={styles.subject}><div className={styles.subjectMotion}><Image src="/scene/about/artist-car.webp" alt="" fill sizes="(max-width: 700px) 125vw, 74vw" priority unoptimized onLoad={()=>setLoaded(value=>value|2)} onError={()=>setLoaded(value=>value|2)}/></div></div>
    <div className={styles.vignette}/>
