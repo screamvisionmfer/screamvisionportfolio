@@ -8,16 +8,9 @@ import { isPageActive, observePageActivity } from "@/components/site-nav/pageAct
 import { usePhoneMotion } from "@/components/portfolio-home/usePhoneMotion";
 import styles from "./aboutScene.module.css";
 
-const disciplines = [
- { title:"Cover art & motion", href:"/covers", copy:"Release artwork, animated covers and visual loops. Built around the sound, made to stand on their own." },
- { title:"Illustration", href:"/illustrations", copy:"Characters, scenes and standalone artworks. A familiar world with something a little strange inside." },
- { title:"Collectible worlds", href:"/cards", copy:"Card packs and character series. Different personalities, one visual language, a whole collection to explore." },
- { title:"Collaborations", href:"/collaborations", copy:"Shared projects and character-led collections. Taking another world and finding my own way into it." },
-];
-
 export function AboutScene(){
  const root=useRef<HTMLElement>(null),scene=useRef<HTMLDivElement>(null);
- const [loaded,setLoaded]=useState(0),[selected,setSelected]=useState(0);
+ const [loaded,setLoaded]=useState(0);
  const phone=usePhoneMotion(),sensors=useRef({enabled:phone.enabled,onData:phone.onData});
  useEffect(()=>{sensors.current={enabled:phone.enabled,onData:phone.onData};},[phone.enabled,phone.onData]);
  useEffect(()=>{
@@ -61,22 +54,20 @@ export function AboutScene(){
    <div className={styles.sceneCaption} aria-hidden="true"><span>SCREAM VISION</span><span>AFTER HOURS / 02</span></div>
   </div>
   <section className={styles.dossier} aria-labelledby="about-title">
-   <p className={styles.eyebrow}><i/> ABOUT THE ARTIST <span>05 / PROFILE</span></p>
-   <h1 id="about-title">Images<br/>that feel<br/><em>alive.</em></h1>
-   <p className={styles.intro}>Independent artist. Cover art, illustration, motion and character-led worlds.</p>
-   <p className={styles.bio}>I work as SCREAM VISION. From a single release cover to an entire cast of characters, I build images with a mood, a story and a personality of their own.</p>
-   <div className={styles.practice}>
-    <p className={styles.smallLabel}>DIFFERENT FORMATS. ONE VISION.</p>
-    <div className={styles.disciplines} role="tablist" aria-label="Creative practice" onKeyDown={event=>{
-     if(!["ArrowDown","ArrowUp","Home","End"].includes(event.key))return;event.preventDefault();
-     const next=event.key==="Home"?0:event.key==="End"?disciplines.length-1:(selected+(event.key==="ArrowDown"?1:-1)+disciplines.length)%disciplines.length;
-     setSelected(next);event.currentTarget.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
-    }} aria-orientation="vertical">
-     {disciplines.map((item,index)=><button key={item.href} role="tab" id={`practice-${index}`} aria-selected={index===selected} aria-controls="practice-description" tabIndex={index===selected?0:-1} onPointerEnter={event=>{if(event.pointerType==="mouse")setSelected(index);}} onFocus={()=>setSelected(index)} onClick={()=>setSelected(index)}><small>0{index+1}</small><span>{item.title}</span><i aria-hidden="true">↗</i></button>)}
-    </div>
-    <div className={styles.practiceDescription} id="practice-description" role="tabpanel" aria-labelledby={`practice-${selected}`} tabIndex={0}><p key={selected}>{disciplines[selected].copy}</p><Link href={disciplines[selected].href}>EXPLORE <span aria-hidden="true">↗</span></Link></div>
+   <p className={styles.eyebrow}><i/> INDEPENDENT DIGITAL ARTIST</p>
+   <h1 id="about-title">Scream<br/><em>Vision.</em></h1>
+   <p className={styles.artistStatement}>Cover art with a story.<br/>Characters with an attitude.</p>
+   <p className={styles.bio}>I’m an independent artist creating cover art, motion and illustrated worlds for music and collectibles. I turn ideas into characters, atmosphere and images with a life of their own.</p>
+   <div className={styles.projectCta}>
+    <a className={styles.primaryCta} href="mailto:screamvisionmfer@gmail.com?subject=New%20project"><span>LET’S MAKE<br/><strong>SOMETHING YOURS.</strong></span><i aria-hidden="true">↗</i></a>
+    <span className={styles.email}>screamvisionmfer@gmail.com</span>
    </div>
-   <div className={styles.contact}><span>HAVE SOMETHING IN MIND?</span><a href="mailto:screamvisionmfer@gmail.com">Let’s make it real. <span aria-hidden="true">↗</span></a></div>
+   <nav className={styles.workLinks} aria-label="Explore my work">
+    <Link href="/covers">COVER ART <span aria-hidden="true">↗</span></Link>
+    <Link href="/illustrations">ILLUSTRATION <span aria-hidden="true">↗</span></Link>
+    <Link href="/cards">CARDS <span aria-hidden="true">↗</span></Link>
+    <Link href="/collaborations">COLLABORATIONS <span aria-hidden="true">↗</span></Link>
+   </nav>
    <footer className={styles.footer}><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM ↗</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE ↗</a>{phone.status!=="unavailable"&&!phone.enabled&&<button onClick={()=>void phone.toggle()} disabled={phone.status==="requesting"}>{phone.status==="requesting"?"CONNECTING…":"ENABLE PHONE TILT"}</button>}</footer>
   </section>
  </main>;

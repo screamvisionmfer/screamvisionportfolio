@@ -56,3 +56,23 @@
 @media(min-width:1001px){.subject{left:-14%;width:85%;mask-image:linear-gradient(90deg,#000 0 62%,transparent 84%);}}
 @media(min-width:701px) and (max-width:1000px){.subject{left:-41%;width:112%;mask-image:linear-gradient(90deg,#000 0 62%,transparent 84%);}}
 @media(max-width:700px){.subject{left:59%;width:210%;max-width:none;height:82%;}}
+
+/* A short artist introduction and one clear contact action. */
+.dossier {padding-top:clamp(130px,17svh,200px);}
+.dossier h1 {font-size:clamp(64px,6vw,104px);line-height:.86;margin-bottom:32px;letter-spacing:-.065em;}
+.artistStatement {margin:0 0 18px;font-size:clamp(20px,1.65vw,27px);line-height:1.35;letter-spacing:-.035em;color:#ddcca4;}
+.bio {font-size:15px;line-height:1.75;max-width:440px;}
+.projectCta {margin-top:32px;animation:copyIn .9s cubic-bezier(.2,.8,.2,1) .65s both;}
+.primaryCta {position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:102px;padding:20px 24px;background:#c5b48d;color:#10120f;text-decoration:none;overflow:hidden;transition:background .3s,transform .3s;}
+.primaryCta>span {font-size:11px;line-height:1.8;letter-spacing:.09em;}.primaryCta strong {font-size:clamp(18px,1.6vw,25px);line-height:1.1;letter-spacing:-.035em;}
+.primaryCta i {font-size:38px;font-style:normal;font-weight:400;transition:transform .35s cubic-bezier(.2,.8,.2,1);}
+.primaryCta:hover {background:#dfcda5;transform:translateY(-3px);}.primaryCta:hover i {transform:translate(4px,-4px);}.primaryCta:active {transform:translateY(0);}
+.email {display:block;margin-top:12px;font:10px/1.6 monospace;letter-spacing:.02em;color:#918a76;}
+.workLinks {display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px;padding-bottom:20px;border-bottom:1px solid #c5b48d20;animation:copyIn .9s cubic-bezier(.2,.8,.2,1) .75s both;}
+.workLinks a {display:inline-flex;align-items:center;gap:10px;min-height:36px;color:#c5b48d;font:10px monospace;letter-spacing:.04em;text-decoration:none;transition:color .25s;}.workLinks a span {opacity:.45;transition:transform .25s,opacity .25s;}.workLinks a:hover {color:#efddb7;}.workLinks a:hover span {opacity:1;transform:translate(2px,-2px);}
+.footer {margin-top:18px;}
+@media(min-width:701px) and (max-width:1000px){.dossier h1{font-size:68px;}.primaryCta{padding:18px;}.primaryCta strong{font-size:19px;}}
+@media(max-width:700px){.dossier{padding-top:28px;}.dossier h1{font-size:clamp(64px,17vw,88px);margin-bottom:28px;}.dossier h1 em::before{content:none;}.artistStatement{font-size:23px;}.bio{font-size:15px;}.projectCta{margin-top:28px;}.primaryCta{padding:20px;min-height:100px;}.primaryCta strong{font-size:21px;}.email{font-size:11px;}.workLinks{gap:6px 24px;margin-top:22px;}.workLinks a{min-height:44px;font-size:11px;}.footer{gap:24px;margin-top:18px;}.footer a,.footer button{font-size:10px;min-height:44px;}.footer button{display:inline-flex;}}
+@media(prefers-reduced-motion:reduce){.projectCta,.workLinks{animation:none;}}
+
+@media(max-width:700px){.workLinks{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}}
