@@ -7,13 +7,24 @@ import styles from "./portfolioHome.module.css";
 export function WorldPortal({ title, href, images, note, index, position, motion, railActive, onEnter, onReady }: {
  title:string; href:string; images:string[]; note:string; index:number; position:string; motion:boolean; railActive:boolean; onEnter:(href:string)=>void;onReady?:()=>void;
 }) {
+ const [deck,setDeck]=useState<string[]>([]);
  const [active,setActive]=useState(0),[hovered,setHovered]=useState(false),[focused,setFocused]=useState(false);
  const element=useRef<HTMLAnchorElement>(null),[entering,setEntering]=useState(false);
  useEffect(()=>{
-  if(!motion||entering)return;
-  const timer=setInterval(()=>{if(!document.hidden&&element.current?.closest("main")?.getAttribute("data-active")!=="false"&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches&&(!window.matchMedia("(max-width:600px)").matches||railActive))setActive(value=>(value+1)%images.length);},hovered||focused?1100:3600+index*450);
+  const shuffled=[...new Set(images)];
+  for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+  try{
+   const key=`portal:last-art:${position}`,previous=sessionStorage.getItem(key);
+   if(shuffled.length>1&&shuffled[0]===previous)[shuffled[0],shuffled[1]]=[shuffled[1],shuffled[0]];
+   if(shuffled[0])sessionStorage.setItem(key,shuffled[0]);
+  }catch{}
+  setDeck(shuffled);setActive(0);
+ },[images,position]);
+ useEffect(()=>{
+  if(!motion||entering||deck.length<2)return;
+  const timer=setInterval(()=>{if(!document.hidden&&element.current?.closest("main")?.getAttribute("data-active")!=="false"&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches&&(!window.matchMedia("(max-width:600px)").matches||railActive))setActive(value=>(value+1)%deck.length);},hovered||focused?1100:3600+index*450);
   return()=>clearInterval(timer);
- },[hovered,focused,images.length,motion,index,railActive,entering]);
+ },[hovered,focused,deck.length,motion,index,railActive,entering]);
  const reset=()=>{const el=element.current;if(!el)return;for(const [key,value] of [["--tilt-x","0deg"],["--tilt-y","0deg"],["--art-x","0px"],["--art-y","0px"],["--glare-x","50%"],["--glare-y","0%"]])el.style.setProperty(key,value);};
  const spotlight=()=>{const el=element.current;if(!el)return;const rect=el.getBoundingClientRect(),root=el.closest("main");root?.style.setProperty("--focus-x",`${rect.left+rect.width/2}px`);root?.style.setProperty("--focus-y",`${rect.top+rect.height*.4}px`);};
  const pointer=(event:PointerEvent<HTMLAnchorElement>)=>{
@@ -31,7 +42,7 @@ export function WorldPortal({ title, href, images, note, index, position, motion
   onClick={event=>{if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();setEntering(true);onEnter(href);}}>
   <span className={styles.portalArrival}><span className={styles.portalBody}>
    <span className={styles.portalArt} data-portal-art>
-    {images.map((src,i)=><span key={src} data-active={i===active}><PortfolioImage src={src} alt="" fill sizes="(max-width:600px) 68vw, 295px" priority={i===0} onLoad={i===0?onReady:undefined} onError={i===0?onReady:undefined} /></span>)}
+    {deck.map((src,i)=>(i===active||i===(active+1)%deck.length||i===(active+deck.length-1)%deck.length)&&<span key={src} data-active={i===active}><PortfolioImage src={src} alt="" fill sizes="(max-width:600px) 68vw, 295px" priority={i===0} onLoad={i===0?onReady:undefined} onError={i===0?onReady:undefined} /></span>)}
     {position!=="cards"&&<span className={styles.portalGlare}/>}
    </span>
    <span className={styles.portalLabel}><span>0{index+1} / {note}</span><strong>{title}</strong></span>
