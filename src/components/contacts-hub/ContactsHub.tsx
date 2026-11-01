@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MobileContactCard } from "./MobileContactCard";
 import { SiteNav } from "@/components/site-nav/SiteNav";
 import styles from "./contactsHub.module.css";
 
@@ -55,6 +56,7 @@ export function ContactsHub() {
       <SiteNav />
       <div className={styles.texture} aria-hidden="true" />
 
+      <MobileContactCard groups={groups}/>
       <section className={styles.directory} aria-label="SCREAM VISION links and contacts">
         <header className={styles.heading}>
           <span>Links &amp; contact · 06</span>

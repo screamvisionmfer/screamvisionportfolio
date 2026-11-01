@@ -47,3 +47,5 @@
 @media (prefers-reduced-motion: reduce) { .texture, .links { animation: none; }.links a, .links i, .tabs button::after { transition: none; } }
 
 @media (max-width: 760px), (hover: none) { .texture { animation: none; transform: none; inset: 0; } }
+
+@media(max-width:760px){.page{height:100svh;min-height:0;overflow-y:auto;overflow-x:hidden;background:#080b0c;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#665f4b #080b0c;}.directory,.texture{display:none;}}
