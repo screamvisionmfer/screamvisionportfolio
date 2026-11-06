@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { usePhoneMotion } from "@/components/portfolio-home/usePhoneMotion";
+import { useContactParallax } from "./useContactParallax";
 import styles from "./mobileContactCard.module.css";
 
 type HubLink={label:string;href:string;note:string};
@@ -28,6 +30,8 @@ async function writeClipboard(value:string){
  }
 }
 export function MobileContactCard({groups}:{groups:LinkGroup[]}){
+ const root=useRef<HTMLElement>(null),phone=usePhoneMotion();
+ useContactParallax(root,phone.enabled,phone.onData);
  const [message,setMessage]=useState(""),timer=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current);},[]);
  const notify=(text:string)=>{setMessage(text);if(timer.current)clearTimeout(timer.current);timer.current=setTimeout(()=>setMessage(""),3200);};
@@ -37,8 +41,8 @@ export function MobileContactCard({groups}:{groups:LinkGroup[]}){
   notify(await writeClipboard(contactUrl)?"Profile link copied":"Share this page from your browser menu");
  };
  const socials=[...groups[0].links.filter(link=>link.label!=="Telegram"),groups[1].links.find(link=>link.label==="Behance")!];
- return <article className={styles.card} aria-label="SCREAM VISION artist contact card">
-  <div className={styles.hero} aria-hidden="true"><Image className={styles.city} src="/scene/about/night-city.webp" alt="" fill sizes="760px" unoptimized/><div className={styles.heroShade}/><div className={styles.portrait}><Image src="/scene/about/contact-portrait.webp" alt="" fill sizes="250px" unoptimized/></div><span className={styles.heroLabel}>ARTIST PROFILE <i/> 06</span></div>
+ return <article ref={root} className={styles.card} aria-label="SCREAM VISION artist contact card">
+  <div className={styles.hero} aria-hidden="true"><Image className={styles.city} src="/scene/about/contact-landscape.webp" alt="" fill sizes="(max-width:760px) 110vw, 65vw" unoptimized/><div className={styles.heroShade}/><div className={styles.portrait}><Image src="/scene/about/contact-artist.webp" alt="" fill sizes="(max-width:760px) 100vw, 60vw" unoptimized/></div><span className={styles.heroLabel}>ARTIST PROFILE <i/> 06</span></div>
   <div className={styles.body}>
    <header className={styles.identity}><p><i/> INDEPENDENT DIGITAL ARTIST</p><h1>SCREAM<br/>VISION.</h1><span>Cover art. Characters. Worlds.</span><p className={styles.bio}>Artwork and motion for music artists<br/>and collectible projects.</p></header>
    <div className={styles.primaryLinks}><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer"><Icon name="send"/><strong>TELEGRAM</strong><small>Let’s talk about your project</small><span>↗</span></a><a href={`mailto:${email}?subject=New%20project`}><Icon name="mail"/><strong>EMAIL</strong><small>Start a conversation</small><span>↗</span></a></div>
@@ -46,6 +50,7 @@ export function MobileContactCard({groups}:{groups:LinkGroup[]}){
    <div className={styles.utilities}><a href="/scream-vision.vcf" download="SCREAM-VISION.vcf"><Icon name="save"/><span>SAVE CONTACT</span></a><button onClick={()=>void share()}><Icon name="share"/><span>SHARE PROFILE</span></button></div>
    <nav className={styles.socials} aria-label="Social profiles">{socials.map(link=><a href={link.href} key={link.label} target="_blank" rel="noopener noreferrer">{link.label==="X / Twitter"?"X / TWITTER":link.label.toUpperCase()}<span aria-hidden="true">↗</span></a>)}</nav>
    <section className={styles.work} aria-labelledby="contact-work-title"><h2 id="contact-work-title">EXPLORE MY WORLD <span>05</span></h2><nav aria-label="Portfolio sections">{works.map(work=><Link href={work.href} key={work.href}><Image src={`/menu-previews/${work.image}.webp`} alt="" fill sizes="(max-width: 760px) 45vw, 200px" unoptimized/><span>{work.title}</span><Icon name="arrow"/></Link>)}</nav></section>
+   {phone.status!=="unavailable"&&!phone.enabled&&<button className={styles.tiltButton} onClick={()=>void phone.toggle()} disabled={phone.status==="requesting"}>{phone.status==="requesting"?"CONNECTING…":"ENABLE PHONE TILT"}</button>}
    <div className={styles.folders}><LinkFolder title="Marketplaces" links={groups[2].links}/><LinkFolder title="Collections" links={groups[3].links}/><LinkFolder title="More portfolio" links={groups[1].links.filter(link=>link.label!=="Behance")}/></div>
    <footer className={styles.footer}><span>SCREAM VISION</span><Link href="/about">MEET THE ARTIST ↗</Link></footer>
   </div>

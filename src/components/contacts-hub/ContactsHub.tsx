@@ -1,7 +1,6 @@
 "use client";
 
 import { nftCollections } from "@/data/nft-collections";
-import { useState } from "react";
 import { MobileContactCard } from "./MobileContactCard";
 import { SiteNav } from "@/components/site-nav/SiteNav";
 import styles from "./contactsHub.module.css";
@@ -51,55 +50,5 @@ const groups: LinkGroup[] = [
 ];
 
 export function ContactsHub() {
-  const [active, setActive] = useState(0);
-
-  return (
-    <main className={styles.page}>
-      <SiteNav />
-      <div className={styles.texture} aria-hidden="true" />
-
-      <MobileContactCard groups={groups}/>
-      <section className={styles.directory} aria-label="SCREAM VISION links and contacts">
-        <header className={styles.heading}>
-          <span>Links &amp; contact · 06</span>
-          <h1>All roads<br />lead here.</h1>
-          <p>Available for selected commissions and collaborations.</p>
-        </header>
-
-        <div className={styles.tabs} role="tablist" aria-label="Link categories">
-          {groups.map((group, index) => (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={active === index}
-              aria-controls="contact-links"
-              key={group.label}
-              onClick={() => setActive(index)}
-            >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              {group.label}
-              <small>{String(group.links.length).padStart(2, "0")}</small>
-            </button>
-          ))}
-        </div>
-
-        <div id="contact-links" className={styles.links} role="tabpanel" key={groups[active].label}>
-          {groups[active].links.map((link, index) => (
-            <a href={link.href} target="_blank" rel="noreferrer" key={link.label}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{link.label}</strong>
-              <small>{link.note}</small>
-              <i aria-hidden="true">↗</i>
-            </a>
-          ))}
-        </div>
-
-        <footer>
-          <span><i /> Open for selected projects</span>
-          <span>Worldwide / Online</span>
-          <span>SCREAM VISION © 2026</span>
-        </footer>
-      </section>
-    </main>
-  );
+  return <main className={styles.page}><SiteNav/><MobileContactCard groups={groups}/></main>;
 }
