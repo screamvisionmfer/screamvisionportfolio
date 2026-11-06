@@ -5,10 +5,10 @@ import { haptic } from "@/components/haptics/haptics";
 import styles from "./cardArchive.module.css";
 import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
-type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode; label?: string; wheelMode?: "continuous" | "steps" };
+type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode; label?: string; touchDrag?: boolean; wheelMode?: "continuous" | "steps" };
 
 /** Native touch scrolling, direct mouse dragging, and one animation only while settling. */
-export function CardRail({ rootRef, index, count, onActiveChange, children, label = "Card carousel", wheelMode = "continuous" }: Props) {
+export function CardRail({ rootRef, index, count, onActiveChange, children, label = "Card carousel", touchDrag = false, wheelMode = "continuous" }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const nearest = useRef(index);
   const desired = useRef(index);
@@ -25,7 +25,8 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, labe
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let lastPaintScroll = 0, lastPaintTime = 0;
     let step = 1, base = 0, frame = 0, motion = 0, wheelTimer = 0, wheelUntil = 0;
-    let down = false, dragged = false, dragX = 0, dragScroll = 0, lastX = 0, lastTime = 0, speed = 0;
+    let down = false, dragged = false, dragX = 0, dragY = 0, dragScroll = 0, lastX = 0, lastTime = 0, speed = 0, touch = false;
+    let pointerId:number|null=null;
     const clamp = (n: number) => Math.max(0, Math.min(count - 1, n));
     const paint = () => {
       frame = 0;
@@ -76,18 +77,23 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, labe
       requestPaint();
     };
     const press = (event: PointerEvent) => {
-      if (event.button !== 0) return;
+      if (event.button !== 0 || event.isPrimary === false || down) return;
       dragged = false;
       stop(); window.clearTimeout(wheelTimer);
-      if (event.pointerType === "touch") return;
-      down = true; speed = 0;
+      touch = event.pointerType === "touch";
+      if (touch && !touchDrag) return;
+      down = true; speed = 0; pointerId=event.pointerId;dragY=event.clientY;
       dragX = lastX = event.clientX; dragScroll = viewport.scrollLeft; lastTime = event.timeStamp;
     };
     const move = (event: PointerEvent) => {
-      if (!down) return;
-      if (!(event.buttons & 1)) { down = false; root.dataset.dragging = "false"; requestPaint(); return; }
+      if (!down || event.pointerId!==pointerId) return;
+      if (!touch && !(event.buttons & 1)) { down = false; root.dataset.dragging = "false"; requestPaint(); return; }
       const dx = event.clientX - dragX;
-      if (!dragged && Math.abs(dx) < 5) return;
+      if (!dragged) {
+        const dy=event.clientY-dragY;
+        if(touch&&Math.abs(dy)>6&&Math.abs(dy)>Math.abs(dx)){down=false;pointerId=null;requestPaint();return;}
+        if(Math.abs(dx)<(touch?7:5))return;
+      }
       dragged = true;
       viewport.setPointerCapture(event.pointerId);
       event.preventDefault();
@@ -98,12 +104,16 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, labe
       requestPaint();
     };
     const release = (event: PointerEvent) => {
-      if (!down) return;
-      down = false; root.dataset.dragging = "false";
+      if (!down || event.pointerId!==pointerId) return;
+      down = false;pointerId=null; root.dataset.dragging = "false";
       if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
       if (!dragged) { requestPaint(); return; }
       const momentum = event.type === "pointercancel" || event.timeStamp - lastTime > 90 ? 0 : Math.max(-step * 3, Math.min(step * 3, speed * 180));
-      goTo(Math.round((viewport.scrollLeft - base + momentum) / step));
+      if(touch&&wheelMode==="steps"){
+        const distance=dragScroll-viewport.scrollLeft,startIndex=clamp(Math.round((dragScroll-base)/step));
+        const committed=event.type!=="pointercancel"&&(Math.abs(distance)>Math.min(65,step*.18)||(Math.abs(distance)>12&&Math.abs(momentum)>40));
+        goTo(committed?startIndex+(distance<0?1:-1):Math.round((viewport.scrollLeft-base)/step));
+      }else goTo(Math.round((viewport.scrollLeft - base + momentum) / step));
     };
     const click = (event: MouseEvent) => { if (dragged && event.detail !== 0) { event.preventDefault(); event.stopPropagation(); } };
     const wheel = (event: WheelEvent) => {
@@ -130,7 +140,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, labe
     const resize = new ResizeObserver(measure); resize.observe(viewport);
     viewport.addEventListener("scroll", requestPaint, { passive: true });
     viewport.addEventListener("pointerdown", press);
-    viewport.addEventListener("pointermove", move);
+    viewport.addEventListener("pointermove", move, {passive:false});
     viewport.addEventListener("pointerup", release);
     viewport.addEventListener("pointercancel", release);
     viewport.addEventListener("click", click, true);
@@ -145,7 +155,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, labe
       viewport.removeEventListener("click", click, true); viewport.removeEventListener("wheel", wheel);
       stopObservingActivity();
     };
-  }, [count, rootRef, wheelMode]);
+  }, [count, rootRef, wheelMode, touchDrag]);
 
   useEffect(() => { if (index !== nearest.current) navigate.current(index); }, [index]);
 

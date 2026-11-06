@@ -22,7 +22,7 @@ export function CollectionsArchive(){
  return <main className={`${styles.page} ${styles.archivePage}`} data-entering={entering!==null} style={{"--collection-accent":collection.accent,"--collection-mood":collection.mood} as CSSProperties}>
   <SiteNav/><div className={styles.atmosphere} aria-hidden="true"/>
   <header className={styles.archiveHeading}><p>SCREAM VISION / ORIGINAL WORLDS</p><h1>Collections<span>03</span></h1></header>
-  <section className={styles.stage} aria-label="Choose a collection"><CardRail rootRef={rail} index={active} count={nftCollections.length} onActiveChange={index=>{if(!busy.current)setActive(index);}} wheelMode="steps" label="Collection carousel">
+  <section className={styles.stage} aria-label="Choose a collection"><CardRail rootRef={rail} index={active} count={nftCollections.length} onActiveChange={index=>{if(!busy.current)setActive(index);}} wheelMode="steps" touchDrag label="Collection carousel">
    {nftCollections.map((item,index)=><CollectionWorldCard key={item.id} collection={item} index={index} active={active===index} entering={entering===index} onExplore={()=>explore(index)}/>)}
   </CardRail></section>
   <footer className={styles.archiveFooter}><span>DRAG TO DISCOVER</span><nav className={styles.selector} aria-label="Collections">{nftCollections.map((item,index)=><button key={item.id} disabled={entering!==null} aria-current={index===active?"true":undefined} onClick={()=>setActive(index)}><small>0{index+1}</small>{item.shortName}</button>)}</nav><span>CLICK TO ENTER ↗</span></footer>
