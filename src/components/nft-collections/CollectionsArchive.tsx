@@ -8,6 +8,7 @@ import { CardRail } from "@/components/card-archive/CardRail";
 import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
 import { haptic } from "@/components/haptics/haptics";
 import styles from "./collectionsArchive.module.css";
+import { CollectionWorldCard } from "./CollectionWorldCard";
 const number=(n:number)=>n.toLocaleString("en-US");
 const date=(value:string)=>new Date(value).toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric",timeZone:"UTC"});
 export function CollectionsArchive(){
@@ -31,10 +32,7 @@ export function CollectionsArchive(){
   <header className={styles.heading}><p>ORIGINAL WORLDS / SCREAM VISION</p><h1>Collections<span> / 03</span></h1><div><span>3 WORLDS</span><i/><span>5,221 CHARACTERS</span></div></header>
   <section className={styles.stage} aria-label="Choose a collection">
    <CardRail rootRef={rail} index={active} count={nftCollections.length} onActiveChange={setActive} wheelMode="steps" label="Collection carousel">
-    {nftCollections.map((item,index)=><button key={item.id} className={styles.world} data-active={active===index} aria-pressed={active===index} aria-label={active===index?`Explore ${item.name}`:`Select ${item.name}`} onClick={()=>explore(index)}>
-     <span className={styles.stack}>{[2,1,0].map((art,i)=><span key={art} className={styles.stackArt} style={{"--layer":i} as CSSProperties}><Image src={item.artworks[art].src} alt="" fill sizes="(max-width:700px) 65vw, 330px" priority={index===0&&art===0} unoptimized draggable={false}/></span>)}</span>
-     <span className={styles.worldLabel}><small>{item.chain}</small><strong>{item.shortName}</strong><span>{number(item.supply)} ARTWORKS <i aria-hidden="true">↗</i></span></span>
-    </button>)}
+    {nftCollections.map((item,index)=><CollectionWorldCard key={item.id} collection={item} index={index} active={active===index} onExplore={()=>explore(index)}/>)}
    </CardRail>
   </section>
   <nav className={styles.selector} aria-label="Collections">{nftCollections.map((item,index)=><button key={item.id} aria-current={index===active?"true":undefined} onClick={()=>setActive(index)}><small>0{index+1}</small>{item.shortName}</button>)}</nav>
