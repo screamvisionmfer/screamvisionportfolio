@@ -1,5 +1,6 @@
 "use client";
 
+import { nftCollections } from "@/data/nft-collections";
 import { useState } from "react";
 import { MobileContactCard } from "./MobileContactCard";
 import { SiteNav } from "@/components/site-nav/SiteNav";
@@ -40,6 +41,7 @@ const groups: LinkGroup[] = [
   {
     label: "Collections",
     links: [
+      ...nftCollections.map(collection=>({label:collection.name,href:collection.website,note:`${collection.chain} / ${collection.supply.toLocaleString("en-US")} artworks`})),
       { label: "Bojungles", href: "https://magiceden.io/collections/base/0x36afee4fadc3b77ff5f1f9a040e264150afb979a", note: "Jungle Bay / Base" },
       { label: "Junglets", href: "https://magiceden.io/marketplace/junglet", note: "Jungle Bay / Solana" },
       { label: "AncientBatz", href: "https://opensea.io/item/ethereum/0x12f32e9c86acc6a39eddfcb978013780c66ee0ad/3", note: "Ozzy Osbourne collaboration" },

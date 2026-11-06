@@ -17,6 +17,7 @@ const primary = [
   { label: "Illustrations", href: "/illustrations" },
   { label: "Cards", href: "/cards" },
   { label: "Collaborations", href: "/collaborations" },
+  { label: "Collections", href: "/collections" },
 ];
 
 export function SiteNav({ className = "" }: { className?: string }) {
@@ -67,7 +68,7 @@ export function SiteNav({ className = "" }: { className?: string }) {
           </nav>
           <div className={styles.menuFooter}><a href="mailto:screamvisionmfer@gmail.com"> GET IN TOUCH</a><div><a href="https://t.me/screamdesign" target="_blank" rel="noopener noreferrer">TELEGRAM</a><a href="https://www.behance.net/jimmyscream" target="_blank" rel="noopener noreferrer">BEHANCE</a></div><p><span>CLICK / ENTER TO OPEN</span><span>ESC TO CLOSE</span></p></div>
         </div>
-        <aside className={styles.preview} aria-label="Section preview"><div key={preview} className={styles.previewScreen}>{menuOpen&&previewVideos[preview]?<video src={previewVideos[preview]} autoPlay muted loop playsInline/>:<PortfolioImage src={`/menu-previews/${preview==="/"?"room":preview.slice(1)}.webp`} alt={`${preview==="/"?"The room":preview.slice(1)} section preview`} fill sizes="(max-width:800px) 85vw, 48vw"/>}<span/></div><div className={styles.previewCaption}><span>SECTION PREVIEW</span><strong>{preview==="/"?"The room":preview.slice(1)}</strong><p>{preview==="/cards"?"Collectible worlds · Open a pack, explore the artwork.":preview==="/covers"?"Music & artwork · Explore the cover collection.":preview==="/illustrations"?"Characters & worlds · Drift through the archive.":preview==="/collaborations"?"Shared universes · Explore selected collaborations.":preview==="/contacts"?"Get in touch · Start something together.":preview==="/about"?"The artist behind the worlds.":"Return to the room · Choose your next world."}</p></div></aside>
+        <aside className={styles.preview} aria-label="Section preview"><div key={preview} className={styles.previewScreen}>{menuOpen&&previewVideos[preview]?<video src={previewVideos[preview]} autoPlay muted loop playsInline/>:<PortfolioImage src={`/menu-previews/${preview==="/"?"room":preview.slice(1)}.webp`} alt={`${preview==="/"?"The room":preview.slice(1)} section preview`} fill sizes="(max-width:800px) 85vw, 48vw"/>}<span/></div><div className={styles.previewCaption}><span>SECTION PREVIEW</span><strong>{preview==="/"?"The room":preview.slice(1)}</strong><p>{preview==="/cards"?"Collectible worlds · Open a pack, explore the artwork.":preview==="/covers"?"Music & artwork · Explore the cover collection.":preview==="/illustrations"?"Characters & worlds · Drift through the archive.":preview==="/collaborations"?"Shared universes · Explore selected collaborations.":preview==="/collections"?"Original NFT worlds · Meet the characters and explore the collections.":preview==="/contacts"?"Get in touch · Start something together.":preview==="/about"?"The artist behind the worlds.":"Return to the room · Choose your next world."}</p></div></aside>
       </div>
     </header>
   );

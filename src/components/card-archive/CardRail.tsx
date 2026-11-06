@@ -5,10 +5,10 @@ import { haptic } from "@/components/haptics/haptics";
 import styles from "./cardArchive.module.css";
 import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
-type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode; wheelMode?: "continuous" | "steps" };
+type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode; label?: string; wheelMode?: "continuous" | "steps" };
 
 /** Native touch scrolling, direct mouse dragging, and one animation only while settling. */
-export function CardRail({ rootRef, index, count, onActiveChange, children, wheelMode = "continuous" }: Props) {
+export function CardRail({ rootRef, index, count, onActiveChange, children, label = "Card carousel", wheelMode = "continuous" }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const nearest = useRef(index);
   const desired = useRef(index);
@@ -42,6 +42,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, whee
         item.style.transform = `perspective(1000px) translateY(${Math.min(distance, 3) * 7}px) rotateY(${Math.max(-25, Math.min(25, -relative * 12))}deg) scale(${scale})`;
         item.style.opacity = String(Math.max(.25, 1 - distance * .13));
       });
+      root.dataset.railReady = "true";
       const next = clamp(Math.round(progress));
       if (next !== nearest.current) { nearest.current = next; select.current(next); haptic("tick", swipeSpeed); }
       root.dataset.animationActive = String(down || Boolean(motion));
@@ -148,7 +149,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, whee
 
   useEffect(() => { if (index !== nearest.current) navigate.current(index); }, [index]);
 
-  return <div ref={rootRef} className={styles.ribbon} tabIndex={0} aria-label="Card carousel" data-dragging="false" onKeyDown={(event) => {
+  return <div ref={rootRef} className={styles.ribbon} tabIndex={0} aria-label={label} data-rail-ready="false" data-dragging="false" onKeyDown={(event) => {
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") { event.preventDefault(); navigate.current(nearest.current + (event.key === "ArrowRight" ? 1 : -1)); }
     if (event.key === "Enter" && event.target === event.currentTarget) viewportRef.current?.querySelector<HTMLButtonElement>(`[data-rail-item="${nearest.current}"] button`)?.click();
   }}>

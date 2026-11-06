@@ -1,0 +1,177 @@
+[
+  {
+    "id": "floaties",
+    "name": "Floaties Pool Chan",
+    "shortName": "Floaties",
+    "subtitle": "The summer tab never closed.",
+    "chain": "Robinhood Chain",
+    "supply": 2222,
+    "minted": 2222,
+    "asOf": "2026-11-06",
+    "soldOut": true,
+    "volume": "18.4K",
+    "currency": "USDG",
+    "website": "https://poolchan.vercel.app",
+    "marketplace": "https://opensea.io/collection/floatiespoolchan",
+    "marketLabel": "View on OpenSea",
+    "accent": "#d4c889",
+    "mood": "#253e3c",
+    "description": "A postcard from the summer we never wanted to end. Poolside characters, strange accessories and the feeling of staying in the water until sunset.",
+    "craft": "Character design / Generative collection",
+    "source": "Confirmed by the artist; volume snapshot from OpenSea.",
+    "artworks": [
+      {
+        "src": "/collections/floaties/1.webp",
+        "label": "Floaties \u00b7 Artwork 01",
+        "source": "https://poolchan.vercel.app/nfts/1.jpg"
+      },
+      {
+        "src": "/collections/floaties/2.webp",
+        "label": "Floaties \u00b7 Artwork 02",
+        "source": "https://poolchan.vercel.app/nfts/2.jpg"
+      },
+      {
+        "src": "/collections/floaties/3.webp",
+        "label": "Floaties \u00b7 Artwork 03",
+        "source": "https://poolchan.vercel.app/nfts/3.jpg"
+      },
+      {
+        "src": "/collections/floaties/4.webp",
+        "label": "Floaties \u00b7 Artwork 04",
+        "source": "https://poolchan.vercel.app/nfts/4.jpg"
+      }
+    ]
+  },
+  {
+    "id": "groypers",
+    "name": "Groypers Alpha Squadron",
+    "shortName": "Groypers",
+    "subtitle": "777 recruits. One squadron.",
+    "chain": "Solana",
+    "supply": 777,
+    "minted": 478,
+    "asOf": "2026-11-05",
+    "soldOut": false,
+    "website": "https://gas-nu-six.vercel.app",
+    "marketplace": "https://launchmynft.io/mint/groypersquadron",
+    "marketLabel": "View on LaunchMyNFT",
+    "accent": "#b5bd8e",
+    "mood": "#27352a",
+    "description": "A squadron of 777 hand-drawn recruits from the $GROYPER universe. Distinct personalities, unexpected gear and a shared visual identity.",
+    "craft": "Hand-drawn characters / Generative collection",
+    "source": "Mint totals reported by LaunchMyNFT.",
+    "artworks": [
+      {
+        "src": "/collections/groypers/1.webp",
+        "label": "Groypers \u00b7 Artwork 01",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_1.png"
+      },
+      {
+        "src": "/collections/groypers/2.webp",
+        "label": "Groypers \u00b7 Artwork 02",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_2.png"
+      },
+      {
+        "src": "/collections/groypers/3.webp",
+        "label": "Groypers \u00b7 Artwork 03",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_3.png"
+      },
+      {
+        "src": "/collections/groypers/4.webp",
+        "label": "Groypers \u00b7 Artwork 04",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_4.png"
+      },
+      {
+        "src": "/collections/groypers/5.webp",
+        "label": "Groypers \u00b7 Artwork 05",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_5.png"
+      },
+      {
+        "src": "/collections/groypers/6.webp",
+        "label": "Groypers \u00b7 Artwork 06",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_6.png"
+      },
+      {
+        "src": "/collections/groypers/7.webp",
+        "label": "Groypers \u00b7 Artwork 07",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_7.png"
+      },
+      {
+        "src": "/collections/groypers/8.webp",
+        "label": "Groypers \u00b7 Artwork 08",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_8.png"
+      },
+      {
+        "src": "/collections/groypers/9.webp",
+        "label": "Groypers \u00b7 Artwork 09",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_9.png"
+      },
+      {
+        "src": "/collections/groypers/10.webp",
+        "label": "Groypers \u00b7 Artwork 10",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_10.png"
+      },
+      {
+        "src": "/collections/groypers/11.webp",
+        "label": "Groypers \u00b7 Artwork 11",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_11.png"
+      },
+      {
+        "src": "/collections/groypers/12.webp",
+        "label": "Groypers \u00b7 Artwork 12",
+        "source": "https://gas-nu-six.vercel.app/nfts/images/nft_12.png"
+      }
+    ]
+  },
+  {
+    "id": "bobros",
+    "name": "Bobros Cartel",
+    "shortName": "Bobros",
+    "subtitle": "Paper cuts. Real-world attitude.",
+    "chain": "Solana",
+    "supply": 2222,
+    "minted": 264,
+    "asOf": "2026-11-05",
+    "soldOut": false,
+    "website": "https://bobroscartel.vercel.app",
+    "marketplace": "https://launchmynft.io/mint/bobroscartel",
+    "marketLabel": "View on LaunchMyNFT",
+    "accent": "#c7ab8e",
+    "mood": "#3c2d27",
+    "description": "2,222 mixed-media characters inspired by BOBO. Sketches, digital paper-cut collage and sampled real-world textures turn each portrait into its own little world.",
+    "craft": "Sketching / Paper-cut collage / Texture sampling",
+    "source": "Mint totals reported by LaunchMyNFT.",
+    "artworks": [
+      {
+        "src": "/collections/bobros/1.webp",
+        "label": "Bobros \u00b7 Artwork 01",
+        "source": "https://bobroscartel.vercel.app/nfts/nft_1609.png"
+      },
+      {
+        "src": "/collections/bobros/2.webp",
+        "label": "Bobros \u00b7 Artwork 02",
+        "source": "https://bobroscartel.vercel.app/nfts/nft_1610.png"
+      },
+      {
+        "src": "/collections/bobros/3.webp",
+        "label": "Bobros \u00b7 Artwork 03",
+        "source": "https://bobroscartel.vercel.app/nfts/nft_1611.png"
+      },
+      {
+        "src": "/collections/bobros/4.webp",
+        "label": "Bobros \u00b7 Artwork 04",
+        "source": "https://bobroscartel.vercel.app/nfts/nft_1612.png"
+      },
+      {
+        "src": "/collections/bobros/5.webp",
+        "label": "Bobros \u00b7 Artwork 05",
+        "source": "https://bobroscartel.vercel.app/nfts/nft_1625.png"
+      },
+      {
+        "src": "/collections/bobros/6.webp",
+        "label": "Bobros \u00b7 Artwork 06",
+        "source": "https://bobroscartel.vercel.app/nfts/nft_1626.png"
+      }
+    ]
+  }
+]

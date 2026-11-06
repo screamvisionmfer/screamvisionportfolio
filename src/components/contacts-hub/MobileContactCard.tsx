@@ -8,7 +8,7 @@ import styles from "./mobileContactCard.module.css";
 type HubLink={label:string;href:string;note:string};
 type LinkGroup={label:string;links:HubLink[]};
 const email="screamvisionmfer@gmail.com",contactUrl="https://thescreamvision.vercel.app/contacts";
-const works=[{href:"/covers",title:"COVER ART",image:"covers"},{href:"/illustrations",title:"ILLUSTRATION",image:"illustrations"},{href:"/cards",title:"CARD PACKS",image:"cards"},{href:"/collaborations",title:"COLLABORATIONS",image:"collaborations"}];
+const works=[{href:"/covers",title:"COVER ART",image:"covers"},{href:"/illustrations",title:"ILLUSTRATION",image:"illustrations"},{href:"/cards",title:"CARD PACKS",image:"cards"},{href:"/collaborations",title:"COLLABORATIONS",image:"collaborations"},{href:"/collections",title:"NFT COLLECTIONS",image:"collections"}];
 
 function Icon({name}:{name:"arrow"|"share"|"save"|"copy"|"mail"|"send"}){
  const paths={arrow:"M5 19 19 5M5 5h14v14",share:"M12 16V3m-5 5 5-5 5 5M5 13v7h14v-7",save:"M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4",copy:"M8 8h12v12H8zM16 8V4H4v12h4",mail:"M3 5h18v14H3zM3 6l9 7 9-7",send:"m3 10 18-7-7 18-4-7-7-4Zm7 4L21 3"};
@@ -45,7 +45,7 @@ export function MobileContactCard({groups}:{groups:LinkGroup[]}){
    <button className={styles.copyEmail} onClick={()=>void copy()} aria-label="Copy email address"><span>{email}</span><Icon name="copy"/></button>
    <div className={styles.utilities}><a href="/scream-vision.vcf" download="SCREAM-VISION.vcf"><Icon name="save"/><span>SAVE CONTACT</span></a><button onClick={()=>void share()}><Icon name="share"/><span>SHARE PROFILE</span></button></div>
    <nav className={styles.socials} aria-label="Social profiles">{socials.map(link=><a href={link.href} key={link.label} target="_blank" rel="noopener noreferrer">{link.label==="X / Twitter"?"X / TWITTER":link.label.toUpperCase()}<span aria-hidden="true">↗</span></a>)}</nav>
-   <section className={styles.work} aria-labelledby="contact-work-title"><h2 id="contact-work-title">EXPLORE MY WORLD <span>04</span></h2><nav aria-label="Portfolio sections">{works.map(work=><Link href={work.href} key={work.href}><Image src={`/menu-previews/${work.image}.webp`} alt="" fill sizes="(max-width: 760px) 45vw, 200px" unoptimized/><span>{work.title}</span><Icon name="arrow"/></Link>)}</nav></section>
+   <section className={styles.work} aria-labelledby="contact-work-title"><h2 id="contact-work-title">EXPLORE MY WORLD <span>05</span></h2><nav aria-label="Portfolio sections">{works.map(work=><Link href={work.href} key={work.href}><Image src={`/menu-previews/${work.image}.webp`} alt="" fill sizes="(max-width: 760px) 45vw, 200px" unoptimized/><span>{work.title}</span><Icon name="arrow"/></Link>)}</nav></section>
    <div className={styles.folders}><LinkFolder title="Marketplaces" links={groups[2].links}/><LinkFolder title="Collections" links={groups[3].links}/><LinkFolder title="More portfolio" links={groups[1].links.filter(link=>link.label!=="Behance")}/></div>
    <footer className={styles.footer}><span>SCREAM VISION</span><Link href="/about">MEET THE ARTIST ↗</Link></footer>
   </div>
