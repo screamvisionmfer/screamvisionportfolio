@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { nftCollections } from "@/data/nft-collections";
 import { SiteNav } from "@/components/site-nav/SiteNav";
 import { CardRail } from "@/components/card-archive/CardRail";
-import { CollectionWorldCard } from "./CollectionWorldCard";
+import Image from "next/image";
+import { CollectionWorldCard, collectionCover } from "./CollectionWorldCard";
 import { haptic } from "@/components/haptics/haptics";
 import styles from "./collectionsArchive.module.css";
 export function CollectionsArchive(){
@@ -20,11 +21,13 @@ export function CollectionsArchive(){
   window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:`/collections/${nftCollections[index].id}`}));
  };
  return <main className={`${styles.page} ${styles.archivePage}`} data-entering={entering!==null} style={{"--collection-accent":collection.accent,"--collection-mood":collection.mood} as CSSProperties}>
-  <SiteNav/><div className={styles.atmosphere} aria-hidden="true"/>
-  <header className={styles.archiveHeading}><p>SCREAM VISION / ORIGINAL WORLDS</p><h1>Collections<span>03</span></h1></header>
-  <section className={styles.stage} aria-label="Choose a collection"><CardRail rootRef={rail} index={active} count={nftCollections.length} onActiveChange={index=>{if(!busy.current)setActive(index);}} wheelMode="steps" touchDrag label="Collection carousel">
-   {nftCollections.map((item,index)=><CollectionWorldCard key={item.id} collection={item} index={index} active={active===index} entering={entering===index} onExplore={()=>explore(index)}/>)}
+  <SiteNav/>
+  <div className={styles.consoleBackdrop} aria-hidden="true">{nftCollections.map((item,index)=><div key={item.id} data-active={active===index}><Image src={collectionCover(item)} alt="" fill sizes="100vw" priority={index===active} unoptimized/></div>)}</div>
+  <header className={styles.consoleHeading}><h1>Collections</h1></header>
+  <section key={collection.id} className={styles.featuredCollection} aria-label="Selected collection"><h2>{collection.shortName}</h2><p>{collection.subtitle}</p><button onClick={()=>explore(active)} disabled={entering!==null}>EXPLORE COLLECTION <span aria-hidden="true">↗</span></button></section>
+  <section className={styles.stage} aria-label="Choose a collection"><CardRail rootRef={rail} index={active} count={nftCollections.length} onActiveChange={index=>{if(!busy.current)setActive(index);}} wheelMode="steps" touchDrag presentation="flat" label="Collection carousel">
+   {nftCollections.map((item,index)=><CollectionWorldCard key={item.id} collection={item} active={active===index} entering={entering===index} onExplore={()=>explore(index)}/>)}
   </CardRail></section>
-  <footer className={styles.archiveFooter}><span>DRAG TO DISCOVER</span><nav className={styles.selector} aria-label="Collections">{nftCollections.map((item,index)=><button key={item.id} disabled={entering!==null} aria-current={index===active?"true":undefined} onClick={()=>setActive(index)}><small>0{index+1}</small>{item.shortName}</button>)}</nav><span>CLICK TO ENTER ↗</span></footer>
+  <footer className={styles.consoleFooter}><span>SWIPE OR DRAG TO BROWSE</span><nav aria-label="Choose collection">{nftCollections.map((item,index)=><button key={item.id} aria-label={`Select ${item.name}`} aria-current={index===active?"true":undefined} disabled={entering!==null} onClick={()=>setActive(index)}><span/></button>)}</nav><span>{String(active+1).padStart(2,"0")} / 03</span></footer>
  </main>;
 }

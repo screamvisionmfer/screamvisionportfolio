@@ -5,10 +5,10 @@ import { haptic } from "@/components/haptics/haptics";
 import styles from "./cardArchive.module.css";
 import { isPageActive, observePageActivity } from "@/components/site-nav/pageActivity";
 
-type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode; label?: string; touchDrag?: boolean; wheelMode?: "continuous" | "steps" };
+type Props = { rootRef: RefObject<HTMLDivElement | null>; index: number; count: number; onActiveChange: (index: number) => void; children: ReactNode; label?: string; touchDrag?: boolean; presentation?: "depth" | "flat"; wheelMode?: "continuous" | "steps" };
 
 /** Native touch scrolling, direct mouse dragging, and one animation only while settling. */
-export function CardRail({ rootRef, index, count, onActiveChange, children, label = "Card carousel", touchDrag = false, wheelMode = "continuous" }: Props) {
+export function CardRail({ rootRef, index, count, onActiveChange, children, label = "Card carousel", touchDrag = false, presentation = "depth", wheelMode = "continuous" }: Props) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const nearest = useRef(index);
   const desired = useRef(index);
@@ -40,8 +40,10 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, labe
         item.style.visibility = distance < 5 ? "visible" : "hidden";
         item.inert = distance >= 3.5;
         const scale = distance <= 1 ? 1.28 - distance * .34 : .94 - Math.min(distance - 1, 2.5) * .07;
-        item.style.transform = `perspective(1000px) translateY(${Math.min(distance, 3) * 7}px) rotateY(${Math.max(-25, Math.min(25, -relative * 12))}deg) scale(${scale})`;
-        item.style.opacity = String(Math.max(.25, 1 - distance * .13));
+        item.style.transform = presentation === "flat"
+          ? `translateY(${Math.min(distance,1)*6}px) scale(${1.035-Math.min(distance,1)*.075})`
+          : `perspective(1000px) translateY(${Math.min(distance, 3) * 7}px) rotateY(${Math.max(-25, Math.min(25, -relative * 12))}deg) scale(${scale})`;
+        item.style.opacity = String(presentation === "flat"?Math.max(.65,1-distance*.12):Math.max(.25, 1 - distance * .13));
       });
       root.dataset.railReady = "true";
       const next = clamp(Math.round(progress));
@@ -155,7 +157,7 @@ export function CardRail({ rootRef, index, count, onActiveChange, children, labe
       viewport.removeEventListener("click", click, true); viewport.removeEventListener("wheel", wheel);
       stopObservingActivity();
     };
-  }, [count, rootRef, wheelMode, touchDrag]);
+  }, [count, rootRef, wheelMode, touchDrag, presentation]);
 
   useEffect(() => { if (index !== nearest.current) navigate.current(index); }, [index]);
 
