@@ -51,7 +51,7 @@ export function SiteNav({ className = "" }: { className?: string }) {
   const allLinks = [...primary, { label: "About", href: "/about" }, { label: "Contacts", href: "/contacts" }];
   return (
     <header ref={menuFocus} className={`${styles.header} ${className}`} data-menu-open={menuOpen} onKeyDown={(event) => { if (menuOpen) { event.stopPropagation(); if (event.key === "Escape") setMenuOpen(false); } }}>
-      <Link className={styles.logo} href="/" aria-label={pathname==="/"?"SCREAM VISION home":"Return to room"}><Image src="/scream-logo.png" alt="" width={90} height={44} priority unoptimized />{pathname!=="/"&&<span>THE ROOM</span>}</Link>
+      <Link className={styles.logo} href="/" aria-label={pathname==="/"?"SCREAM VISION home":"Return to room"}><Image className={styles.wordmark} src="/scream-logo.png" alt="" width={90} height={44} priority unoptimized /><Image className={styles.symbol} src="/scream-symbol.webp" alt="" width={48} height={48} priority unoptimized />{pathname!=="/"&&<span>THE ROOM</span>}</Link>
       <span className={styles.location}><i/> {primary.find(item=>item.href===activeHref)?.label??(activeHref==="/about"?"About":"Contacts")} <small>/ SCREAM VISION</small></span>
       <button className={styles.menuButton} type="button" aria-expanded={menuOpen} aria-controls="site-world-menu" aria-label={menuOpen ? "Close menu" : "Open menu"} onClick={() => {setPreview(activeHref??"/");setMenuOpen(value=>!value);}}>
         <span>{menuOpen?"RESUME":"MENU"}</span><i className={styles.menuGlyph} aria-hidden="true"/>

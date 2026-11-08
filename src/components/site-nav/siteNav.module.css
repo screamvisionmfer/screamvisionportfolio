@@ -77,3 +77,5 @@
 .menuButton,.menuButton:hover,.menuGlyph,.logo > span,.location { color:#baa77b; }
 .panel nav .active,.panel nav a:hover,.panel nav a:focus-visible,.menuHeading h2,.menuFooter > a { color:#d1c19a; }.panel nav a { color:#9d9787; }.menuFooter > div { color:#a79e87; }
 @media(max-width:800px) { .logo { width:72px;height:43px; }.logo img { width:72px;height:72px;margin-top:-9px; } }
+
+.logo .symbol{display:none;}@media(max-width:800px){.logo{width:44px;height:48px;overflow:visible;}.logo .wordmark{display:none;}.logo .symbol{display:block;width:40px;height:44px;object-fit:contain;margin:0;}.logo:hover .symbol{animation:none;}}

@@ -10,9 +10,9 @@ export const metadata: Metadata = {
     description: "Cover art. Characters. Worlds. Get in touch and explore my work.",
     url: "https://thescreamvision.vercel.app/contacts",
     type: "profile",
-    images: [{ url: "https://thescreamvision.vercel.app/scene/about/night-city.webp", width: 1672, height: 941, alt: "SCREAM VISION night city" }],
+    images: [{ url: "https://thescreamvision.vercel.app/social-preview.jpg", width: 1200, height: 675, alt: "SCREAM VISION — Whole world in touch" }],
   },
-  twitter: { card: "summary_large_image", title: "SCREAM VISION — Contact & Links", description: "Cover art. Characters. Worlds.", images: ["https://thescreamvision.vercel.app/scene/about/night-city.webp"] },
+  twitter: { card: "summary_large_image", title: "SCREAM VISION — Contact & Links", description: "Cover art. Characters. Worlds.", images: ["https://thescreamvision.vercel.app/social-preview.jpg"] },
 };
 
 export default function ContactsPage() {

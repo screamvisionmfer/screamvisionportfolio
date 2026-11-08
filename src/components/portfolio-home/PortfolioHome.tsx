@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { covers } from "@/data/covers";
 import { illustrations } from "@/data/illustrations";
+import { nftCollections } from "@/data/nft-collections";
 import { collaborations } from "@/data/collaborations";
 import { cardPacks } from "@/data/card-packs";
 import { SiteNav } from "@/components/site-nav/SiteNav";
@@ -21,6 +22,7 @@ const sections=[
  {title:"Illustrations",href:"/illustrations",note:"Characters / Worlds",position:"illustrations",images:illustrations.map(item=>item.image)},
  {title:"Cards",href:"/cards",note:"Collect / Unseal",position:"cards",images:cardPacks.flatMap(pack=>pack.cards.map(card=>card.image))},
  {title:"Collaborations",href:"/collaborations",note:"Shared universes",position:"collaborations",images:collaborations.flatMap(project=>project.assets.filter(asset=>asset.kind==="image").map(asset=>asset.src))},
+ {title:"Collections",href:"/collections",note:"Original worlds / NFT",position:"collections",images:nftCollections.flatMap(collection=>collection.artworks.map(art=>art.src))},
 ];
 function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMotion>;motion:boolean}){
  return <div className={styles.gyroControl}><div><span>Phone tilt</span><button aria-label={phone.enabled?"Disable gyroscope":"Enable gyroscope"} aria-pressed={phone.enabled} disabled={!motion||phone.status==="requesting"||phone.status==="unavailable"} onClick={()=>void phone.toggle()}>{phone.status==="requesting"?"…":phone.enabled?"ON":"ENABLE"}</button></div><p role="status">{motion?phone.message:"Enable Motion / Parallax first"}</p></div>;
@@ -91,7 +93,7 @@ export function PortfolioHome(){
    <span className={styles.switchImages}><Image src="/scene/switch-on.webp" alt="" fill sizes="75px" unoptimized data-visible={lit}/><Image src="/scene/switch-off.webp" alt="" fill sizes="75px" unoptimized data-visible={!lit}/></span>
    <span><b>LIGHT</b><i data-on={lit}/>{lit?"ON":"OFF"}</span>
   </button>
-  <div className={styles.railHint}>{String(activePortal+1).padStart(2,"0")} / 04 <span>SWIPE TO EXPLORE</span></div>
+  <div className={styles.railHint}>{String(activePortal+1).padStart(2,"0")} / {String(sections.length).padStart(2,"0")} <span>SWIPE TO EXPLORE</span></div>
   <nav ref={rail} className={styles.worlds} aria-label="Choose a world" onKeyDown={event=>{
    if(!["ArrowRight","ArrowLeft","ArrowUp","ArrowDown"].includes(event.key))return;
    const links=Array.from(event.currentTarget.querySelectorAll<HTMLAnchorElement>("a")),index=links.indexOf(document.activeElement as HTMLAnchorElement);
