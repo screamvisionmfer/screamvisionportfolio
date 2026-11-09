@@ -22,25 +22,32 @@
     "artworks": [
       {
         "src": "/collections/floaties/1.webp",
-        "label": "Floaties \u00b7 Artwork 01",
+        "label": "Floaties · Artwork 01",
         "source": "https://poolchan.vercel.app/nfts/1.jpg"
       },
       {
         "src": "/collections/floaties/2.webp",
-        "label": "Floaties \u00b7 Artwork 02",
+        "label": "Floaties · Artwork 02",
         "source": "https://poolchan.vercel.app/nfts/2.jpg"
       },
       {
         "src": "/collections/floaties/3.webp",
-        "label": "Floaties \u00b7 Artwork 03",
+        "label": "Floaties · Artwork 03",
         "source": "https://poolchan.vercel.app/nfts/3.jpg"
       },
       {
         "src": "/collections/floaties/4.webp",
-        "label": "Floaties \u00b7 Artwork 04",
+        "label": "Floaties · Artwork 04",
         "source": "https://poolchan.vercel.app/nfts/4.jpg"
       }
-    ]
+    ],
+    "marketData": {
+      "holders": 447,
+      "volume": 18413.84922228788,
+      "currency": "USDG",
+      "asOf": "2026-11-09",
+      "source": "https://opensea.io/collection/floatiespoolchan"
+    }
   },
   {
     "id": "groypers",
@@ -63,62 +70,62 @@
     "artworks": [
       {
         "src": "/collections/groypers/1.webp",
-        "label": "Groypers \u00b7 Artwork 01",
+        "label": "Groypers · Artwork 01",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_1.png"
       },
       {
         "src": "/collections/groypers/2.webp",
-        "label": "Groypers \u00b7 Artwork 02",
+        "label": "Groypers · Artwork 02",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_2.png"
       },
       {
         "src": "/collections/groypers/3.webp",
-        "label": "Groypers \u00b7 Artwork 03",
+        "label": "Groypers · Artwork 03",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_3.png"
       },
       {
         "src": "/collections/groypers/4.webp",
-        "label": "Groypers \u00b7 Artwork 04",
+        "label": "Groypers · Artwork 04",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_4.png"
       },
       {
         "src": "/collections/groypers/5.webp",
-        "label": "Groypers \u00b7 Artwork 05",
+        "label": "Groypers · Artwork 05",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_5.png"
       },
       {
         "src": "/collections/groypers/6.webp",
-        "label": "Groypers \u00b7 Artwork 06",
+        "label": "Groypers · Artwork 06",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_6.png"
       },
       {
         "src": "/collections/groypers/7.webp",
-        "label": "Groypers \u00b7 Artwork 07",
+        "label": "Groypers · Artwork 07",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_7.png"
       },
       {
         "src": "/collections/groypers/8.webp",
-        "label": "Groypers \u00b7 Artwork 08",
+        "label": "Groypers · Artwork 08",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_8.png"
       },
       {
         "src": "/collections/groypers/9.webp",
-        "label": "Groypers \u00b7 Artwork 09",
+        "label": "Groypers · Artwork 09",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_9.png"
       },
       {
         "src": "/collections/groypers/10.webp",
-        "label": "Groypers \u00b7 Artwork 10",
+        "label": "Groypers · Artwork 10",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_10.png"
       },
       {
         "src": "/collections/groypers/11.webp",
-        "label": "Groypers \u00b7 Artwork 11",
+        "label": "Groypers · Artwork 11",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_11.png"
       },
       {
         "src": "/collections/groypers/12.webp",
-        "label": "Groypers \u00b7 Artwork 12",
+        "label": "Groypers · Artwork 12",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_12.png"
       }
     ]
@@ -144,32 +151,32 @@
     "artworks": [
       {
         "src": "/collections/bobros/1.webp",
-        "label": "Bobros \u00b7 Artwork 01",
+        "label": "Bobros · Artwork 01",
         "source": "https://bobroscartel.vercel.app/nfts/nft_1609.png"
       },
       {
         "src": "/collections/bobros/2.webp",
-        "label": "Bobros \u00b7 Artwork 02",
+        "label": "Bobros · Artwork 02",
         "source": "https://bobroscartel.vercel.app/nfts/nft_1610.png"
       },
       {
         "src": "/collections/bobros/3.webp",
-        "label": "Bobros \u00b7 Artwork 03",
+        "label": "Bobros · Artwork 03",
         "source": "https://bobroscartel.vercel.app/nfts/nft_1611.png"
       },
       {
         "src": "/collections/bobros/4.webp",
-        "label": "Bobros \u00b7 Artwork 04",
+        "label": "Bobros · Artwork 04",
         "source": "https://bobroscartel.vercel.app/nfts/nft_1612.png"
       },
       {
         "src": "/collections/bobros/5.webp",
-        "label": "Bobros \u00b7 Artwork 05",
+        "label": "Bobros · Artwork 05",
         "source": "https://bobroscartel.vercel.app/nfts/nft_1625.png"
       },
       {
         "src": "/collections/bobros/6.webp",
-        "label": "Bobros \u00b7 Artwork 06",
+        "label": "Bobros · Artwork 06",
         "source": "https://bobroscartel.vercel.app/nfts/nft_1626.png"
       }
     ]

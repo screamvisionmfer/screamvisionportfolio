@@ -1,9 +1,19 @@
 import { nftCollections, type CollectionStat } from "@/data/nft-collections";
+import { parseOpenSeaStats } from "@/data/parse-opensea-stats";
 export const revalidate=1800;
 export async function GET(){
  const entries=await Promise.all(nftCollections.map(async collection=>{
   const fallback:CollectionStat={minted:collection.minted,asOf:collection.asOf,snapshot:true};
-  if(collection.id==="floaties")return [collection.id,fallback] as const;
+  if(collection.id==="floaties"){
+   if(collection.marketData)Object.assign(fallback,{holders:collection.marketData.holders,volume:collection.marketData.volume,currency:collection.marketData.currency,marketAsOf:collection.marketData.asOf,marketSnapshot:true});
+   try{
+    const response=await fetch(collection.marketplace,{next:{revalidate:1800},signal:AbortSignal.timeout(7000)});
+    if(!response.ok)throw new Error("Market unavailable");
+    const market=parseOpenSeaStats(await response.text(),collection.name,collection.supply);if(!market)throw new Error("Market schema changed");
+    const timestamp=response.headers.get("date"),asOf=timestamp?new Date(timestamp):new Date();
+    return [collection.id,{...fallback,...market,marketAsOf:Number.isNaN(asOf.valueOf())?new Date().toISOString():asOf.toISOString(),marketSnapshot:false} satisfies CollectionStat] as const;
+   }catch{return [collection.id,fallback] as const;}
+  }
   try{
    const response=await fetch(collection.marketplace,{next:{revalidate:1800},signal:AbortSignal.timeout(7000)});
    if(!response.ok)throw new Error("Source unavailable");

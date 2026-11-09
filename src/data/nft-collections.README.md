@@ -7,3 +7,12 @@ Mint counters for Groypers and Bobros are refreshed server-side through `/api/co
 Floaties sold out (2,222 / 2,222) and trading volume (18.4K USDG) were confirmed by the artist with an OpenSea screenshot on 2026-11-06. Volume is a dated snapshot, not a live price or volume feed. Update `asOf` when updating this snapshot.
 
 Artwork sample labels describe selected previews, not verified token IDs. Full collections remain on their own sites and marketplaces.
+
+
+## Collection project details
+
+- `collection-traits.json` contains aggregate statistics from the artist-provided archives, not token metadata or image files. Rebuild it with `python scripts/analyze-collection-metadata.py --bobros <zip> --floaties <zip> --groypers <zip>`. The analyzer checks token counts and unique names, excludes Rarity Rank, and counts distinct category/value pairs (including explicit None values).
+- Trait bars compare variant counts against the largest category. Expanded categories show the three most common values and their shares of the complete metadata set.
+- `/api/collections` refreshes public mint counts and OpenSea Floaties holder/volume data every 30 minutes. OpenSea statistics must match the collection name and total supply. On source failure, dated saved data remains available.
+- Minted count is not a secondary-market sale count. Unavailable sales/holder statistics are omitted instead of shown as zero.
+- Floaties market snapshot verified on 2026-11-09: 447 holders, 18413.84922228788 USDG volume.
