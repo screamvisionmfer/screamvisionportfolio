@@ -22,7 +22,7 @@ export function RoomArrival(){
   const click=(event:MouseEvent)=>{
    if((event.detail&&dragged)||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
    const a=(event.target as Element).closest<HTMLAnchorElement>("a[href]");
-   if(!a||a.hasAttribute("download")||(a.target&&a.target!=="_self"))return;
+   if(!a||a.dataset.cinematicLink==="true"||a.hasAttribute("download")||(a.target&&a.target!=="_self"))return;
    const url=new URL(a.href);if(url.origin!==location.origin||url.pathname===location.pathname)return;
    event.preventDefault();navigate(url.pathname+url.search+url.hash);
   };
