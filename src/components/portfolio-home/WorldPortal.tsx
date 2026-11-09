@@ -1,14 +1,15 @@
 "use client";
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import Link from "next/link";
-import { PortfolioImage } from "@/components/portfolio-image/PortfolioImage";
+import { PortalArtwork } from "./PortalArtwork";
 import styles from "./portfolioHome.module.css";
 
 export function WorldPortal({ title, href, images, note, index, position, motion, railActive, onEnter, onReady }: {
  title:string; href:string; images:string[]; note:string; index:number; position:string; motion:boolean; railActive:boolean; onEnter:(href:string)=>void;onReady?:()=>void;
 }) {
  const [deck,setDeck]=useState<string[]>([]);
- const [active,setActive]=useState(0),[hovered,setHovered]=useState(false),[focused,setFocused]=useState(false);
+ const [slots,setSlots]=useState<string[]>([]),[hovered,setHovered]=useState(false),[focused,setFocused]=useState(false);
+ const rotation=useRef({cursor:3,slot:0,images:[] as string[]});
  const element=useRef<HTMLAnchorElement>(null),[entering,setEntering]=useState(false);
  const departure=useRef<ReturnType<typeof setTimeout>|null>(null);
  useEffect(()=>()=>{if(departure.current)clearTimeout(departure.current);},[]);
@@ -20,13 +21,20 @@ export function WorldPortal({ title, href, images, note, index, position, motion
    if(shuffled.length>1&&shuffled[0]===previous)[shuffled[0],shuffled[1]]=[shuffled[1],shuffled[0]];
    if(shuffled[0])sessionStorage.setItem(key,shuffled[0]);
   }catch{}
-  setDeck(shuffled);setActive(0);
+  setDeck(shuffled);setSlots(shuffled.slice(0,3));rotation.current={cursor:3,slot:0,images:shuffled.slice(0,3)};
  },[images,position]);
  useEffect(()=>{
-  if(position!=="cards"||!motion||entering||deck.length<2)return;
-  const timer=setInterval(()=>{if(!document.hidden&&element.current?.closest("main")?.getAttribute("data-active")!=="false"&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches&&(!window.matchMedia("(max-width:600px)").matches||railActive))setActive(value=>(value+1)%deck.length);},hovered||focused?1100:3600+index*450);
+  const mobile=matchMedia("(max-width:600px)").matches;
+  if(!motion||entering||deck.length<=3||!(hovered||focused||(mobile&&railActive)))return;
+  const timer=setInterval(()=>{
+   if(document.hidden||element.current?.closest("main")?.getAttribute("data-active")==="false"||document.documentElement.dataset.navigationOpen==="true"||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+   const state=rotation.current;let candidate=deck[state.cursor%deck.length];
+   for(let attempts=0;attempts<deck.length&&state.images.includes(candidate);attempts++){state.cursor++;candidate=deck[state.cursor%deck.length];}
+   if(state.images.includes(candidate))return;
+   const next=[...state.images];next[state.slot]=candidate;state.images=next;state.slot=(state.slot+1)%next.length;state.cursor++;setSlots(next);
+  },1800);
   return()=>clearInterval(timer);
- },[hovered,focused,deck.length,motion,index,railActive,entering,position]);
+ },[hovered,focused,deck,motion,railActive,entering]);
  const reset=()=>{const el=element.current;if(!el)return;for(const [key,value] of [["--tilt-x","0deg"],["--tilt-y","0deg"],["--art-x","0px"],["--art-y","0px"],["--glare-x","50%"],["--glare-y","0%"]])el.style.setProperty(key,value);};
  const spotlight=()=>{const el=element.current;if(!el)return;const rect=el.getBoundingClientRect(),root=el.closest("main");root?.style.setProperty("--focus-x",`${rect.left+rect.width/2}px`);root?.style.setProperty("--focus-y",`${rect.top+rect.height*.4}px`);};
  const pointer=(event:PointerEvent<HTMLAnchorElement>)=>{
@@ -45,8 +53,9 @@ export function WorldPortal({ title, href, images, note, index, position, motion
   <span className={styles.portalArrival}><span className={styles.portalBody}>
    <span className={styles.portalArt} data-portal-art>
     {position!=="cards"?<span className={styles.coverScene}>
-     {deck.slice(0,3).map((src,i)=><span key={src} className={styles.coverPlane} data-layer={i}><PortfolioImage src={src} alt="" fill sizes="(max-width:600px) 60vw, 240px" priority={i===0} onLoad={i===0?onReady:undefined} onError={i===0?onReady:undefined}/><span className={styles.coverLight}/></span>)}
-    </span>:<>{deck.map((src,i)=>(i===active||i===(active+1)%deck.length||i===(active+deck.length-1)%deck.length)&&<span key={src} data-active={i===active}><PortfolioImage src={src} alt="" fill sizes="(max-width:600px) 68vw, 295px" priority={i===0} onLoad={i===0?onReady:undefined} onError={i===0?onReady:undefined} /></span>)}{position!=="cards"&&<span className={styles.portalGlare}/>}</>}
+     {slots.map((src,i)=><span key={i} className={styles.coverPlane} data-layer={i}><PortalArtwork src={src} priority={i===0} onReady={i===0?onReady:undefined}/><span className={styles.coverLight}/></span>)}
+    </span>:<>{slots.map((src,i)=><span key={i} data-active={i===0}><PortalArtwork src={src} priority={i===0} onReady={i===0?onReady:undefined}/></span>)}</>}
+
 
    </span>
    <span className={styles.portalLabel}><span>0{index+1} / {note}</span><strong>{title}</strong></span>
