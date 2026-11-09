@@ -3,207 +3,24 @@
     "tokens": 2222,
     "categories": 11,
     "variants": 387,
-    "traits": [
+    "rarest": [
       {
-        "name": "Head",
-        "variants": 101,
-        "coverage": 1456,
-        "top": [
-          {
-            "value": "NASA Helmet",
-            "count": 36
-          },
-          {
-            "value": "El Bobro Luchador Hat",
-            "count": 33
-          },
-          {
-            "value": "West Solana Luchador Hat",
-            "count": 31
-          }
-        ]
+        "name": "BOBRO #1210",
+        "tokenId": "1210",
+        "rank": 1,
+        "src": "/collections/bobros/rare-1210.webp"
       },
       {
-        "name": "Clothes",
-        "variants": 90,
-        "coverage": 2213,
-        "top": [
-          {
-            "value": "Bobo T-Shirt",
-            "count": 127
-          },
-          {
-            "value": "BWO Black T-Shirt",
-            "count": 77
-          },
-          {
-            "value": "Bobin Suit",
-            "count": 70
-          }
-        ]
+        "name": "BOBRO #1411",
+        "tokenId": "1411",
+        "rank": 2,
+        "src": "/collections/bobros/rare-1411.webp"
       },
       {
-        "name": "Background",
-        "variants": 61,
-        "coverage": 2213,
-        "top": [
-          {
-            "value": "Bobo",
-            "count": 195
-          },
-          {
-            "value": "Shrimp Pink",
-            "count": 100
-          },
-          {
-            "value": "Solid White",
-            "count": 94
-          }
-        ]
-      },
-      {
-        "name": "Hands",
-        "variants": 30,
-        "coverage": 1118,
-        "top": [
-          {
-            "value": "Green Signal",
-            "count": 118
-          },
-          {
-            "value": "Red Signal",
-            "count": 98
-          },
-          {
-            "value": "Well Well",
-            "count": 75
-          }
-        ]
-      },
-      {
-        "name": "Eyes",
-        "variants": 28,
-        "coverage": 2213,
-        "top": [
-          {
-            "value": "Based Eyes",
-            "count": 471
-          },
-          {
-            "value": "Tired",
-            "count": 124
-          },
-          {
-            "value": "Stoner",
-            "count": 108
-          }
-        ]
-      },
-      {
-        "name": "Face Accessories",
-        "variants": 27,
-        "coverage": 802,
-        "top": [
-          {
-            "value": "Fashion Killa Pink",
-            "count": 89
-          },
-          {
-            "value": "Matrix",
-            "count": 73
-          },
-          {
-            "value": "Nerd Vibe Glasses",
-            "count": 53
-          }
-        ]
-      },
-      {
-        "name": "Mouth",
-        "variants": 24,
-        "coverage": 2213,
-        "top": [
-          {
-            "value": "Based",
-            "count": 489
-          },
-          {
-            "value": "Dumbfussed",
-            "count": 114
-          },
-          {
-            "value": "Whistle",
-            "count": 105
-          }
-        ]
-      },
-      {
-        "name": "Back Stuff",
-        "variants": 14,
-        "coverage": 328,
-        "top": [
-          {
-            "value": "Trust Nobody",
-            "count": 48
-          },
-          {
-            "value": "Bobow",
-            "count": 43
-          },
-          {
-            "value": "RPGD",
-            "count": 42
-          }
-        ]
-      },
-      {
-        "name": "Accessories",
-        "variants": 7,
-        "coverage": 455,
-        "top": [
-          {
-            "value": "Gold Bobo Chain",
-            "count": 92
-          },
-          {
-            "value": "Teeth Necklace",
-            "count": 83
-          },
-          {
-            "value": "Bominick Boretto Cross",
-            "count": 65
-          }
-        ]
-      },
-      {
-        "name": "Bobo Type",
-        "variants": 4,
-        "coverage": 2213,
-        "top": [
-          {
-            "value": "Based-Bobo",
-            "count": 1523
-          },
-          {
-            "value": "Gangster Bobo",
-            "count": 474
-          },
-          {
-            "value": "Black Bobo",
-            "count": 109
-          }
-        ]
-      },
-      {
-        "name": "Special",
-        "variants": 1,
-        "coverage": 9,
-        "top": [
-          {
-            "value": "1/1",
-            "count": 9
-          }
-        ]
+        "name": "BOBRO #884",
+        "tokenId": "884",
+        "rank": 3,
+        "src": "/collections/bobros/rare-884.webp"
       }
     ],
     "source": "Artist-provided collection metadata",
@@ -213,253 +30,24 @@
     "tokens": 2222,
     "categories": 13,
     "variants": 297,
-    "traits": [
+    "rarest": [
       {
-        "name": "Hats",
-        "variants": 83,
-        "coverage": 1474,
-        "top": [
-          {
-            "value": "Emo Hairstyle",
-            "count": 56
-          },
-          {
-            "value": "Headband Red",
-            "count": 53
-          },
-          {
-            "value": "0x Panama Beige",
-            "count": 50
-          }
-        ]
+        "name": "Floatie #1552",
+        "tokenId": "1552",
+        "rank": 1,
+        "src": "/collections/floaties/rare-1552.webp"
       },
       {
-        "name": "Foot Fetish",
-        "variants": 39,
-        "coverage": 2222,
-        "top": [
-          {
-            "value": "Cowboy Boots",
-            "count": 81
-          },
-          {
-            "value": "Sad Purple Slippers",
-            "count": 78
-          },
-          {
-            "value": "Grey Crocs",
-            "count": 77
-          }
-        ]
+        "name": "Floatie #2134",
+        "tokenId": "2134",
+        "rank": 2,
+        "src": "/collections/floaties/rare-2134.webp"
       },
       {
-        "name": "Backgrounds",
-        "variants": 38,
-        "coverage": 2222,
-        "top": [
-          {
-            "value": "Light Green",
-            "count": 111
-          },
-          {
-            "value": "0x Deployer Banner Blue",
-            "count": 101
-          },
-          {
-            "value": "White",
-            "count": 100
-          }
-        ]
-      },
-      {
-        "name": "Floatie",
-        "variants": 30,
-        "coverage": 1438,
-        "top": [
-          {
-            "value": "Green UFO",
-            "count": 90
-          },
-          {
-            "value": "Nandor Cat",
-            "count": 80
-          },
-          {
-            "value": "Simple Yellow Floatie",
-            "count": 79
-          }
-        ]
-      },
-      {
-        "name": "Face Accessories",
-        "variants": 25,
-        "coverage": 1311,
-        "top": [
-          {
-            "value": "Monocle",
-            "count": 63
-          },
-          {
-            "value": "Black Sunglasses",
-            "count": 62
-          },
-          {
-            "value": "Modern Vibe Sunglasses Yellow",
-            "count": 62
-          }
-        ]
-      },
-      {
-        "name": "Waist",
-        "variants": 13,
-        "coverage": 1135,
-        "top": [
-          {
-            "value": "HAM Shorts",
-            "count": 121
-          },
-          {
-            "value": "0x Black Shorts",
-            "count": 108
-          },
-          {
-            "value": "Robinhood Chain Black Shorts",
-            "count": 103
-          }
-        ]
-      },
-      {
-        "name": "Back Gear",
-        "variants": 12,
-        "coverage": 899,
-        "top": [
-          {
-            "value": "Nailed Bat",
-            "count": 134
-          },
-          {
-            "value": "Robinhood Bow",
-            "count": 120
-          },
-          {
-            "value": "SPAS 12",
-            "count": 112
-          }
-        ]
-      },
-      {
-        "name": "Eyes",
-        "variants": 12,
-        "coverage": 2222,
-        "top": [
-          {
-            "value": "Original Eyes",
-            "count": 445
-          },
-          {
-            "value": "UFO Eyes",
-            "count": 195
-          },
-          {
-            "value": "Red Satanic Eyes",
-            "count": 189
-          }
-        ]
-      },
-      {
-        "name": "Body",
-        "variants": 10,
-        "coverage": 2222,
-        "top": [
-          {
-            "value": "Original Body",
-            "count": 488
-          },
-          {
-            "value": "Slate Blue Body",
-            "count": 209
-          },
-          {
-            "value": "Black Body",
-            "count": 204
-          }
-        ]
-      },
-      {
-        "name": "Upper Body",
-        "variants": 10,
-        "coverage": 2222,
-        "top": [
-          {
-            "value": "Original Upper Body",
-            "count": 488
-          },
-          {
-            "value": "Slate Blue Upper Body",
-            "count": 209
-          },
-          {
-            "value": "Black Upper Body",
-            "count": 204
-          }
-        ]
-      },
-      {
-        "name": "Bill",
-        "variants": 9,
-        "coverage": 2222,
-        "top": [
-          {
-            "value": "Original Bill",
-            "count": 734
-          },
-          {
-            "value": "Black Bill",
-            "count": 219
-          },
-          {
-            "value": "Yellow Bill",
-            "count": 202
-          }
-        ]
-      },
-      {
-        "name": "Pendant",
-        "variants": 9,
-        "coverage": 667,
-        "top": [
-          {
-            "value": "NO KOL Pendant",
-            "count": 144
-          },
-          {
-            "value": "Cowboy Tie",
-            "count": 110
-          },
-          {
-            "value": "Silver Rekt Pendant",
-            "count": 72
-          }
-        ]
-      },
-      {
-        "name": "Hand Accessories",
-        "variants": 7,
-        "coverage": 674,
-        "top": [
-          {
-            "value": "Silver Chain",
-            "count": 144
-          },
-          {
-            "value": "Punk Bracelet",
-            "count": 137
-          },
-          {
-            "value": "Silver Watch",
-            "count": 111
-          }
-        ]
+        "name": "Floatie #1168",
+        "tokenId": "1168",
+        "rank": 3,
+        "src": "/collections/floaties/rare-1168.webp"
       }
     ],
     "source": "Artist-provided collection metadata",
@@ -469,241 +57,24 @@
     "tokens": 777,
     "categories": 13,
     "variants": 285,
-    "traits": [
+    "rarest": [
       {
-        "name": "Hats",
-        "variants": 87,
-        "coverage": 521,
-        "top": [
-          {
-            "value": "CAMO Tactical Boonie Hat",
-            "count": 16
-          },
-          {
-            "value": "BWO Cap",
-            "count": 15
-          },
-          {
-            "value": "M1 Helmet",
-            "count": 14
-          }
-        ]
+        "name": "GROYPER #295",
+        "tokenId": "295",
+        "rank": 1,
+        "src": "/collections/groypers/rare-295.webp"
       },
       {
-        "name": "Clothes",
-        "variants": 77,
-        "coverage": 504,
-        "top": [
-          {
-            "value": "Based Red T-Shirt",
-            "count": 37
-          },
-          {
-            "value": "Based Black T-Shirt",
-            "count": 30
-          },
-          {
-            "value": "Based White T-Shirt",
-            "count": 28
-          }
-        ]
+        "name": "GROYPER #346",
+        "tokenId": "346",
+        "rank": 2,
+        "src": "/collections/groypers/rare-346.webp"
       },
       {
-        "name": "Background",
-        "variants": 32,
-        "coverage": 752,
-        "top": [
-          {
-            "value": "G",
-            "count": 54
-          },
-          {
-            "value": "Green",
-            "count": 42
-          },
-          {
-            "value": "Blue",
-            "count": 35
-          }
-        ]
-      },
-      {
-        "name": "Face Accessories",
-        "variants": 15,
-        "coverage": 439,
-        "top": [
-          {
-            "value": "Chrome Blue Sunglasses",
-            "count": 41
-          },
-          {
-            "value": "Broken Nerd Glasses",
-            "count": 40
-          },
-          {
-            "value": "Golden Sunglasses",
-            "count": 38
-          }
-        ]
-      },
-      {
-        "name": "Eyes",
-        "variants": 13,
-        "coverage": 752,
-        "top": [
-          {
-            "value": "Based Eyes",
-            "count": 319
-          },
-          {
-            "value": "Shiner Eyes",
-            "count": 65
-          },
-          {
-            "value": "Angry Eyes",
-            "count": 54
-          }
-        ]
-      },
-      {
-        "name": "Ranks",
-        "variants": 13,
-        "coverage": 752,
-        "top": [
-          {
-            "value": "Civilian",
-            "count": 180
-          },
-          {
-            "value": "Recruit",
-            "count": 92
-          },
-          {
-            "value": "Initiate",
-            "count": 86
-          }
-        ]
-      },
-      {
-        "name": "Pendant",
-        "variants": 12,
-        "coverage": 258,
-        "top": [
-          {
-            "value": "NoKol Pendant",
-            "count": 43
-          },
-          {
-            "value": "Satanic Pendant",
-            "count": 35
-          },
-          {
-            "value": "1337 Military Tag",
-            "count": 34
-          }
-        ]
-      },
-      {
-        "name": "Weapons",
-        "variants": 11,
-        "coverage": 449,
-        "top": [
-          {
-            "value": "Magic Staff",
-            "count": 62
-          },
-          {
-            "value": "Bat",
-            "count": 57
-          },
-          {
-            "value": "RPG",
-            "count": 56
-          }
-        ]
-      },
-      {
-        "name": "Hands",
-        "variants": 9,
-        "coverage": 568,
-        "top": [
-          {
-            "value": "Based Hands",
-            "count": 148
-          },
-          {
-            "value": "Well-Well Hands",
-            "count": 81
-          },
-          {
-            "value": "Pray Hands",
-            "count": 65
-          }
-        ]
-      },
-      {
-        "name": "Mouth",
-        "variants": 8,
-        "coverage": 752,
-        "top": [
-          {
-            "value": "Based Smile",
-            "count": 234
-          },
-          {
-            "value": "Dr.Acula",
-            "count": 97
-          },
-          {
-            "value": "Mfer",
-            "count": 94
-          }
-        ]
-      },
-      {
-        "name": "Facial Hair",
-        "variants": 5,
-        "coverage": 260,
-        "top": [
-          {
-            "value": "Amish Beard",
-            "count": 70
-          },
-          {
-            "value": "Sideburns",
-            "count": 67
-          },
-          {
-            "value": "Handlebar Mustache",
-            "count": 55
-          }
-        ]
-      },
-      {
-        "name": "Body",
-        "variants": 2,
-        "coverage": 752,
-        "top": [
-          {
-            "value": "Based Body",
-            "count": 524
-          },
-          {
-            "value": "OG Body",
-            "count": 228
-          }
-        ]
-      },
-      {
-        "name": "Special",
-        "variants": 1,
-        "coverage": 25,
-        "top": [
-          {
-            "value": "1/1",
-            "count": 25
-          }
-        ]
+        "name": "GROYPER #89",
+        "tokenId": "89",
+        "rank": 3,
+        "src": "/collections/groypers/rare-89.webp"
       }
     ],
     "source": "Artist-provided collection metadata",

@@ -16,7 +16,7 @@
     "marketLabel": "View on OpenSea",
     "accent": "#d4c889",
     "mood": "#253e3c",
-    "description": "A postcard from the summer we never wanted to end. Poolside characters, strange accessories and the feeling of staying in the water until sunset.",
+    "description": "A 2,222-piece postcard from an endless summer. Sun-faded pool toys, dial-up daydreams and pixel graphics meet on Robinhood Chain. Inspired by the PFP of 0xDeployer.",
     "craft": "Character design / Generative collection",
     "source": "Confirmed by the artist; volume snapshot from OpenSea.",
     "artworks": [
@@ -47,24 +47,25 @@
       "currency": "USDG",
       "asOf": "2026-11-09",
       "source": "https://opensea.io/collection/floatiespoolchan"
-    }
+    },
+    "descriptionSource": "https://poolchan.vercel.app"
   },
   {
     "id": "groypers",
     "name": "Groypers Alpha Squadron",
     "shortName": "Groypers",
-    "subtitle": "777 recruits. One squadron.",
+    "subtitle": "The signal. The squadron. The amplifier.",
     "chain": "Solana",
     "supply": 777,
-    "minted": 478,
-    "asOf": "2026-11-05",
-    "soldOut": false,
+    "minted": 777,
+    "asOf": "2026-11-09",
+    "soldOut": true,
     "website": "https://gas-nu-six.vercel.app",
     "marketplace": "https://launchmynft.io/mint/groypersquadron",
     "marketLabel": "View on LaunchMyNFT",
     "accent": "#b5bd8e",
     "mood": "#27352a",
-    "description": "A squadron of 777 hand-drawn recruits from the $GROYPER universe. Distinct personalities, unexpected gear and a shared visual identity.",
+    "description": "777 unique hand-drawn NFT recruits from the $GROYPER universe. The squadron gives the token a visual identity, supporting its visibility and recognition. All 777 recruits are deployed.",
     "craft": "Hand-drawn characters / Generative collection",
     "source": "Mint totals reported by LaunchMyNFT.",
     "artworks": [
@@ -128,13 +129,14 @@
         "label": "Groypers · Artwork 12",
         "source": "https://gas-nu-six.vercel.app/nfts/images/nft_12.png"
       }
-    ]
+    ],
+    "descriptionSource": "https://gas-nu-six.vercel.app"
   },
   {
     "id": "bobros",
     "name": "Bobros Cartel",
     "shortName": "Bobros",
-    "subtitle": "Paper cuts. Real-world attitude.",
+    "subtitle": "Unemployed dream. Billionaire energy.",
     "chain": "Solana",
     "supply": 2222,
     "minted": 264,
@@ -145,7 +147,7 @@
     "marketLabel": "View on LaunchMyNFT",
     "accent": "#c7ab8e",
     "mood": "#3c2d27",
-    "description": "2,222 mixed-media characters inspired by BOBO. Sketches, digital paper-cut collage and sampled real-world textures turn each portrait into its own little world.",
+    "description": "2,222 mixed-media BOBROS built from hand-drawn sketches, digital paper-cut collage and real-world textures. Inspired by BOBO: a meme-first PFP club for timeline chaos and inside jokes.",
     "craft": "Sketching / Paper-cut collage / Texture sampling",
     "source": "Mint totals reported by LaunchMyNFT.",
     "artworks": [
@@ -179,6 +181,7 @@
         "label": "Bobros · Artwork 06",
         "source": "https://bobroscartel.vercel.app/nfts/nft_1626.png"
       }
-    ]
+    ],
+    "descriptionSource": "https://bobroscartel.vercel.app"
   }
 ]
