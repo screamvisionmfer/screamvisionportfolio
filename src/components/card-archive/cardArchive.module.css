@@ -333,3 +333,5 @@
 
 .boosterShelf:focus-visible {outline:none;}
 .boosterShelf:focus-visible .shelfPack[data-selected="true"] {outline:1px solid #baa77b80;outline-offset:12px;}
+
+.openingControls{position:absolute;z-index:6;left:50%;bottom:-65px;transform:translateX(-50%);width:min(320px,calc(100vw - 40px));display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;}.openingControls .sealHint{position:static;transform:none;display:block;white-space:normal;max-width:100%;font:10px/1.5 monospace;letter-spacing:.08em;}.openingControls .skipOpening{position:static;transform:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;max-width:100%;min-height:44px;padding:10px 14px;white-space:nowrap;font:11px/1.4 monospace;letter-spacing:.06em;color:#c5b48d;}.openingControls .skipOpening>span{font:16px Arial;}@media(max-width:600px){.openingControls{position:fixed;bottom:max(30px,env(safe-area-inset-bottom));}.openingControls .sealHint{font-size:10px;}.openingControls .skipOpening{font-size:11px;}}

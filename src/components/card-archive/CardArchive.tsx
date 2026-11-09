@@ -82,8 +82,10 @@ export function CardArchive() {
         {!fallback && <BoosterScene key={pack.id} pack={pack} opening={mode === "opening"} onReady={() => setReady(true)} onComplete={reveal} onUnavailable={unavailable} />}
         <div className={styles.fallbackPack} data-visible={!ready || fallback} data-opening={mode === "opening" && fallback} aria-hidden="true"><span /><div><PortfolioImage src={pack.artwork} alt="" fill sizes="300px" priority /></div><span /></div>
         <button className={styles.packHit} aria-label={`Open ${pack.title} booster`} disabled={mode === "opening"} onClick={open} />
-        <div className={styles.sealHint} aria-live="polite"><i /><span>{mode === "opening" ? ready ? "Breaking the seal. Your collection awaits." : "Preparing your pack…" : "A whole world. Under one seal."}</span></div>
-        {mode === "opening" && <button className={styles.skipOpening} onClick={reveal}>Skip to collection ↗</button>}
+        <div className={styles.openingControls}>
+          <div className={styles.sealHint} role="status"><span>{ready ? "Opening pack…" : "Preparing pack…"}</span></div>
+          <button className={styles.skipOpening} onClick={reveal}>Skip opening <span aria-hidden="true">↗</span></button>
+        </div>
       </section>}
       {unlocked && <>
         <aside className={styles.packDock}><button onClick={reset} aria-label="Repack collection"><PortfolioImage src={mediaSource(pack.artwork)} alt={`${pack.title} opened pack`} width={68} height={88} /><span>← Packs</span></button><span className={styles.dockLine} /><span>{pad(pack.cards.length)} ARTWORKS</span></aside>
