@@ -24,7 +24,7 @@
       }
     ],
     "source": "Artist-provided collection metadata",
-    "note": "Rarity Rank is excluded. Variants are distinct category/value pairs, including explicit None values."
+    "note": "Rarest artworks follow the explicit Rarity Rank in metadata (1 is rarest). Rank is excluded only from trait totals. Variants are distinct category/value pairs, including explicit None values."
   },
   "floaties": {
     "tokens": 2222,
@@ -51,7 +51,7 @@
       }
     ],
     "source": "Artist-provided collection metadata",
-    "note": "Rarity Rank is excluded. Variants are distinct category/value pairs, including explicit None values."
+    "note": "Rarest artworks follow the explicit Rarity Rank in metadata (1 is rarest). Rank is excluded only from trait totals. Variants are distinct category/value pairs, including explicit None values."
   },
   "groypers": {
     "tokens": 777,
@@ -78,6 +78,6 @@
       }
     ],
     "source": "Artist-provided collection metadata",
-    "note": "Rarity Rank is excluded. Variants are distinct category/value pairs, including explicit None values."
+    "note": "Rarest artworks follow the explicit Rarity Rank in metadata (1 is rarest). Rank is excluded only from trait totals. Variants are distinct category/value pairs, including explicit None values."
   }
 }

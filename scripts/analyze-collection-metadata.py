@@ -11,6 +11,7 @@ def analyze(archive, expected):
     traits = collections.defaultdict(collections.Counter)
     names = set()
     ranked = []
+    ranks = set()
     with zipfile.ZipFile(archive) as source:
         files = [entry for entry in source.infolist() if entry.filename.lower().endswith(".json") and not entry.filename.startswith("__MACOSX/")]
         if len(files) != expected:
@@ -24,8 +25,15 @@ def analyze(archive, expected):
                 raise ValueError("Missing or duplicate token name")
             names.add(name)
             rank = next((a.get("value") for a in item.get("attributes", []) if a.get("trait_type") == "Rarity Rank"), None)
-            if isinstance(rank, (int, float)) and rank > 0:
+            if rank is not None:
+                rank = int(rank)
+                if rank < 1 or rank > expected or rank in ranks:
+                    raise ValueError(f"Invalid or duplicate rarity rank: {rank}")
+                ranks.add(rank)
                 token_id = Path(entry.filename).stem.removeprefix("nft_")
+                image_id = Path(item.get("image", "")).stem.removeprefix("nft_")
+                if image_id != token_id:
+                    raise ValueError(f"Metadata/image ID mismatch: {name}")
                 ranked.append({"name": name, "tokenId": token_id, "rank": rank})
             seen = set()
             for attribute in item.get("attributes", []):
@@ -38,7 +46,7 @@ def analyze(archive, expected):
                 seen.add(category)
                 traits[category][str(value)] += 1
     categories = [{"name": name, "variants": len(values), "coverage": sum(values.values()), "top": [{"value": value, "count": count} for value, count in values.most_common(3)]} for name, values in sorted(traits.items(), key=lambda pair: (-len(pair[1]), pair[0]))]
-    return {"tokens": len(names), "categories": len(categories), "variants": sum(item["variants"] for item in categories), "rarest": sorted(ranked, key=lambda item: item["rank"])[:3], "source": "Artist-provided collection metadata", "note": "Rarity Rank is excluded. Variants are distinct category/value pairs, including explicit None values."}
+    return {"tokens": len(names), "categories": len(categories), "variants": sum(item["variants"] for item in categories), "rarest": sorted(ranked, key=lambda item: item["rank"])[:3], "source": "Artist-provided collection metadata", "note": "Rarest artworks follow the explicit Rarity Rank in metadata (1 is rarest). Rank is excluded only from trait totals. Variants are distinct category/value pairs, including explicit None values."}
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
