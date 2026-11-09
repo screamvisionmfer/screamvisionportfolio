@@ -36,3 +36,27 @@
 @media(min-width:701px) and (max-height:680px){.hero{min-height:620px;}.stage{inset:100px 0 105px;}.identity,.heroLinks{bottom:160px;}.identity h1{font-size:42px;}.gallery>button{width:min(48svh,32vw);}.selectionMeta{margin-top:12px;}.heroFooter{bottom:15px;}}
 @media(max-width:700px){.heroLinks{order:2;width:100%;margin-top:18px;gap:2px;}.heroLinks a{font-size:11px;min-height:43px;}.heroFooter{order:3;}.controls{gap:5px;width:100%;}.controls>button{width:36px;height:44px;}.artPicker{gap:4px;}.artPicker>button{width:36px!important;height:36px!important;min-height:36px;}.selectionMeta{gap:12px;font-size:8px;margin-top:13px;}.identity{margin-top:22px;}.identity h1{font-size:48px;}.identity>span{font-size:14px;}.stage{order:0;}.heroFooter{margin-top:18px;}}
 @media(prefers-reduced-motion:reduce){.selectionMeta{animation:none;}.artPicker>button{transition:none;}}
+
+/* Full-width dissolve keeps the world backdrop from becoming a boxed panel. */
+.about{max-width:none;width:100%;background:none;padding:145px max(6vw,calc((100vw - 1270px)/2)) 60px;isolation:isolate;}
+.about:before{content:"";position:absolute;z-index:-1;inset:-240px 0 0;pointer-events:none;background:linear-gradient(to bottom,transparent 0%,#080a0910 70px,#080a0959 180px,#080a09bd 330px,#080a09f5 510px,#080a09 700px);}
+.intelIntro{grid-template-columns:1.1fr 1fr;gap:7vw;min-height:440px;align-items:center;}
+.intelIntro .sectionCode{font-size:10px;line-height:1.8;color:#a69775;margin-bottom:28px;max-width:450px;}
+.intelIntro h2{font-size:clamp(37px,4.2vw,67px);font-weight:500;text-transform:none;line-height:1.04;letter-spacing:-.05em;max-width:650px;margin-bottom:30px;text-wrap:balance;}
+.intelCopy{font-size:clamp(16px,1.2vw,19px);line-height:1.8;color:#ac9f83;max-width:540px;}
+.intelDetails{display:flex;flex-wrap:wrap;gap:10px 22px;margin:28px 0 14px;max-width:500px;font:10px/1.8 monospace;text-transform:uppercase;letter-spacing:.06em;color:#8b7e63;}
+.intelDetails>span:last-child{flex-basis:100%;color:#b3a384;}
+.intelSource{color:#b7a37d;gap:15px;transition:color .3s,transform .3s;}.intelSource:hover{transform:translateX(4px);}
+.intelArt{height:auto;aspect-ratio:1.13;width:100%;max-width:550px;justify-self:center;perspective:1200px;}
+.intelArt:before{content:"";position:absolute;inset:5% -10%;background:radial-gradient(ellipse,var(--world-mood),transparent 68%);opacity:.6;filter:blur(40px);pointer-events:none;}
+.intelArt>button{position:absolute;width:72%;aspect-ratio:1;left:12%;top:10%;padding:0;border:0;background:none;box-shadow:0 30px 60px #0006;transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .5s,opacity .5s;}
+.intelArt>button img{object-fit:contain;}
+.intelArt>button[data-layer="0"]{z-index:3;transform:translate(-9%,5%) rotate(-7deg);}
+.intelArt>button[data-layer="1"]{z-index:2;transform:translate(23%,-9%) rotate(9deg) scale(.87);filter:brightness(.65);}
+.intelArt>button[data-layer="2"]{z-index:1;transform:translate(6%,-23%) rotate(-2deg) scale(.75);filter:brightness(.4);}
+.intelArt>button>span{position:absolute;bottom:0;left:0;right:0;padding:35px 12px 12px;background:linear-gradient(transparent,#080a09d9);font:9px/1.5 monospace;text-align:left;letter-spacing:.05em;opacity:0;transition:opacity .4s;}
+.intelArt>button:hover,.intelArt>button:focus-visible{z-index:4;transform:translate(-3%,-2%) rotate(0deg) scale(1.025);filter:brightness(1);}
+.intelArt>button:hover>span,.intelArt>button:focus-visible>span{opacity:1;}
+.statsHeading{margin-top:85px;}
+@media(max-width:700px){.about{padding:90px 22px 40px;}.about:before{inset:-160px 0 0;background:linear-gradient(transparent,#080a0999 220px,#080a09 470px);}.intelIntro{grid-template-columns:1fr;gap:30px;min-height:0;}.intelIntro h2{font-size:43px;max-width:360px;line-height:1.06;margin-bottom:24px;}.intelIntro .sectionCode{font-size:9px;max-width:300px;margin-bottom:22px;}.intelCopy{font-size:16px;line-height:1.8;}.intelDetails{font-size:9px;margin-top:23px;gap:7px 20px;}.intelArt{width:95%;max-width:380px;aspect-ratio:1.12;margin:20px auto 0;height:auto;}.intelArt>button>span{font-size:8px;}.statsHeading{margin-top:48px;}}
+@media(prefers-reduced-motion:reduce){.intelArt>button{transition:none;}.intelSource{transition:none;}}
