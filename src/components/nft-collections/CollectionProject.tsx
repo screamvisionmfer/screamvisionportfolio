@@ -8,6 +8,7 @@ import traitCatalog from "@/data/collection-traits.json";
 import { SiteNav } from "@/components/site-nav/SiteNav";
 import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
 import { haptic } from "@/components/haptics/haptics";
+import { CollectionSlideshow } from "./CollectionSlideshow";
 import { CollectionMetric } from "./CollectionMetric";
 import { useCollectionMotion } from "./useCollectionMotion";
 import styles from "./collectionsArchive.module.css";
@@ -50,7 +51,7 @@ export function CollectionProject({collection}:{collection:NftCollection}){
   <section ref={about} className={page.about} data-revealed={revealed} aria-labelledby="collection-about-title">
    <div className={page.intelIntro}>
     <div><p className={page.sectionCode}>{collection.name.toUpperCase()} / THE COLLECTION</p><h2 id="collection-about-title">{collection.subtitle}</h2><p className={page.intelCopy}>{collection.description}</p><div className={page.intelDetails}><span>{collection.chain}</span><span>{number(collection.supply)} original artworks</span><span>{collection.craft}</span></div><a className={page.intelSource} href={collection.descriptionSource??collection.website} target="_blank" rel="noopener noreferrer">FROM THE OFFICIAL COLLECTION SITE ↗</a></div>
-    <div className={page.intelArt}>{traits.rarest.map((art,index)=><button key={art.src} data-layer={index} onClick={()=>setZoom(index)} aria-label={`Inspect featured ${art.name}`}><Image src={art.src} alt={art.name} fill sizes="(max-width:700px) 65vw, 400px" unoptimized/><span>#{art.rank.toString().padStart(2,"0")} / {art.name}</span></button>)}</div>
+    <CollectionSlideshow artworks={traits.rarest} onInspect={setZoom}/>
    </div>
    <div className={page.statsHeading}><span>COLLECTION / STATUS</span><button onClick={()=>setStatsRun(value=>value+1)}>REPLAY SCAN ↻</button></div>
    <div className={page.intelMetrics} data-extended={stat.holders!==undefined||!!volume} aria-label="Collection metrics" key={statsRun}>
