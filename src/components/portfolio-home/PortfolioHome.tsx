@@ -30,6 +30,8 @@ function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMoti
 export function PortfolioHome(){
  const [vibration,setVibration]=useState(true),[vibrationSupported,setVibrationSupported]=useState(false);
  useEffect(()=>{setVibration(readHaptics());setVibrationSupported(supportsHaptics());},[]);
+ const [returning,setReturning]=useState(false);
+ useEffect(()=>{setReturning(document.documentElement.dataset.roomReturn==="true");},[]);
  const [loadProgress,setLoadProgress]=useState(0),[introStage,setIntroStage]=useState(0),[portalCount,setPortalCount]=useState(0);
  const loadedPortals=useRef(new Set<number>());
  const [bootProgress,setBootProgress]=useState(0),[bootComplete,setBootComplete]=useState(false);
@@ -40,6 +42,7 @@ export function PortfolioHome(){
  const [motion,setMotion]=useState(true),[retro,setRetro]=useState(false),[settings,setSettings]=useState(false),[resetVersion,setResetVersion]=useState(0);
  useEffect(()=>{bootTarget.current={ready,progress:loadProgress};},[ready,loadProgress]);
  useEffect(()=>{
+  if(returning)return;
   const start=performance.now();let previous=start,value=0,frame=0;
   const tick=(now:number)=>{
    const delta=Math.min(64,now-previous);previous=now;
@@ -49,13 +52,14 @@ export function PortfolioHome(){
    frame=requestAnimationFrame(tick);
   };
   frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame);
- },[]);
+ },[returning]);
  useEffect(()=>{
+  if(returning){if(ready){setBootComplete(true);setIntroStage(3);}return;}
   if(!bootComplete)return;
   const reveal=setTimeout(()=>setIntroStage(1),180);
   const timer=setTimeout(()=>setIntroStage(2),1030);
   return()=>{clearTimeout(reveal);clearTimeout(timer);};
- },[bootComplete]);
+ },[bootComplete,returning,ready]);
  useEffect(()=>{
   if(introStage!==2||portalCount<sections.length)return;
   const timer=setTimeout(()=>setIntroStage(3),350);
@@ -83,7 +87,7 @@ export function PortfolioHome(){
   if(leaving)return;router.prefetch(href);setLeaving(true);
   window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:href}));
  };
- return <main className={styles.room} data-ready={ready} data-stage={introStage} aria-busy={introStage<3} data-lit={lit} data-motion={motion} data-retro={retro} data-leaving={leaving}>
+ return <main className={styles.room} data-ready={ready} data-returning={returning} data-stage={introStage} aria-busy={introStage<3} data-lit={lit} data-motion={motion} data-retro={retro} data-leaving={leaving}>
   <h1 className={styles.srOnly}>SCREAM VISION — Cover art, illustrations and collectible worlds</h1>
   <div className={styles.scene}><RoomScene lit={lit} motion={motion} gyro={phone.enabled} onGyroData={phone.onData} resetVersion={resetVersion} onReady={()=>setReady(true)} onProgress={setLoadProgress}/></div>
   <div className={styles.focusVeil} aria-hidden="true"/>

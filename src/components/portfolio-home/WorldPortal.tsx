@@ -11,8 +11,6 @@ export function WorldPortal({ title, href, images, note, index, position, motion
  const [slots,setSlots]=useState<string[]>([]),[hovered,setHovered]=useState(false),[focused,setFocused]=useState(false);
  const rotation=useRef({cursor:3,slot:0,images:[] as string[]});
  const element=useRef<HTMLAnchorElement>(null),[entering,setEntering]=useState(false);
- const departure=useRef<ReturnType<typeof setTimeout>|null>(null);
- useEffect(()=>()=>{if(departure.current)clearTimeout(departure.current);},[]);
  useEffect(()=>{
   const shuffled=[...new Set(images)];
   for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
@@ -49,7 +47,7 @@ export function WorldPortal({ title, href, images, note, index, position, motion
  };
  return <Link ref={element} href={href} className={styles.world} style={{"--portal-index":index} as CSSProperties} data-position={position} data-scene={position==="cards"?"cards":"layered"} data-cinematic-link="true" data-awake={hovered||focused||railActive} data-entering={entering} data-rail-active={railActive} aria-label={`Explore ${title}`}
   onPointerEnter={()=>{spotlight();setHovered(true);}} onPointerMove={pointer} onPointerLeave={()=>{setHovered(false);reset();}} onFocus={()=>{spotlight();setFocused(true);}} onBlur={()=>{setFocused(false);reset();}}
-  onClick={event=>{if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();if(entering)return;setEntering(true);if(motion&&!matchMedia("(prefers-reduced-motion: reduce)").matches)departure.current=setTimeout(()=>onEnter(href),650);else onEnter(href);}}>
+  onClick={event=>{if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();if(entering)return;spotlight();reset();setEntering(true);onEnter(href);}}>
   <span className={styles.portalArrival}><span className={styles.portalBody}>
    <span className={styles.portalArt} data-portal-art>
     {position!=="cards"?<span className={styles.coverScene}>

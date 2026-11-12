@@ -13,8 +13,8 @@ export function RoomArrival(){
    const url=new URL(href,window.location.href);
    if(url.origin!==location.origin||url.pathname===location.pathname)return;
    if(matchMedia("(prefers-reduced-motion: reduce)").matches){router.push(href);return;}
-   busy.current=true;router.prefetch(href);setPhase("out");
-   timer.current=setTimeout(()=>router.push(href),550);
+   busy.current=true;router.prefetch(href);document.documentElement.dataset.sceneJourney=location.pathname==="/"?"depart":"page";document.documentElement.dataset.roomReturn=url.pathname==="/"?"true":"false";setPhase("out");
+   timer.current=setTimeout(()=>router.push(href),location.pathname==="/"?800:450);
   };
   let downX=0,downY=0,dragged=false;
   const down=(event:PointerEvent)=>{downX=event.clientX;downY=event.clientY;dragged=false;};
@@ -32,10 +32,10 @@ export function RoomArrival(){
  },[router]);
  useLayoutEffect(()=>{
   if(previous.current===pathname)return;
-  previous.current=pathname;busy.current=false;
+  const returning=pathname==="/";previous.current=pathname;busy.current=false;document.documentElement.dataset.roomReturn=returning?"true":"false";document.documentElement.dataset.sceneJourney=returning?"return":"arrive";
   if(timer.current)clearTimeout(timer.current);
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){setPhase("idle");return;}
-  setPhase("in");timer.current=setTimeout(()=>setPhase("idle"),650);
+  setPhase("in");timer.current=setTimeout(()=>{setPhase("idle");delete document.documentElement.dataset.sceneJourney;},550);
  },[pathname]);
  return phase!=="idle"?<div className={styles.routeCurtain} data-phase={phase} aria-hidden="true"/>:null;
 }
