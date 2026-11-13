@@ -35,3 +35,5 @@
 @media(min-width:801px){.objectTools{bottom:auto;top:calc(48% + min(21.5vw,245px) + 30px);}.deckLabel,.slots small{font-size:11px;}.slots em{font-size:10px;}}
 @media(max-height:800px) and (min-width:801px){.stage{min-height:540px;}.page{min-height:720px;}.objectTools{top:calc(46% + 195px);}}
 @media(min-width:1600px){.objectTools{top:calc(49% + 275px);}}
+
+.hubBack{position:absolute;top:104px;left:6vw;z-index:4;font:11px monospace;letter-spacing:.08em;color:#b5a17b;text-decoration:none;min-height:44px;display:flex;align-items:center;}@media(max-width:800px){.hubBack{top:75px;left:23px;}.heading{padding-top:140px;}}
