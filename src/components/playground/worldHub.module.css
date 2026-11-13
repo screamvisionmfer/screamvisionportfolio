@@ -46,3 +46,18 @@
 @media(max-width:800px){.topStatus{display:none;}.selection p{font-size:10px;letter-spacing:.04em;}.footer nav button{font-size:10px;}.footer nav button small{font-size:9px;}.roomLink{font-size:10px;}.actions .enter{font-size:11px;}}
 
 .actions .enter{justify-content:center;gap:0;min-width:185px;transition:color .25s,letter-spacing .3s;}.actions .enter:hover{letter-spacing:.14em;}
+
+/* Mobile controls participate in layout rather than hanging below a fixed canvas. */
+@media(max-width:800px){
+ .page{height:100dvh;min-height:0;display:flex;flex-direction:column;padding:110px 22px calc(16px + env(safe-area-inset-bottom,0px));overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;}
+ .heading{position:relative;inset:auto;flex-shrink:0;margin-bottom:18px;}.heading p{margin-bottom:12px;}.heading h1{font-size:clamp(33px,9.8vw,42px);}
+ .worldSelect{position:relative;inset:auto;display:flex;flex-direction:column;flex:1 0 360px;min-height:360px;}
+ .stage{position:relative;inset:auto;flex:1;min-height:170px;width:calc(100% + 44px);margin-inline:-22px;}
+ .selection{position:relative;inset:auto;flex-shrink:0;margin-top:16px;}.selection p{margin-bottom:12px;flex-wrap:wrap;row-gap:3px;}.selection h2{font-size:clamp(31px,9.5vw,42px);margin-bottom:12px;}.selection>span{font-size:12px;line-height:1.65;}
+ .actions{position:relative;inset:auto;transform:none;justify-content:center;flex-shrink:0;margin-top:18px;}.actions .enter{min-height:48px;}
+ .footer{position:relative;inset:auto;flex-shrink:0;gap:14px;margin-top:22px;align-items:center;}.footer nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;flex:1;min-width:0;}.footer nav button{min-width:0;min-height:52px;align-items:center;font-size:10px;padding:8px 0 12px;}.footer nav button span{max-width:none;overflow-wrap:normal;}.footer nav button small{flex-shrink:0;}.footer>span:last-child{flex-shrink:0;}
+}
+@media(max-width:800px) and (max-height:690px){.page{padding-top:92px;}.heading{margin-bottom:10px;}.heading p{font-size:8px;margin-bottom:10px;}.heading h1{font-size:33px;}.worldSelect{flex-basis:330px;min-height:330px;}.stage{min-height:150px;}.selection{margin-top:10px;}.selection h2{font-size:32px;}.selection>span{font-size:11px;}.actions{margin-top:10px;}.footer{margin-top:14px;}}
+
+@media(max-width:800px){.worldSelect{flex-basis:auto;}.stage{flex-basis:170px;}}
+@media(max-width:800px) and (max-height:690px){.worldSelect{flex-basis:auto;}.stage{flex-basis:150px;}}
