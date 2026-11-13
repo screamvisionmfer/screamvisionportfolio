@@ -37,3 +37,6 @@
 @media(min-width:1600px){.objectTools{top:calc(49% + 275px);}}
 
 .hubBack{position:absolute;top:104px;left:6vw;z-index:4;font:11px monospace;letter-spacing:.08em;color:#b5a17b;text-decoration:none;min-height:44px;display:flex;align-items:center;}@media(max-width:800px){.hubBack{top:75px;left:23px;}.heading{padding-top:140px;}}
+
+.comicPage{min-height:0;overflow:hidden;}.comicPage .stage{height:100svh;min-height:0;max-height:none;}.comicPage .objectStage{position:absolute;left:50%;top:47%;width:min(33vw,350px);height:min(44vw,450px);margin:0;transform:translate(-50%,-50%);}.comicPage .orbit{left:50%;top:47%;width:min(55vw,650px);}.comicCaption{position:absolute;left:22px;right:22px;bottom:6vh;text-align:center;}.comicCaption h1{font-size:clamp(24px,2.5vw,36px);letter-spacing:-.045em;font-weight:750;margin:0 0 14px;}.comicCaption>span{font:11px/1.6 monospace;letter-spacing:.05em;color:#9c8d70;}
+@media(max-width:800px){.comicPage .objectStage{left:50%;top:47%;width:min(61vw,270px);height:min(81vw,360px);}.comicPage .orbit{top:47%;width:90vw;}.comicCaption{bottom:8vh;}.comicCaption h1{font-size:27px;}.comicPage .hubBack{top:80px;}}

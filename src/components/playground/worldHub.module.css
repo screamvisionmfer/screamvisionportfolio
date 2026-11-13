@@ -44,3 +44,5 @@
 
 @media(min-width:801px){.world{height:90%;}.stage{bottom:145px;}}
 @media(max-width:800px){.topStatus{display:none;}.selection p{font-size:10px;letter-spacing:.04em;}.footer nav button{font-size:10px;}.footer nav button small{font-size:9px;}.roomLink{font-size:10px;}.actions .enter{font-size:11px;}}
+
+.actions .enter{justify-content:center;gap:0;min-width:185px;transition:color .25s,letter-spacing .3s;}.actions .enter:hover{letter-spacing:.14em;}

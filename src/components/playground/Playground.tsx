@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { SiteNav } from "@/components/site-nav/SiteNav";
 import { haptic } from "@/components/haptics/haptics";
@@ -46,10 +45,9 @@ export function Playground(){
     {worlds.map((world,index)=>{let offset=(index-selected+worlds.length)%worlds.length;if(offset>1)offset-=worlds.length;return <button key={world.id} className={styles.world} data-offset={offset} data-kind={world.id} style={{"--local-accent":world.color} as CSSProperties} tabIndex={offset===0?0:-1} aria-label={offset===0?`Open ${world.title}`:`Select ${world.title}`} onClick={()=>{if(swiped.current){swiped.current=false;return;}if(offset===0)open();else{setSelected(index);haptic("select");}}}><WorldArt kind={world.id}/><span className={styles.sideLabel}>{world.title}<small>{world.status}</small></span></button>;})}
    </div>
    <div className={styles.selection} key={current.id}><p><i/>{current.status}<span>/ {current.type}</span></p><h2>{current.title}</h2><span>{current.note}</span></div>
-   <div className={styles.actions}><button onClick={()=>move(-1)} aria-label="Previous world">←</button><button className={styles.enter} onClick={open}>{current.href?"ENTER WORLD":"EXPLORE STUDY"}<span>↗</span></button><button onClick={()=>move(1)} aria-label="Next world">→</button></div>
+   <div className={styles.actions}><button className={styles.enter} onClick={open}>{current.href?"ENTER WORLD":"EXPLORE STUDY"}</button></div>
   </section>
   <footer className={styles.footer}><span>DRAG / SCROLL TO SELECT</span><nav aria-label="World selection">{worlds.map((world,index)=><button key={world.id} aria-label={`Select ${world.title}`} aria-current={selected===index} onClick={()=>{if(!entering){setSelected(index);haptic("tick");}}}><small>0{index+1}</small><span>{world.title}</span><i/></button>)}</nav><span>{String(selected+1).padStart(2,"0")} <i>/ 03</i></span></footer>
   {preview&&<div className={styles.overlay} onClick={event=>{if(event.target===event.currentTarget)setPreview(false);}}><section ref={dialog} className={styles.study} role="dialog" aria-modal="true" aria-labelledby="study-title" onKeyDown={event=>{if(event.key==="Escape")setPreview(false);}}><button className={styles.close} aria-label="Close study" onClick={()=>setPreview(false)}>×</button><p>PLAYGROUND / VISUAL PROTOTYPE</p><div className={styles.studyArt}><WorldArt kind={current.id}/></div><div className={styles.studyText}><h2 id="study-title">{current.title}</h2><p>A visual study for the hub. No project has been released here yet.</p><button onClick={()=>setPreview(false)}>← BACK TO WORLD SELECT</button></div></section></div>}
-  <Link className={styles.roomLink} href="/">← THE ROOM</Link>
  </main>;
 }
