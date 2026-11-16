@@ -251,3 +251,7 @@ html[data-scene-journey="depart"] .routeCurtain[data-phase="out"]{animation:scen
 @media(min-width:601px){.world[data-position="cards"],.world[data-position="collections"]{top:40%;}.world[data-position="illustrations"],.world[data-position="playground"]{top:63%;}.world[data-position="covers"] .portalArt,.world[data-position="cards"] .portalArt{aspect-ratio:1.85;}.world[data-position="covers"] .coverPlane{width:54%;left:23%;top:0;}.world[data-position] .portalLabel{padding-top:10px;gap:6px;}.world[data-position] .portalLabel>span{font-size:8px;letter-spacing:.09em;}.world[data-position] .portalLabel strong{font-size:clamp(18px,1.7vw,25px);}}
 
 @media(min-width:601px){.world[data-position="cards"],.world[data-position="collections"]{top:39%;}.world[data-position="illustrations"],.world[data-position="playground"]{top:64%;}.world[data-position="covers"] .portalArt{aspect-ratio:2.1;}.world[data-position="covers"] .coverPlane{width:48%;left:26%;}}
+
+html[data-scene-journey="menu"] .routeCurtain[data-phase="out"]{animation:routeOut .3s ease both;}
+
+html[data-scene-journey="menu-arrive"] .routeCurtain[data-phase="in"]{animation-duration:.35s;}
