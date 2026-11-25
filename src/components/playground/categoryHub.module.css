@@ -1,26 +1,15 @@
-.page{min-height:100svh;background:#080a09;color:#c9ba90;isolation:isolate;overflow:hidden;--accent:#d7bd71}
-.ambient{position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 50% 55%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 65%);transition:background .7s}
-.hub{max-width:1600px;margin:auto;padding:145px 6vw 35px;transition:opacity .45s,transform .6s}
-.header p,.footer,.number,.caption small,.category header p,.back,.project small{font-family:monospace;letter-spacing:.13em;font-size:11px}
-.header p{opacity:.6;margin:0 0 15px}.header h1{font-size:clamp(42px,6vw,94px);letter-spacing:-.065em;line-height:.95;margin:0 0 18px;font-weight:900}
-.header h1 span{font-size:.4em;vertical-align:top;margin-left:14px;color:var(--accent)}.header>span{font-size:15px;opacity:.65}
-.panels{display:flex;height:clamp(360px,49vh,650px);gap:8px;margin:46px -1.5vw 35px;transform:skewX(-7deg)}
-.panel{position:relative;isolation:isolate;flex:1;min-width:0;border:0;padding:0;overflow:hidden;background:#151913;cursor:pointer;text-align:left;color:#e9ddba;transition:flex .65s cubic-bezier(.2,.7,.2,1),transform .65s,filter .6s;filter:saturate(.6);animation:arrive .8s both;animation-delay:calc(var(--order)*90ms)}
-.panel[data-selected=true]{flex:1.55;filter:saturate(1);transform:translateY(-12px)}
-.picture{position:absolute;inset:-3% -24%;background-size:cover;background-position:center;transform:skewX(7deg) scale(1.07);transition:transform 1s,filter .65s;filter:grayscale(.55)}
-.panel[data-selected=true] .picture{transform:skewX(7deg) scale(1.15);filter:grayscale(0)}
-.wash{position:absolute;inset:0;background:linear-gradient(0deg,#050706 0%,transparent 65%),linear-gradient(0deg,color-mix(in srgb,var(--color) 30%,transparent),#0002);mix-blend-mode:multiply}
-.number{position:absolute;top:22px;left:25px;transform:skewX(7deg);background:#080a0980;padding:7px}
-.caption{position:absolute;bottom:30px;left:23px;right:8px;transform:skewX(7deg);text-shadow:0 2px 20px #000}
-.caption small{display:block;margin-bottom:12px;font-size:10px;opacity:.8}
-.caption strong{font-size:clamp(24px,3.1vw,49px);font-weight:900;text-transform:uppercase;letter-spacing:-.065em;display:block}
-.footer{display:flex;justify-content:space-between;gap:20px;opacity:.45;font-size:10px}
-.panel:focus-visible,.back:focus-visible,.project:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
-.page[data-entering=true] .hub{opacity:0;transform:scale(1.035)}
-.category{max-width:1300px;margin:auto;padding:145px 6vw 60px;animation:arrive .7s both}
-.back{color:inherit;background:none;border:0;padding:12px 0;cursor:pointer}.category header{margin:45px 0}.category header p{opacity:.5}.category h1{font-size:clamp(50px,9vw,120px);text-transform:uppercase;letter-spacing:-.065em;line-height:1;margin:0}
-.project{display:flex;align-items:center;justify-content:center;gap:80px;width:100%;padding:35px;background:none;border:0;color:inherit;cursor:pointer;text-align:left}
-.book{display:flex;flex-direction:column;justify-content:space-between;width:230px;height:310px;background:linear-gradient(130deg,#766c49,#191e18 55%);padding:25px;border-left:7px solid #aa986c;transform:perspective(900px) rotateY(-17deg) rotateZ(-5deg);box-shadow:30px 30px 70px #0008;transition:transform .6s}.project:hover .book{transform:perspective(900px) rotateY(0) rotateZ(0)}.book b{font-size:38px;line-height:1;letter-spacing:-.06em}.book i{font:10px monospace;font-style:normal}.project>span:last-child{display:flex;flex-direction:column;gap:18px}.project strong{font-size:32px}.project>span>span{font-size:13px;opacity:.6}.empty{padding:45px 0 90px}.empty>span{font-size:90px;opacity:.2}.empty h2{font-size:30px;letter-spacing:-.04em}.empty p{opacity:.5}
-@keyframes arrive{from{opacity:0;translate:0 25px}to{opacity:1;translate:0 0}}
-@media(max-width:700px){.hub{padding:125px 24px 30px}.header p{font-size:9px}.header>span{font-size:13px}.panels{flex-direction:column;height:auto;gap:9px;margin:30px 0;transform:none}.panel,.panel[data-selected=true]{flex:none;height:155px;transform:none;clip-path:polygon(0 8%,100% 0,100% 92%,0 100%)}.picture,.panel[data-selected=true] .picture{inset:-40% -5%;transform:scale(1.05);background-position:center 40%;filter:none}.number{top:22px;left:16px;transform:none;font-size:9px}.caption{bottom:25px;left:18px;transform:none}.caption small{font-size:9px;margin-bottom:5px}.caption strong{font-size:34px}.wash{background:linear-gradient(90deg,#050706c9,transparent),linear-gradient(0deg,#05070699,transparent)}.footer{font-size:8px;line-height:1.7}.category{padding:125px 24px 45px}.category header{margin:30px 0}.project{flex-direction:column;gap:40px;padding:25px 0}.project>span:last-child{text-align:center}.book{width:210px;height:280px}.empty h2{font-size:25px}}
-@media(prefers-reduced-motion:reduce){.page *{animation:none!important;transition:none!important}}
+.page{min-height:100svh;background:#080a09;color:#c9ba90;isolation:isolate;overflow:hidden}
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 50% 60%,#d7bd7112,transparent 65%)}
+.hub{max-width:1400px;margin:auto;padding:145px 7vw 60px}
+.header h1{font-size:clamp(40px,6vw,84px);letter-spacing:-.065em;line-height:1;margin:0;font-weight:900}
+.panels{max-width:850px;margin:45px auto 0}
+.panel{display:block;position:relative;isolation:isolate;height:clamp(360px,54vh,650px);overflow:hidden;color:#e9ddba;clip-path:polygon(5% 0,100% 3%,95% 100%,0 97%);transition:clip-path .65s cubic-bezier(.2,.7,.2,1);text-decoration:none}
+.picture{position:absolute;inset:-4%;background:url("/illustrations/BRAIN%20SLAYER.webp") center 45%/cover;transform:scale(1);transition:transform 1s cubic-bezier(.2,.7,.2,1),filter .7s;filter:saturate(.7)}
+.wash{position:absolute;inset:0;background:linear-gradient(0deg,#050706ed,transparent 65%)}
+.caption{position:absolute;bottom:35px;left:8%;right:8%;text-shadow:0 2px 20px #000}
+.caption strong{font-size:clamp(42px,6vw,80px);font-weight:900;text-transform:uppercase;letter-spacing:-.065em}
+.panel:hover,.panel:focus-visible{clip-path:polygon(2% 0,100% 1%,98% 100%,0 99%)}
+.panel:hover .picture,.panel:focus-visible .picture{transform:scale(1.05);filter:saturate(1)}
+.panel:focus-visible{outline:3px solid #d7bd71;outline-offset:-12px}
+@media(max-width:700px){.hub{padding:125px 24px 35px}.panels{margin-top:30px}.panel{height:clamp(330px,58svh,620px)}.caption{bottom:30px}.caption strong{font-size:48px}}
+@media(prefers-reduced-motion:reduce){.page *{transition:none!important}}
