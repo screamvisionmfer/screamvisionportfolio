@@ -23,7 +23,7 @@ const sections=[
  {title:"Illustrations",href:"/illustrations",note:"Characters / Worlds",position:"illustrations",images:illustrations.map(item=>item.image)},
  {title:"Collaborations",href:"/collaborations",note:"Shared universes",position:"collaborations",images:collaborations.flatMap(project=>project.assets.filter(asset=>asset.kind==="image").map(asset=>asset.src))},
  {title:"Collections",href:"/collections",note:"Original worlds / NFT",position:"collections",images:nftCollections.map(collection=>`/collections/${collection.id}/banner.webp`)},
- {title:"Playground",href:"/playground",note:"Groy Payne / Honey & Blood",position:"playground",images:["/comics/groy-payne-01/01.webp"]},
+ {title:"Playground",href:"/playground",note:"AI-assisted stories & experiments",position:"playground",images:["/comics/groy-payne-01/01.webp"]},
 ];
 function PhoneMotionControl({phone,motion}:{phone:ReturnType<typeof usePhoneMotion>;motion:boolean}){
  return <div className={styles.gyroControl}><div><span>Phone tilt</span><button aria-label={phone.enabled?"Disable gyroscope":"Enable gyroscope"} aria-pressed={phone.enabled} disabled={!motion||phone.status==="requesting"||phone.status==="unavailable"} onClick={()=>void phone.toggle()}>{phone.status==="requesting"?"…":phone.enabled?"ON":"ENABLE"}</button></div><p role="status">{motion?phone.message:"Enable Motion / Parallax first"}</p></div>;

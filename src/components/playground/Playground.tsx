@@ -12,8 +12,8 @@ export function Playground(){
   <SiteNav/>
   <div className={styles.ambient} aria-hidden="true"/>
   <section className={styles.hub}>
-   <header className={styles.header}><h1>PLAYGROUND</h1></header>
-   <a href="/playground/groy-payne-honey-and-blood" className={styles.composition} aria-label="Open Comics" onClick={event=>{
+   <header className={styles.header}><h1>PLAYGROUND</h1><p className={styles.description}>Human ideas. Artificial possibilities.<span>Comics, stories and visual experiments made with AI.</span></p></header>
+   <a href="/playground/groy-payne-honey-and-blood" className={styles.composition} onPointerMove={event=>{if(event.pointerType!=="mouse"||matchMedia("(prefers-reduced-motion: reduce)").matches)return;const rect=event.currentTarget.getBoundingClientRect();event.currentTarget.style.setProperty("--pointer-x",`${((event.clientX-rect.left)/rect.width-.5)*12}deg`);event.currentTarget.style.setProperty("--pointer-y",`${-((event.clientY-rect.top)/rect.height-.5)*8}deg`);}} onPointerLeave={event=>{event.currentTarget.style.setProperty("--pointer-x","0deg");event.currentTarget.style.setProperty("--pointer-y","0deg");}} aria-label="Open Comics" onClick={event=>{
     if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
     event.preventDefault();if(entering)return;
     haptic("select");setEntering(true);
@@ -25,7 +25,7 @@ export function Playground(){
      <span className={styles.right}><span/></span>
      <span className={styles.center}><span/></span>
     </span>
-    <span className={styles.caption}>Comics</span>
+    <span className={styles.caption}>Comics<small>Groy Payne: Honey &amp; Blood</small></span>
    </a>
   </section>
  </main>;

@@ -17,15 +17,13 @@ export function ComicProject(){
  const toggleFullscreen=async()=>{if(document.fullscreenElement){await document.exitFullscreen();}else{try{await page.current?.requestFullscreen();}catch{setFullscreen(v=>!v);}}};
  const host=useRef<HTMLDivElement>(null),target=useRef(0),turn=useRef(0);
  const [support,setSupport]=useState(false),[copied,setCopied]=useState(""),[views,setViews]=useState<number|null>(null);
- useEffect(()=>{let supportTimer:ReturnType<typeof setTimeout>|undefined;try{if(!sessionStorage.getItem("groy-support")){supportTimer=setTimeout(()=>setSupport(true),1100);sessionStorage.setItem("groy-support","1");}}catch{}
- const key="groy-view-01",seen=sessionStorage.getItem(key);
+ useEffect(()=>{const key="groy-view-01",seen=sessionStorage.getItem(key);
  fetch("/api/comic-views",{method:seen?"GET":"POST"}).then(r=>r.ok?r.json():null).then(data=>{if(typeof data?.views==="number"){setViews(data.views);sessionStorage.setItem(key,"1");}}).catch(()=>{});
- return()=>{if(supportTimer)clearTimeout(supportTimer);};
  },[]);
-
  const supportRef=useModalFocus<HTMLElement>(support);
  const copy=async(network:string,address:string)=>{try{await navigator.clipboard.writeText(address);setCopied(network);}catch{setCopied("Select and copy the address below");}};
  const [sheet,setSheet]=useState(0),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[zoom,setZoom]=useState<number|null>(null);
+ useEffect(()=>{if(!ready)return;const timer=setTimeout(()=>setSupport(true),800);return()=>clearTimeout(timer);},[ready]);
  const clickStart=useRef<{x:number;y:number;time:number}|null>(null);
  const resetView=useRef<(()=>void)|null>(null);
  const swipe=useRef<number|null>(null);
@@ -69,9 +67,9 @@ export function ComicProject(){
    return {mesh,geo,original,front,back};
   });
   const resize=()=>{const width=element.clientWidth,height=element.clientHeight;renderer.setSize(width,height);camera.aspect=width/height;camera.updateProjectionMatrix();};
-  resetView.current=()=>{controls.target.set(0,0,0);const width=target.current===0||target.current===15?W:W*2;const distance=Math.max(H/.78,width/(camera.aspect*.78))/(2*Math.tan(THREE.MathUtils.degToRad(18)));camera.position.set(0,.12,distance);controls.update();};
+  resetView.current=()=>{const mobile=camera.aspect<.8,focus=mobile&&target.current>0&&target.current<15?W/2:0;controls.target.set(focus,0,0);const width=mobile||target.current===0||target.current===15?W:W*2;const distance=Math.max(H/.78,width/(camera.aspect*.78))/(2*Math.tan(THREE.MathUtils.degToRad(18)));camera.position.set(focus,.12,distance);controls.update();};
   const observer=new ResizeObserver(resize);observer.observe(element);resize();
-  let frame=0,last=0,flipStart=0,flipFrom=0,flipTo=0,previousFit=0;
+  let frame=0,last=0,flipStart=0,flipFrom=0,flipTo=0,previousFit=0,previousFocus=0;
   const animate=(time:number)=>{
    frame=requestAnimationFrame(animate);if(document.hidden)return;
    const dt=Math.min(.05,(time-last)/1000||.016);last=time;
@@ -79,7 +77,10 @@ export function ComicProject(){
    if(flipTo===flipFrom&&Math.abs(turn.current-target.current)>.001){flipFrom=turn.current;flipTo=flipFrom+Math.sign(target.current-flipFrom);flipStart=time;}
    if(flipTo!==flipFrom){const t=Math.min(1,(time-flipStart)/(reduced?1:950));const eased=t*t*(3-2*t);turn.current=flipFrom+(flipTo-flipFrom)*eased;if(t===1)flipFrom=flipTo;}
    const value=turn.current;
-   const viewWidth=(value<.01||value>14.99)?W:W*2;
+   const mobile=camera.aspect<.8;
+   const viewWidth=mobile?W:(value<.01||value>14.99)?W:W*2;
+   const focus=mobile?W/2*Math.min(1,value,15-value):0;
+   camera.position.x+=focus-previousFocus;controls.target.x+=focus-previousFocus;previousFocus=focus;
    const fit=Math.max(H/.88,viewWidth/(camera.aspect*(camera.aspect<.8?.94:.82)))/(2*Math.tan(THREE.MathUtils.degToRad(18)));
    if(!previousFit){camera.position.set(0,.15,fit);previousFit=fit;}
    else if(Math.abs(fit-previousFit)>.001){camera.position.multiplyScalar(fit/previousFit);previousFit=fit;}
@@ -142,9 +143,9 @@ export function ComicProject(){
    <button onClick={()=>change(-1)} disabled={sheet===0} aria-label="Previous page">←</button>
    <span aria-live="polite">{sheet===0?"COVER":sheet===15?"BACK COVER":`${left} — ${right}`}</span>
    <button onClick={()=>change(1)} disabled={sheet===15} aria-label="Next page">→</button>
-   <button className={styles.read} onClick={toggleFullscreen}>{fullscreen?"EXIT FULLSCREEN":"FULLSCREEN"}</button>
-   <button className={styles.read} onClick={()=>resetView.current?.()}>RESET VIEW</button>
-   <button onClick={()=>setSupport(true)} className={styles.read}>SUPPORT</button>
+   <button className={styles.iconButton} aria-label={fullscreen?"Exit fullscreen":"Fullscreen"} title="Fullscreen" onClick={toggleFullscreen}>{fullscreen?"⤡":"⤢"}</button>
+   <button className={styles.iconButton} aria-label="Reset view" title="Reset view" onClick={()=>resetView.current?.()}>↺</button>
+   <button onClick={()=>setSupport(true)} className={styles.iconButton} aria-label="Support the comic" title="Support">♡</button>
    {views!==null&&<span className={styles.viewCount}>{views.toLocaleString()} views</span>}
    <button ref={readButton} className={styles.read} onClick={()=>{setZoom(right);}}>READ</button>
   </nav>
