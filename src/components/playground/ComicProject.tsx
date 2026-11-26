@@ -10,6 +10,10 @@ import { CopyWallet } from "./CopyWallet";
 import styles from "./comicReader.module.css";
 
 const image=(n:number,large=false)=>`/comics/groy-payne-01/${String(n).padStart(2,"0")}${large?"-large":""}.webp`;
+function ControlIcon({kind}:{kind:"left"|"right"|"reset"|"support"|"expand"|"collapse"|"close"}){
+ const paths={left:"M19 12H5m6-6-6 6 6 6",right:"M5 12h14m-6-6 6 6-6 6",reset:"M3 10a9 9 0 1 1 2 8M3 4v6h6",support:"M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z",expand:"M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5",collapse:"M3 8h5V3m8 0v5h5M8 21v-5H3m18 0h-5v5",close:"m6 6 12 12M6 18 18 6"};
+ return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[kind]}/></svg>;
+}
 const W=1.414,H=2;
 export function ComicProject(){
  const page=useRef<HTMLElement>(null);
@@ -142,17 +146,17 @@ export function ComicProject(){
   {!ready&&!failed&&<p className={styles.loading}>Opening comic…</p>}
   {failed&&<div className={styles.fallback}><img src={image(right)} alt={`Comic page ${right}`}/></div>}
   <nav className={styles.controls} aria-label="Comic pages">
-   <button onClick={()=>change(-1)} disabled={sheet===0} aria-label="Previous page">←</button>
+   <button onClick={()=>change(-1)} disabled={sheet===0} aria-label="Previous page"><ControlIcon kind="left"/></button>
    <span aria-live="polite">{sheet===0?"COVER":sheet===15?"BACK COVER":`${left} — ${right}`}</span>
-   <button onClick={()=>change(1)} disabled={sheet===15} aria-label="Next page">→</button>
-   <button className={styles.iconButton} aria-label={fullscreen?"Exit fullscreen":"Fullscreen"} title="Fullscreen" onClick={toggleFullscreen}>{fullscreen?"⤡":"⤢"}</button>
-   <button className={styles.iconButton} aria-label="Reset view" title="Reset view" onClick={()=>resetView.current?.()}>↺</button>
-   <button onClick={()=>setSupport(true)} className={styles.iconButton} aria-label="Support the comic" title="Support">♡</button>
+   <button onClick={()=>change(1)} disabled={sheet===15} aria-label="Next page"><ControlIcon kind="right"/></button>
+   <button className={styles.iconButton} aria-label={fullscreen?"Exit fullscreen":"Fullscreen"} title="Fullscreen" onClick={toggleFullscreen}><ControlIcon kind={fullscreen?"collapse":"expand"}/></button>
+   <button className={styles.iconButton} aria-label="Reset view" title="Reset view" onClick={()=>resetView.current?.()}><ControlIcon kind="reset"/></button>
+   <button onClick={()=>setSupport(true)} className={styles.iconButton} aria-label="Support the comic" title="Support"><ControlIcon kind="support"/></button>
    {views!==null&&<span className={styles.viewCount}>{views.toLocaleString()} views</span>}
    <button ref={readButton} className={styles.read} onClick={()=>{setZoom(right);}}>READ</button>
   </nav>
   {zoom!==null&&<div className={styles.zoom} role="dialog" aria-modal="true" aria-label="Read comic page" onKeyDown={e=>{if(e.key==="Tab"){e.preventDefault();const items=Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"));const i=items.indexOf(document.activeElement as HTMLButtonElement);items[(i+(e.shiftKey?-1:1)+items.length)%items.length].focus();}}}>
-   <div className={styles.zoomBar}><button onClick={()=>{setZoom(Math.max(1,zoom-1));}} disabled={zoom===1} aria-label="Previous page">←</button><span>{zoom} / 30</span><button onClick={()=>{setZoom(Math.min(30,zoom+1));}} disabled={zoom===30} aria-label="Next page">→</button><button ref={zoomClose} onClick={()=>{setZoom(null);readButton.current?.focus();}} aria-label="Close reading view">×</button></div>
+   <div className={styles.zoomBar}><button onClick={()=>{setZoom(Math.max(1,zoom-1));}} disabled={zoom===1} aria-label="Previous page"><ControlIcon kind="left"/></button><span>{zoom} / 30</span><button onClick={()=>{setZoom(Math.min(30,zoom+1));}} disabled={zoom===30} aria-label="Next page"><ControlIcon kind="right"/></button><button ref={zoomClose} onClick={()=>{setZoom(null);readButton.current?.focus();}} aria-label="Close reading view"><ControlIcon kind="close"/></button></div>
    <div className={styles.zoomImage} key={zoom} onTouchStart={e=>{swipe.current=e.touches[0].clientX;}} onTouchEnd={e=>{if(swipe.current===null)return;const dx=e.changedTouches[0].clientX-swipe.current;swipe.current=null;if(Math.abs(dx)>45){setZoom(Math.max(1,Math.min(30,zoom+(dx<0?1:-1))));}}}>
     {zoom>1&&<button className={styles.previousSlide} aria-label="Previous page" onClick={()=>{setZoom(zoom-1);}}><img src={image(zoom-1)} alt=""/></button>}
     <div className={styles.pageImage}>
@@ -164,7 +168,7 @@ export function ComicProject(){
   {support&&<div className={styles.supportOverlay} onClick={e=>{if(e.target===e.currentTarget)setSupport(false);}}>
    <section ref={supportRef} className={styles.supportCard} role="dialog" aria-modal="true" aria-label="Support the comic" onKeyDown={e=>{if(e.key==="Escape")setSupport(false);}}>
     <div className={styles.supportCover} aria-hidden="true"><img src={image(1)} alt=""/></div>
-    <button className={styles.supportClose} onClick={()=>setSupport(false)} aria-label="Close support">×</button>
+    <button className={styles.supportClose} onClick={()=>setSupport(false)} aria-label="Close support"><ControlIcon kind="close"/></button>
     <p className={styles.eyebrow}>GROY PAYNE / INDEPENDENT COMIC</p><h2>Help write<br/>the next chapter.</h2>
     <p>Every page takes time. If you enjoyed the story, you can help me keep making it. Tips of any size are appreciated.</p>
     {[["Ethereum","0x0D6b9D09F2Fb29490D9Ced2020ed401580E3DC7a"],["Solana","3RVY5jVyaeUrQiWkpaQPBiuzhvZv6Mi9dyfHXXBNsS"]].map(([network,address])=><div className={styles.wallet} key={network}><CopyWallet network={network} address={address}/></div>)}
