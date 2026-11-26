@@ -185,7 +185,7 @@ export function ComicProject(){
     <button className={styles.supportClose} onClick={()=>setSupport(false)} aria-label="Close support"><ControlIcon kind="close"/></button>
     <p className={styles.eyebrow}>GROY PAYNE / INDEPENDENT COMIC</p><h2>Help write<br/>the next chapter.</h2>
     <p>Every page takes time. If you enjoyed the story, you can help me keep making it. Tips of any size are appreciated.</p>
-    {[["Ethereum","0x0D6b9D09F2Fb29490D9Ced2020ed401580E3DC7a"],["Solana","3RVY5jVyaeUrQiWkpaQPBiuzhvZv6Mi9dyfHXXBNsS"]].map(([network,address])=><div className={styles.wallet} key={network}><CopyWallet network={network} address={address}/></div>)}
+    {[["Ethereum","0x0D6b9D09F2Fb29490D9Ced2020ed401580E3DC7a"],["Solana","5v3RVY5jVyaeUrQiWkpaQPBiuzhvZv6Mi9dyfHXXBNsS"]].map(([network,address])=><div className={styles.wallet} key={network}><CopyWallet network={network} address={address}/></div>)}
     <small>Send only assets supported by the selected network.</small>
     <button className={styles.continueButton} onClick={()=>setSupport(false)}>CONTINUE TO COMIC</button>
    </section>
