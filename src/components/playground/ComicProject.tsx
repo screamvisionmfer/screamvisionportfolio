@@ -6,6 +6,7 @@ import Link from "next/link";
 import { SiteNav } from "@/components/site-nav/SiteNav";
 import { haptic } from "@/components/haptics/haptics";
 import { useModalFocus } from "@/components/viewer-controls/useModalFocus";
+import { CopyWallet } from "./CopyWallet";
 import styles from "./comicReader.module.css";
 
 const image=(n:number,large=false)=>`/comics/groy-payne-01/${String(n).padStart(2,"0")}${large?"-large":""}.webp`;
@@ -16,12 +17,12 @@ export function ComicProject(){
  useEffect(()=>{const sync=()=>setFullscreen(document.fullscreenElement===page.current);document.addEventListener("fullscreenchange",sync);return()=>document.removeEventListener("fullscreenchange",sync);},[]);
  const toggleFullscreen=async()=>{if(document.fullscreenElement){await document.exitFullscreen();}else{try{await page.current?.requestFullscreen();}catch{setFullscreen(v=>!v);}}};
  const host=useRef<HTMLDivElement>(null),target=useRef(0),turn=useRef(0);
- const [support,setSupport]=useState(false),[copied,setCopied]=useState(""),[views,setViews]=useState<number|null>(null);
+ const [support,setSupport]=useState(false),[views,setViews]=useState<number|null>(null);
  useEffect(()=>{const key="groy-view-01",seen=sessionStorage.getItem(key);
  fetch("/api/comic-views",{method:seen?"GET":"POST"}).then(r=>r.ok?r.json():null).then(data=>{if(typeof data?.views==="number"){setViews(data.views);sessionStorage.setItem(key,"1");}}).catch(()=>{});
  },[]);
  const supportRef=useModalFocus<HTMLElement>(support);
- const copy=async(network:string,address:string)=>{try{await navigator.clipboard.writeText(address);setCopied(network);}catch{setCopied("Select and copy the address below");}};
+
  const [sheet,setSheet]=useState(0),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[zoom,setZoom]=useState<number|null>(null);
  useEffect(()=>{if(!ready)return;const timer=setTimeout(()=>setSupport(true),800);return()=>clearTimeout(timer);},[ready]);
  const clickStart=useRef<{x:number;y:number;time:number}|null>(null);
@@ -41,7 +42,7 @@ export function ComicProject(){
   const book=new THREE.Group();scene.add(book);
   camera.position.set(0,.12,5);
   let lastInput=performance.now(),pointerX=0,pointerY=0,interacting=false;
-  const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.zoomToCursor=true;controls.enablePan=false;controls.minDistance=2.5;controls.maxDistance=14;controls.rotateSpeed=.7;controls.zoomSpeed=.7;controls.minPolarAngle=.05;controls.maxPolarAngle=Math.PI-.05;
+  const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.zoomToCursor=true;controls.enablePan=true;controls.mouseButtons.MIDDLE=THREE.MOUSE.PAN;controls.mouseButtons.RIGHT=THREE.MOUSE.PAN;controls.touches.TWO=THREE.TOUCH.DOLLY_PAN;controls.screenSpacePanning=true;controls.minDistance=2.5;controls.maxDistance=14;controls.rotateSpeed=.7;controls.zoomSpeed=.7;controls.minPolarAngle=.05;controls.maxPolarAngle=Math.PI-.05;
   controls.autoRotateSpeed=.45;
   const started=()=>{interacting=true;lastInput=performance.now();};const ended=()=>{interacting=false;lastInput=performance.now();};
   controls.addEventListener("start",started);controls.addEventListener("end",ended);
@@ -49,6 +50,7 @@ export function ComicProject(){
   const leave=()=>{pointerX=0;pointerY=0;};element.addEventListener("pointermove",pointer);element.addEventListener("pointerleave",leave);
   scene.add(new THREE.HemisphereLight(0xffffff,0x929292,1.5));
   const light=new THREE.DirectionalLight(0xfff4de,1.7);light.position.set(-3,5,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);light.shadow.camera.left=-4;light.shadow.camera.right=4;light.shadow.camera.top=4;light.shadow.camera.bottom=-4;light.shadow.normalBias=.015;scene.add(light);
+  const backlight=new THREE.PointLight(0xffdeb0,9,12,2);backlight.position.set(0,.4,-1.3);scene.add(backlight);
   const rim=new THREE.DirectionalLight(0xc4dcff,.65);rim.position.set(4,1,3);scene.add(rim);
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.ShadowMaterial({opacity:.22}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.22;floor.receiveShadow=true;scene.add(floor);
   const loader=new THREE.TextureLoader(),textures:THREE.Texture[]=[],materials:THREE.Material[]=[],geometries:THREE.BufferGeometry[]=[];
@@ -129,7 +131,7 @@ export function ComicProject(){
 
  const left=sheet===15?30:sheet*2,right=sheet===0?1:Math.min(30,sheet*2+1);
  return <main ref={page} className={styles.page} data-open={sheet>0} data-fullscreen={fullscreen}>
-  <SiteNav/><Link href="/playground" className={styles.back}>← PLAYGROUND</Link>
+  <div className={styles.siteHeader}><SiteNav/></div><Link href="/playground" className={styles.back}>← PLAYGROUND</Link>
   <header className={styles.heading}><h1>GROY PAYNE<span>Honey &amp; Blood</span></h1><p><b>ISSUE 01</b><span>NOVEMBER 2026</span></p></header>
   <div className={styles.stage} ref={host} aria-label="Click to turn pages, drag to rotate, scroll to zoom toward cursor."
    onPointerDown={e=>{if(e.button===0)clickStart.current={x:e.clientX,y:e.clientY,time:performance.now()};}}
@@ -165,7 +167,7 @@ export function ComicProject(){
     <button className={styles.supportClose} onClick={()=>setSupport(false)} aria-label="Close support">×</button>
     <p className={styles.eyebrow}>GROY PAYNE / INDEPENDENT COMIC</p><h2>Help write<br/>the next chapter.</h2>
     <p>Every page takes time. If you enjoyed the story, you can help me keep making it. Tips of any size are appreciated.</p>
-    {[["Ethereum","0x0D6b9D09F2Fb29490D9Ced2020ed401580E3DC7a"],["Solana","3RVY5jVyaeUrQiWkpaQPBiuzhvZv6Mi9dyfHXXBNsS"]].map(([network,address])=><div className={styles.wallet} key={network}><button onClick={()=>copy(network,address)}>{network}<span>{copied===network?"COPIED":"COPY ADDRESS"}</span></button><code>{address}</code></div>)}
+    {[["Ethereum","0x0D6b9D09F2Fb29490D9Ced2020ed401580E3DC7a"],["Solana","3RVY5jVyaeUrQiWkpaQPBiuzhvZv6Mi9dyfHXXBNsS"]].map(([network,address])=><div className={styles.wallet} key={network}><CopyWallet network={network} address={address}/></div>)}
     <small>Send only assets supported by the selected network.</small>
     <button className={styles.continueButton} onClick={()=>setSupport(false)}>CONTINUE TO COMIC</button>
    </section>
