@@ -11,6 +11,10 @@ import styles from "./comicReader.module.css";
 const image=(n:number,large=false)=>`/comics/groy-payne-01/${String(n).padStart(2,"0")}${large?"-large":""}.webp`;
 const W=1.414,H=2;
 export function ComicProject(){
+ const page=useRef<HTMLElement>(null);
+ const [fullscreen,setFullscreen]=useState(false);
+ useEffect(()=>{const sync=()=>setFullscreen(document.fullscreenElement===page.current);document.addEventListener("fullscreenchange",sync);return()=>document.removeEventListener("fullscreenchange",sync);},[]);
+ const toggleFullscreen=async()=>{if(document.fullscreenElement){await document.exitFullscreen();}else{try{await page.current?.requestFullscreen();}catch{setFullscreen(v=>!v);}}};
  const host=useRef<HTMLDivElement>(null),target=useRef(0),turn=useRef(0);
  const [support,setSupport]=useState(false),[copied,setCopied]=useState(""),[views,setViews]=useState<number|null>(null);
  useEffect(()=>{try{if(!sessionStorage.getItem("groy-support")){setSupport(true);sessionStorage.setItem("groy-support","1");}}catch{}
@@ -36,7 +40,13 @@ export function ComicProject(){
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(36,1,.1,40);
   const book=new THREE.Group();scene.add(book);
   camera.position.set(0,.12,5);
+  let lastInput=performance.now(),pointerX=0,pointerY=0,interacting=false;
   const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.zoomToCursor=true;controls.enablePan=false;controls.minDistance=2.5;controls.maxDistance=14;controls.rotateSpeed=.7;controls.zoomSpeed=.7;controls.minPolarAngle=.05;controls.maxPolarAngle=Math.PI-.05;
+  controls.autoRotateSpeed=.45;
+  const started=()=>{interacting=true;lastInput=performance.now();};const ended=()=>{interacting=false;lastInput=performance.now();};
+  controls.addEventListener("start",started);controls.addEventListener("end",ended);
+  const pointer=(event:PointerEvent)=>{const rect=element.getBoundingClientRect();pointerX=(event.clientX-rect.left)/rect.width-.5;pointerY=(event.clientY-rect.top)/rect.height-.5;lastInput=performance.now();};
+  const leave=()=>{pointerX=0;pointerY=0;};element.addEventListener("pointermove",pointer);element.addEventListener("pointerleave",leave);
   scene.add(new THREE.HemisphereLight(0xffffff,0x929292,1.5));
   const light=new THREE.DirectionalLight(0xffffff,1.3);light.position.set(-3,5,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);light.shadow.camera.left=-4;light.shadow.camera.right=4;light.shadow.camera.top=4;light.shadow.camera.bottom=-4;light.shadow.normalBias=.015;scene.add(light);
   const rim=new THREE.DirectionalLight(0xffffff,.3);rim.position.set(4,1,3);scene.add(rim);
@@ -48,12 +58,12 @@ export function ComicProject(){
   const paper=new THREE.MeshStandardMaterial({color:0xd9d0b9,roughness:.85});materials.push(paper);
   const leaves=Array.from({length:15},(_,i)=>{
    const cover=i===0||i===14;
-   const front=new THREE.MeshStandardMaterial({roughness:cover?.34:.67,metalness:0});
-   const back=new THREE.MeshStandardMaterial({roughness:cover?.34:.67,metalness:0});
+   const front=new THREE.MeshPhysicalMaterial({color:0x555555,emissive:0xffffff,emissiveIntensity:.7,roughness:.95,metalness:0,specularIntensity:.02});
+   const back=new THREE.MeshPhysicalMaterial({color:0x555555,emissive:0xffffff,emissiveIntensity:.7,roughness:.95,metalness:0,specularIntensity:.02});
    materials.push(front,back);
-   const geo=new THREE.BoxGeometry(W,H,cover?.009:.003,28,1,1);geo.translate(W/2,0,0);geometries.push(geo);
+   const geo=new THREE.BoxGeometry(W,H,cover?.0025:.0008,40,8,1);geo.translate(W/2,0,0);geometries.push(geo);
    const original=Float32Array.from(geo.attributes.position.array);
-   const mesh=new THREE.Mesh(geo,[paper,spine,paper,paper,front,back]);mesh.castShadow=true;mesh.receiveShadow=true;mesh.position.z=(15-i)*.004;book.add(mesh);
+   const mesh=new THREE.Mesh(geo,[paper,spine,paper,paper,front,back]);mesh.castShadow=true;mesh.receiveShadow=true;mesh.frustumCulled=false;mesh.position.z=(15-i)*.004;book.add(mesh);
    return {mesh,geo,original,front,back};
   });
   const resize=()=>{const width=element.clientWidth,height=element.clientHeight;renderer.setSize(width,height);camera.aspect=width/height;camera.updateProjectionMatrix();};
@@ -71,37 +81,51 @@ export function ComicProject(){
    const fit=Math.max(H/.78,viewWidth/(camera.aspect*.78))/(2*Math.tan(THREE.MathUtils.degToRad(18)));
    if(!previousFit){camera.position.set(0,.15,fit);previousFit=fit;}
    else if(Math.abs(fit-previousFit)>.001){camera.position.multiplyScalar(fit/previousFit);previousFit=fit;}
-   controls.update();
+   controls.autoRotate=target.current===0&&!interacting&&!reduced&&time-lastInput>4500;
+   controls.update(dt);
    book.position.x=THREE.MathUtils.lerp(-W/2,0,Math.min(1,value));
    if(value>14)book.position.x=THREE.MathUtils.lerp(0,W/2,value-14);
-   book.rotation.y=0;
-   book.rotation.x=0;
+   const floating=target.current===0&&!interacting&&!reduced;
+   book.rotation.y=THREE.MathUtils.damp(book.rotation.y,floating?pointerX*.16:0,5,dt);
+   book.rotation.x=THREE.MathUtils.damp(book.rotation.x,floating?pointerY*.1:0,5,dt);
+   book.position.y=floating?Math.sin(time*.0006)*.012:0;
    leaves.forEach(({mesh,geo,original,front,back},i)=>{
     if(i===0||i===14||Math.abs(value-i)<2.2){
-     if(!front.map){front.map=texture(i*2+1);front.needsUpdate=true;}
-     if(!back.map){back.map=texture(i*2+2);back.needsUpdate=true;}
+     if(!front.map){front.map=texture(i*2+1);front.emissiveMap=front.map;front.needsUpdate=true;}
+     if(!back.map){back.map=texture(i*2+2);back.emissiveMap=back.map;back.needsUpdate=true;}
     }else if(Math.abs(value-i)>3){
-     if(front.map){front.map.dispose();front.map=null;front.needsUpdate=true;}
-     if(back.map){back.map.dispose();back.map=null;back.needsUpdate=true;}
+     if(front.map){front.map.dispose();front.map=null;front.emissiveMap=null;front.needsUpdate=true;}
+     if(back.map){back.map.dispose();back.map=null;back.emissiveMap=null;back.needsUpdate=true;}
     }
     const t=THREE.MathUtils.clamp(value-i,0,1),angle=t*Math.PI;
-    const curve=Math.sin(t*Math.PI)*.75;
+    const flex=Math.sin(t*Math.PI);
     const positions=geo.attributes.position;
+    // Integrate a changing tangent across the sheet: anchored spine, lagging edge.
+    const samples=80,step=W/samples,xs=[0],zs=[0];
+    for(let k=1;k<=samples;k++){
+     const u=(k-.5)/samples;
+     const tangent=angle+flex*(Math.sin(u*Math.PI*.9)-.62)*1.9;
+     xs[k]=xs[k-1]+Math.cos(tangent)*step;
+     zs[k]=zs[k-1]+Math.sin(tangent)*step;
+    }
     for(let v=0;v<positions.count;v++){
-     const x=original[v*3],y=original[v*3+1],z=original[v*3+2],c=curve/W,a=angle-curve/2;
-     const px=curve>.0001?(Math.sin(a+c*x)-Math.sin(a))/c:x*Math.cos(angle);
-     const pz=curve>.0001?(Math.cos(a)-Math.cos(a+c*x))/c:x*Math.sin(angle);
-     positions.setXYZ(v,px-z*Math.sin(a+c*x),y,pz+z*Math.cos(a+c*x));
+     const x=original[v*3],y=original[v*3+1],z=original[v*3+2],u=x/W;
+     const f=Math.min(samples-.00001,Math.max(0,u*samples)),k=Math.floor(f),mix=f-k;
+     const tangent=angle+flex*(Math.sin(u*Math.PI*.9)-.62)*1.9;
+     const px=THREE.MathUtils.lerp(xs[k],xs[k+1],mix);
+     const pz=THREE.MathUtils.lerp(zs[k],zs[k+1],mix);
+     const corner=flex*Math.pow(u,2)*Math.sin(y/H*Math.PI)*.055;
+     positions.setXYZ(v,px-z*Math.sin(tangent),y,pz+z*Math.cos(tangent)+corner);
     }
     positions.needsUpdate=true;geo.computeVertexNormals();mesh.position.z=t>=.5?(i+1)*.005:(15-i)*.005;
    });
    renderer.render(scene,camera);
   };frame=requestAnimationFrame(animate);
-  return()=>{disposed=true;cancelAnimationFrame(frame);observer.disconnect();controls.dispose();textures.forEach(t=>t.dispose());materials.forEach(m=>m.dispose());geometries.forEach(g=>g.dispose());floor.geometry.dispose();(floor.material as THREE.Material).dispose();renderer.dispose();renderer.domElement.remove();};
+  return()=>{disposed=true;cancelAnimationFrame(frame);observer.disconnect();controls.dispose();element.removeEventListener("pointermove",pointer);element.removeEventListener("pointerleave",leave);textures.forEach(t=>t.dispose());materials.forEach(m=>m.dispose());geometries.forEach(g=>g.dispose());floor.geometry.dispose();(floor.material as THREE.Material).dispose();renderer.dispose();renderer.domElement.remove();};
  },[]);
 
  const left=sheet===15?30:sheet*2,right=sheet===0?1:Math.min(30,sheet*2+1);
- return <main className={styles.page} data-open={sheet>0}>
+ return <main ref={page} className={styles.page} data-open={sheet>0} data-fullscreen={fullscreen}>
   <SiteNav/><Link href="/playground" className={styles.back}>← PLAYGROUND</Link>
   <header className={styles.heading}><h1>GROY PAYNE<span>Honey &amp; Blood</span></h1><p><b>ISSUE 01</b><span>NOVEMBER 2026</span></p></header>
   <div className={styles.stage} ref={host} aria-label="Click to turn pages, drag to rotate, scroll to zoom toward cursor."
@@ -116,6 +140,7 @@ export function ComicProject(){
    <button onClick={()=>change(-1)} disabled={sheet===0} aria-label="Previous page">←</button>
    <span aria-live="polite">{sheet===0?"COVER":sheet===15?"BACK COVER":`${left} — ${right}`}</span>
    <button onClick={()=>change(1)} disabled={sheet===15} aria-label="Next page">→</button>
+   <button className={styles.read} onClick={toggleFullscreen}>{fullscreen?"EXIT FULLSCREEN":"FULLSCREEN"}</button>
    <button className={styles.read} onClick={()=>resetView.current?.()}>RESET VIEW</button>
    <button onClick={()=>setSupport(true)} className={styles.read}>SUPPORT</button>
    {views!==null&&<span className={styles.viewCount}>{views.toLocaleString()} views</span>}

@@ -46,3 +46,8 @@
 .continueButton{width:auto;background:none;color:inherit;padding:14px 0;border-bottom:1px solid #c9ba9066;margin-top:25px;text-align:left}
 .controls{gap:12px}.controls .read{margin-left:4px}
 @media(max-width:900px){.heading{position:relative;top:auto;left:auto;width:auto;text-align:center;padding:120px 16px 0}.heading h1{font-size:28px}.heading h1 span{display:inline;margin-left:10px;font-size:20px}.heading p{justify-content:center;margin-top:10px}.stage{margin-top:20px}.controls{gap:6px}.controls .read{font-size:9px}.supportCard{padding:35px 20px}}
+.page:fullscreen,.page[data-fullscreen=true]{position:fixed;inset:0;width:100%;height:100dvh;min-height:0;z-index:9000}
+.page:fullscreen .heading,.page[data-fullscreen=true] .heading{top:30px}
+.page:fullscreen .stage,.page[data-fullscreen=true] .stage{margin-top:30px}
+.page:fullscreen>nav:first-child,.page[data-fullscreen=true]>nav:first-child{display:none}
+@media(max-width:900px){.page:fullscreen .heading,.page[data-fullscreen=true] .heading{position:relative;top:auto;padding-top:25px}.page:fullscreen .stage,.page[data-fullscreen=true] .stage{margin-top:10px}}
