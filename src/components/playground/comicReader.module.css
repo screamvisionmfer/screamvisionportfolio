@@ -64,3 +64,13 @@
 @media(hover:hover){.controls button:not(:disabled):hover,.zoomBar button:not(:disabled):hover{color:#f1dda0;transform:translateY(-2px)}.wallet button:hover{color:#f1dda0}.continueButton:hover{letter-spacing:.16em}.supportClose:hover{transform:rotate(90deg)}}
 .controls button,.zoomBar button,.wallet button,.continueButton,.supportClose{transition:transform .25s,color .25s,letter-spacing .25s}
 @media(max-width:700px){.supportCard{padding:190px 25px 28px;max-height:92dvh;overflow:auto}.supportCover{width:105px;top:20px;left:calc(50% - 52px);transform:rotate(-5deg)}.supportCard h2{font-size:34px}.supportCard>.eyebrow{display:none}.zoomImage{padding:5px 2%}.pageImage{width:100%}.previousSlide{right:98%}.nextSlide{left:98%}}
+.page::before{z-index:0;opacity:1!important;background:radial-gradient(ellipse at 50% 48%,#efd49d30,transparent 60%)}
+.stage{position:relative;z-index:1}
+.supportOverlay{background:#020302e8;backdrop-filter:blur(20px);animation:supportVeil 1.3s ease both}
+.supportCard{width:100%;height:100%;max-height:none;background:none;border-radius:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:7vh max(8vw,25px) 7vh 48%;animation:none;overflow:auto}
+.supportCover{left:12%;top:50%;width:min(25vw,330px);transform:translateY(-50%) perspective(1000px) rotateY(15deg) rotateZ(-5deg);animation:supportBook 1.6s cubic-bezier(.15,.8,.2,1) both}
+.supportCard>:not(.supportCover):not(.supportClose){max-width:430px;width:100%;animation:supportText 1s .5s both}
+.supportCard h2{font-size:clamp(42px,5vw,76px)}.supportCard .wallet:nth-of-type(2){animation-delay:.75s}.supportCard .wallet:nth-of-type(3){animation-delay:.9s}.supportClose{right:4vw;top:4vh}
+@keyframes supportText{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes supportBook{from{opacity:0;translate:-35px 0;scale:.9}to{opacity:1;translate:0 0;scale:1}}
+@media(max-width:700px){.heading{padding-top:105px}.heading h1{font-size:22px}.heading h1 span{font-size:17px}.heading p{font-size:8px;margin-top:7px}.stage{margin:8px 0 0}.controls{padding-bottom:max(10px,env(safe-area-inset-bottom));gap:3px}.controls button{min-height:36px}.supportOverlay{padding:0}.supportCard{padding:210px 28px 30px;justify-content:flex-start}.supportCover{width:115px;left:calc(50% - 57px);top:25px;transform:rotate(-5deg)}.supportCard h2{font-size:40px}.supportCard .wallet{margin-top:15px}}

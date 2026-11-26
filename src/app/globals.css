@@ -55,7 +55,7 @@ html[data-noir="true"]::after { background: radial-gradient(ellipse at 50% 42%, 
 @media(max-width:800px) { :root { --section-toolbar-top:calc(max(12px, env(safe-area-inset-top)) + 84px); --section-toolbar-edge:18px; } }
 @media(hover:hover) and (prefers-reduced-motion:no-preference){
  button:not(:disabled),a{transition:color .2s,filter .2s,box-shadow .2s}
- button:not(:disabled):hover{filter:brightness(1.12)}
+ button:not(:disabled):not([data-tile-key]):hover{filter:brightness(1.12)}
  a:hover{color:#d8c68e}
- button:not(:disabled):active{filter:brightness(.92)}
+ button:not(:disabled):not([data-tile-key]):active{filter:brightness(.92)}
 }

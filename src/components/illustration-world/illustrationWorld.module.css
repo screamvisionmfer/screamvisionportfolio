@@ -128,3 +128,7 @@
 .viewSwitch button:hover {color:#dfcda7;border-color:#baa77b90;background:#191c15;}
 .archiveGrid {top:106px;}
 @media(max-width:800px){.viewSwitch{right:16px;bottom:max(18px,env(safe-area-inset-bottom));}.archiveGrid{top:90px;padding-bottom:90px;}.gridHeading{margin-bottom:22px;}.gridHeading h1{font-size:34px;}}
+/* Keep the pool of repeated artwork free of animated filter/compositing effects. */
+.tile,.tile:hover{filter:none!important}
+.tile img{filter:none!important;transition:transform .5s ease}
+.ambient::after{animation:none}

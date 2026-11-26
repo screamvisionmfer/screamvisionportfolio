@@ -22,7 +22,7 @@ export function ComicProject(){
  fetch("/api/comic-views",{method:seen?"GET":"POST"}).then(r=>r.ok?r.json():null).then(data=>{if(typeof data?.views==="number"){setViews(data.views);sessionStorage.setItem(key,"1");}}).catch(()=>{});
  return()=>{if(supportTimer)clearTimeout(supportTimer);};
  },[]);
- useEffect(()=>{if(matchMedia("(max-width:700px)").matches)setZoom(1);},[]);
+
  const supportRef=useModalFocus<HTMLElement>(support);
  const copy=async(network:string,address:string)=>{try{await navigator.clipboard.writeText(address);setCopied(network);}catch{setCopied("Select and copy the address below");}};
  const [sheet,setSheet]=useState(0),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[zoom,setZoom]=useState<number|null>(null);
@@ -56,12 +56,12 @@ export function ComicProject(){
   const loader=new THREE.TextureLoader(),textures:THREE.Texture[]=[],materials:THREE.Material[]=[],geometries:THREE.BufferGeometry[]=[];
   let disposed=false;
   const texture=(n:number)=>{const t=loader.load(image(n),()=>{if(!disposed&&n===1)setReady(true);},undefined,()=>{if(!disposed&&n===1)setFailed(true);});t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());textures.push(t);return t;};
-  const spine=new THREE.MeshStandardMaterial({color:0x080808,roughness:.85});materials.push(spine);
-  const paper=new THREE.MeshStandardMaterial({color:0xd9d0b9,roughness:.85});materials.push(paper);
+  const spine=new THREE.MeshBasicMaterial({color:0x030303});materials.push(spine);
+  const paper=new THREE.MeshStandardMaterial({color:0x35332e,roughness:.9});materials.push(paper);
   const leaves=Array.from({length:15},(_,i)=>{
    const cover=i===0||i===14;
-   const front=new THREE.MeshPhysicalMaterial({color:0x888888,emissive:0xffffff,emissiveIntensity:.95,roughness:.95,metalness:0,specularIntensity:.02});
-   const back=new THREE.MeshPhysicalMaterial({color:0x888888,emissive:0xffffff,emissiveIntensity:.95,roughness:.95,metalness:0,specularIntensity:.02});
+   const front=new THREE.MeshPhysicalMaterial({color:0x888888,emissive:0xffffff,emissiveIntensity:.85,roughness:.48,metalness:0,specularIntensity:.22,clearcoat:.25,clearcoatRoughness:.3});
+   const back=new THREE.MeshPhysicalMaterial({color:0x888888,emissive:0xffffff,emissiveIntensity:.85,roughness:.48,metalness:0,specularIntensity:.22,clearcoat:.25,clearcoatRoughness:.3});
    materials.push(front,back);
    const geo=new THREE.BoxGeometry(W,H,cover?.0025:.0008,40,8,1);geo.translate(W/2,0,0);geometries.push(geo);
    const original=Float32Array.from(geo.attributes.position.array);
@@ -80,7 +80,7 @@ export function ComicProject(){
    if(flipTo!==flipFrom){const t=Math.min(1,(time-flipStart)/(reduced?1:950));const eased=t*t*(3-2*t);turn.current=flipFrom+(flipTo-flipFrom)*eased;if(t===1)flipFrom=flipTo;}
    const value=turn.current;
    const viewWidth=(value<.01||value>14.99)?W:W*2;
-   const fit=Math.max(H/.78,viewWidth/(camera.aspect*.78))/(2*Math.tan(THREE.MathUtils.degToRad(18)));
+   const fit=Math.max(H/.88,viewWidth/(camera.aspect*(camera.aspect<.8?.94:.82)))/(2*Math.tan(THREE.MathUtils.degToRad(18)));
    if(!previousFit){camera.position.set(0,.15,fit);previousFit=fit;}
    else if(Math.abs(fit-previousFit)>.001){camera.position.multiplyScalar(fit/previousFit);previousFit=fit;}
    controls.autoRotate=target.current===0&&!interacting&&!reduced&&time-lastInput>4500;

@@ -13,11 +13,11 @@ export function Playground(){
   <div className={styles.ambient} aria-hidden="true"/>
   <section className={styles.hub}>
    <header className={styles.header}><h1>PLAYGROUND</h1></header>
-   <a href="/playground/untitled-story" className={styles.composition} aria-label="Open Comics" onClick={event=>{
+   <a href="/playground/groy-payne-honey-and-blood" className={styles.composition} aria-label="Open Comics" onClick={event=>{
     if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
     event.preventDefault();if(entering)return;
     haptic("select");setEntering(true);
-    timer.current=setTimeout(()=>window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:"/playground/untitled-story"})),matchMedia("(prefers-reduced-motion: reduce)").matches?0:550);
+    timer.current=setTimeout(()=>window.dispatchEvent(new CustomEvent("portfolio:navigate",{detail:"/playground/groy-payne-honey-and-blood"})),matchMedia("(prefers-reduced-motion: reduce)").matches?0:550);
    }}>
     <span className={styles.backdrop} aria-hidden="true"/>
     <span className={styles.frames} aria-hidden="true">
