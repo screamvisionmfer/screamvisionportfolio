@@ -28,3 +28,10 @@
 .center{box-shadow:0 20px 70px #0009}
 .composition::after{content:"";position:absolute;inset:5% 20% 20%;pointer-events:none;background:radial-gradient(ellipse,#dec18816,transparent 65%);z-index:-1}
 @media(max-width:700px){.hub{padding-top:120px}.header h1{font-size:36px}.description{font-size:16px}.description span{font-size:11px;max-width:250px;line-height:1.6}.composition{height:58svh;margin-top:20px}.caption small{font-size:9px;margin-top:14px}}
+@media(orientation:landscape) and (max-height:600px){
+ .page{height:100dvh;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+ .hub{padding:95px 35px 35px;min-height:100%}
+ .header h1{font-size:34px}.description{font-size:14px;margin-top:10px}.description span{font-size:10px}
+ .composition{height:370px;min-height:300px;margin-top:20px}
+ .caption{font-size:85px}
+}

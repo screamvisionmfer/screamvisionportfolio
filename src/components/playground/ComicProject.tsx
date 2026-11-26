@@ -16,6 +16,11 @@ function ControlIcon({kind}:{kind:"left"|"right"|"reset"|"support"|"expand"|"col
 }
 const W=1.414,H=2;
 export function ComicProject(){
+ const [theatre,setTheatre]=useState(false),[hudVisible,setHudVisible]=useState(true);
+ const hudTimer=useRef<ReturnType<typeof setTimeout>|null>(null),lastHud=useRef(0);
+ const revealHud=()=>{setHudVisible(true);if(hudTimer.current)clearTimeout(hudTimer.current);hudTimer.current=setTimeout(()=>setHudVisible(false),3200);};
+ useEffect(()=>{const landscape=matchMedia("(orientation:landscape) and (max-height:600px) and (pointer:coarse)");
+ const sync=()=>{setTheatre(landscape.matches);revealHud();};sync();landscape.addEventListener("change",sync);return()=>{landscape.removeEventListener("change",sync);if(hudTimer.current)clearTimeout(hudTimer.current);};},[]);
  const page=useRef<HTMLElement>(null);
  const [fullscreen,setFullscreen]=useState(false);
  useEffect(()=>{const sync=()=>setFullscreen(document.fullscreenElement===page.current);document.addEventListener("fullscreenchange",sync);return()=>document.removeEventListener("fullscreenchange",sync);},[]);
@@ -134,11 +139,11 @@ export function ComicProject(){
  },[]);
 
  const left=sheet===15?30:sheet*2,right=sheet===0?1:Math.min(30,sheet*2+1);
- return <main ref={page} className={styles.page} data-open={sheet>0} data-fullscreen={fullscreen}>
+ return <main ref={page} className={styles.page} data-open={sheet>0} data-fullscreen={fullscreen} data-theatre={theatre} data-hud={hudVisible||support||zoom!==null} onPointerDownCapture={()=>{if(theatre)revealHud();}} onPointerMove={()=>{if(theatre&&performance.now()-lastHud.current>500){lastHud.current=performance.now();revealHud();}}}>
   <div className={styles.siteHeader}><SiteNav/></div><Link href="/playground" className={styles.back}>← PLAYGROUND</Link>
   <header className={styles.heading}><h1>GROY PAYNE<span>Honey &amp; Blood</span></h1><p><b>ISSUE 01</b><span>NOVEMBER 2026</span></p></header>
   <div className={styles.stage} ref={host} aria-label="Click to turn pages, drag to rotate, scroll to zoom toward cursor."
-   onPointerDown={e=>{if(e.button===0)clickStart.current={x:e.clientX,y:e.clientY,time:performance.now()};}}
+   onPointerDown={e=>{if(theatre&&!hudVisible){clickStart.current=null;return;}if(e.button===0)clickStart.current={x:e.clientX,y:e.clientY,time:performance.now()};}}
    onPointerCancel={()=>{clickStart.current=null;}}
    onPointerUp={e=>{const start=clickStart.current;clickStart.current=null;if(!start||Math.hypot(e.clientX-start.x,e.clientY-start.y)>6||performance.now()-start.time>600)return;
     const rect=e.currentTarget.getBoundingClientRect();change(sheet===0?1:sheet===15?-1:e.clientX<rect.left+rect.width/2?-1:1);

@@ -87,3 +87,19 @@
 .controls button:not(.read),.zoomBar button,.supportClose{display:inline-flex;align-items:center;justify-content:center}
 .controls svg,.zoomBar svg,.supportClose svg{display:block;width:20px;height:20px;min-width:20px;flex:none;stroke-width:1.5}
 @media(max-width:700px){.controls .iconButton,.controls>button:not(.read){width:34px;min-width:34px;height:38px;padding:0}.controls svg{width:20px;height:20px}}
+@media(orientation:landscape) and (max-height:600px) and (pointer:coarse){
+ .page{height:100dvh;min-height:0;overflow:hidden;background:#030403}
+ .page .stage{position:absolute;inset:0;margin:0;width:100%;height:100%;min-height:0}
+ .page .siteHeader{display:none}
+ .page .heading,.page:fullscreen .heading,.page[data-fullscreen=true] .heading{position:absolute;top:18px;left:60px;width:auto;text-align:left;padding:0;pointer-events:none;transition:opacity 1.2s,transform 1.2s;z-index:3}
+ .page .heading h1{font-size:20px}.page .heading h1 span{display:inline;font-size:15px;margin-left:8px}
+ .page .heading p{justify-content:flex-start;margin-top:5px;font-size:7px}
+ .page .back{top:18px;left:18px;font-size:0;z-index:4;transition:opacity 1.2s}
+ .page .back::before{content:"←";font-size:24px}
+ .page .controls{position:absolute;bottom:0;left:0;right:0;z-index:4;padding:12px 20px max(10px,env(safe-area-inset-bottom));height:65px;background:linear-gradient(transparent,#030403dc);transition:opacity 1.2s,transform 1.2s}
+ .page .viewCount{display:none}
+ .page[data-hud=false] .heading,.page[data-hud=false] .back{opacity:0;transform:translateY(-8px);pointer-events:none}
+ .page[data-hud=false] .controls{opacity:0;transform:translateY(12px);pointer-events:none}
+ .page .supportCard{padding:25px 35px 25px 45%;justify-content:center}.page .supportCover{left:12%;width:120px;top:50%;transform:translateY(-50%) rotate(-5deg)}
+ .page .supportCard h2{font-size:32px;margin:10px 0}.page .supportCard>p:not(.eyebrow){font-size:11px;line-height:1.4}.page .wallet{margin-top:8px;padding-top:8px}.page .wallet button{font-size:14px}.page .wallet code{font-size:8px;margin-top:5px}.page .supportCard>small{margin-top:8px;font-size:8px}.page .continueButton{margin-top:8px;padding:10px 0}
+}
