@@ -103,3 +103,26 @@
  .page .supportCard{padding:25px 35px 25px 45%;justify-content:center}.page .supportCover{left:12%;width:120px;top:50%;transform:translateY(-50%) rotate(-5deg)}
  .page .supportCard h2{font-size:32px;margin:10px 0}.page .supportCard>p:not(.eyebrow){font-size:11px;line-height:1.4}.page .wallet{margin-top:8px;padding-top:8px}.page .wallet button{font-size:14px}.page .wallet code{font-size:8px;margin-top:5px}.page .supportCard>small{margin-top:8px;font-size:8px}.page .continueButton{margin-top:8px;padding:10px 0}
 }
+/* Navigation remains available in fullscreen and mobile theatre. */
+.page:fullscreen .siteHeader,.page[data-fullscreen=true] .siteHeader,.page[data-theatre=true] .siteHeader{display:block}
+.page:fullscreen .heading,.page[data-fullscreen=true] .heading{top:150px}
+.page:fullscreen .back,.page[data-fullscreen=true] .back{top:115px}
+.page:fullscreen .stage,.page[data-fullscreen=true] .stage{margin-top:100px}
+.page::before,.page[data-open=true]::before{background:radial-gradient(ellipse at 50% 46%,#ff2b2466 0%,#be161a28 30%,transparent 64%)}
+.siteHeader,.heading,.back,.controls{transition:opacity 2s ease,filter 2s ease}
+.page[data-idle=true] .heading,.page[data-idle=true] .back,.page[data-idle=true] .controls{opacity:.025!important;filter:brightness(.2);pointer-events:none}
+.page[data-idle=true] .siteHeader{opacity:.08;filter:brightness(.4)}
+.walletBody{padding:58px 24px 22px;min-height:115px}
+.wallet .copyTrigger{top:20px;left:24px;width:calc(100% - 48px)}
+.wallet .walletBody code{margin:0;font-size:10px;line-height:1.7}
+@media(max-width:900px){.page:fullscreen .heading,.page[data-fullscreen=true] .heading{position:relative;top:auto;padding-top:127px}.page:fullscreen .stage,.page[data-fullscreen=true] .stage{margin-top:8px}}
+@media(orientation:landscape) and (max-height:600px) and (pointer:coarse){
+ .page .siteHeader{display:block}
+ .page .siteHeader header{padding-top:8px;padding-bottom:0}
+ .page .siteHeader header>a,.page .siteHeader header>span{display:none}
+ .page .siteHeader header>button{margin-left:auto}
+ .page .heading,.page:fullscreen .heading,.page[data-fullscreen=true] .heading{position:absolute;top:18px;left:60px;padding:0;width:auto}
+ .page .back,.page:fullscreen .back,.page[data-fullscreen=true] .back{top:18px}
+ .page .stage,.page:fullscreen .stage,.page[data-fullscreen=true] .stage{margin:0;inset:0}
+ .page[data-idle=true] .siteHeader{opacity:.35;filter:none}
+}

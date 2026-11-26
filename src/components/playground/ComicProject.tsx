@@ -16,6 +16,8 @@ function ControlIcon({kind}:{kind:"left"|"right"|"reset"|"support"|"expand"|"col
 }
 const W=1.414,H=2;
 export function ComicProject(){
+ const [idle,setIdle]=useState(false);
+ const idleRef=useRef(false);
  const [theatre,setTheatre]=useState(false),[hudVisible,setHudVisible]=useState(true);
  const hudTimer=useRef<ReturnType<typeof setTimeout>|null>(null),lastHud=useRef(0);
  const revealHud=()=>{setHudVisible(true);if(hudTimer.current)clearTimeout(hudTimer.current);hudTimer.current=setTimeout(()=>setHudVisible(false),3200);};
@@ -33,6 +35,13 @@ export function ComicProject(){
  const supportRef=useModalFocus<HTMLElement>(support);
 
  const [sheet,setSheet]=useState(0),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[zoom,setZoom]=useState<number|null>(null);
+ useEffect(()=>{
+ let timer:ReturnType<typeof setTimeout>;
+ const wake=()=>{idleRef.current=false;setIdle(false);clearTimeout(timer);if(!support&&zoom===null)timer=setTimeout(()=>{idleRef.current=true;setIdle(true);},30000);};
+ const events=["pointerdown","pointermove","wheel","keydown","touchstart"] as const;
+ events.forEach(event=>window.addEventListener(event,wake,{passive:true}));wake();
+ return()=>{clearTimeout(timer);events.forEach(event=>window.removeEventListener(event,wake));};
+ },[support,zoom]);
  useEffect(()=>{if(!ready)return;const timer=setTimeout(()=>setSupport(true),800);return()=>clearTimeout(timer);},[ready]);
  const clickStart=useRef<{x:number;y:number;time:number}|null>(null);
  const resetView=useRef<(()=>void)|null>(null);
@@ -59,8 +68,8 @@ export function ComicProject(){
   const leave=()=>{pointerX=0;pointerY=0;};element.addEventListener("pointermove",pointer);element.addEventListener("pointerleave",leave);
   scene.add(new THREE.HemisphereLight(0xffffff,0x929292,1.5));
   const light=new THREE.DirectionalLight(0xfff4de,1.7);light.position.set(-3,5,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);light.shadow.camera.left=-4;light.shadow.camera.right=4;light.shadow.camera.top=4;light.shadow.camera.bottom=-4;light.shadow.normalBias=.015;scene.add(light);
-  const backlight=new THREE.PointLight(0xffdeb0,9,12,2);backlight.position.set(0,.4,-1.3);scene.add(backlight);
-  const rim=new THREE.DirectionalLight(0xc4dcff,.65);rim.position.set(4,1,3);scene.add(rim);
+  const backlight=new THREE.PointLight(0xff3020,12,12,2);backlight.position.set(0,.4,-1.3);scene.add(backlight);
+  const rim=new THREE.DirectionalLight(0xff7050,.8);rim.position.set(4,1,3);scene.add(rim);
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.ShadowMaterial({opacity:.22}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.22;floor.receiveShadow=true;scene.add(floor);
   const loader=new THREE.TextureLoader(),textures:THREE.Texture[]=[],materials:THREE.Material[]=[],geometries:THREE.BufferGeometry[]=[];
   let disposed=false;
@@ -95,7 +104,7 @@ export function ComicProject(){
    const fit=Math.max(H/.88,viewWidth/(camera.aspect*(camera.aspect<.8?.94:.82)))/(2*Math.tan(THREE.MathUtils.degToRad(18)));
    if(!previousFit){camera.position.set(0,.15,fit);previousFit=fit;}
    else if(Math.abs(fit-previousFit)>.001){camera.position.multiplyScalar(fit/previousFit);previousFit=fit;}
-   controls.autoRotate=target.current===0&&!interacting&&!reduced&&time-lastInput>4500;
+   controls.autoRotate=!interacting&&!reduced&&(idleRef.current||(target.current===0&&time-lastInput>4500));
    controls.update(dt);
    book.position.x=THREE.MathUtils.lerp(-W/2,0,Math.min(1,value));
    if(value>14)book.position.x=THREE.MathUtils.lerp(0,W/2,value-14);
@@ -139,11 +148,11 @@ export function ComicProject(){
  },[]);
 
  const left=sheet===15?30:sheet*2,right=sheet===0?1:Math.min(30,sheet*2+1);
- return <main ref={page} className={styles.page} data-open={sheet>0} data-fullscreen={fullscreen} data-theatre={theatre} data-hud={hudVisible||support||zoom!==null} onPointerDownCapture={()=>{if(theatre)revealHud();}} onPointerMove={()=>{if(theatre&&performance.now()-lastHud.current>500){lastHud.current=performance.now();revealHud();}}}>
+ return <main ref={page} className={styles.page} data-open={sheet>0} data-fullscreen={fullscreen} data-idle={idle} data-theatre={theatre} data-hud={hudVisible||support||zoom!==null} onPointerDownCapture={()=>{if(theatre)revealHud();}} onPointerMove={()=>{if(theatre&&performance.now()-lastHud.current>500){lastHud.current=performance.now();revealHud();}}}>
   <div className={styles.siteHeader}><SiteNav/></div><Link href="/playground" className={styles.back}>← PLAYGROUND</Link>
   <header className={styles.heading}><h1>GROY PAYNE<span>Honey &amp; Blood</span></h1><p><b>ISSUE 01</b><span>NOVEMBER 2026</span></p></header>
   <div className={styles.stage} ref={host} aria-label="Click to turn pages, drag to rotate, scroll to zoom toward cursor."
-   onPointerDown={e=>{if(theatre&&!hudVisible){clickStart.current=null;return;}if(e.button===0)clickStart.current={x:e.clientX,y:e.clientY,time:performance.now()};}}
+   onPointerDown={e=>{if(idle||(theatre&&!hudVisible)){clickStart.current=null;return;}if(e.button===0)clickStart.current={x:e.clientX,y:e.clientY,time:performance.now()};}}
    onPointerCancel={()=>{clickStart.current=null;}}
    onPointerUp={e=>{const start=clickStart.current;clickStart.current=null;if(!start||Math.hypot(e.clientX-start.x,e.clientY-start.y)>6||performance.now()-start.time>600)return;
     const rect=e.currentTarget.getBoundingClientRect();change(sheet===0?1:sheet===15?-1:e.clientX<rect.left+rect.width/2?-1:1);
