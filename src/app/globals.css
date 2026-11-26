@@ -53,3 +53,9 @@ html[data-noir="true"]::after { background: radial-gradient(ellipse at 50% 42%, 
 /* Shared second row beneath the logo and menu, including safe areas. */
 :root { --section-toolbar-top:calc(max(18px, env(safe-area-inset-top)) + 100px); --section-toolbar-edge:28px; }
 @media(max-width:800px) { :root { --section-toolbar-top:calc(max(12px, env(safe-area-inset-top)) + 84px); --section-toolbar-edge:18px; } }
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+ button:not(:disabled),a{transition:color .2s,filter .2s,box-shadow .2s}
+ button:not(:disabled):hover{filter:brightness(1.12)}
+ a:hover{color:#d8c68e}
+ button:not(:disabled):active{filter:brightness(.92)}
+}

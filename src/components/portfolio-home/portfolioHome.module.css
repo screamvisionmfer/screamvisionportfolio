@@ -255,3 +255,6 @@ html[data-scene-journey="depart"] .routeCurtain[data-phase="out"]{animation:scen
 html[data-scene-journey="menu"] .routeCurtain[data-phase="out"]{animation:routeOut .3s ease both;}
 
 html[data-scene-journey="menu-arrive"] .routeCurtain[data-phase="in"]{animation-duration:.35s;}
+.world[data-position="playground"] .coverPlane{width:48%;left:26%;aspect-ratio:2480/3508;top:-12%;transform:perspective(700px) rotateY(-12deg) rotateZ(5deg);box-shadow:10px 15px 30px #0008}
+.world[data-position="playground"] .portalArt{overflow:visible;aspect-ratio:1.65}
+@media(max-width:600px){.world[data-position="playground"] .coverPlane{width:58%;left:21%;top:-20%}.world[data-position="playground"] .portalArt{aspect-ratio:1.25}}

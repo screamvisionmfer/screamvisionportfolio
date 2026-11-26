@@ -59,7 +59,7 @@ export const menuArtwork:Record<string,string[]> = {
     "/collections/bobros/banner.webp"
   ],
   "/playground": [
-    "/playground-preview.svg"
+    "/comics/groy-payne-01/01.webp"
   ],
   "/": [
     "/menu-previews/room.webp"

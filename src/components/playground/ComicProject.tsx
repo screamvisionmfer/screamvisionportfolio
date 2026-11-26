@@ -17,10 +17,12 @@ export function ComicProject(){
  const toggleFullscreen=async()=>{if(document.fullscreenElement){await document.exitFullscreen();}else{try{await page.current?.requestFullscreen();}catch{setFullscreen(v=>!v);}}};
  const host=useRef<HTMLDivElement>(null),target=useRef(0),turn=useRef(0);
  const [support,setSupport]=useState(false),[copied,setCopied]=useState(""),[views,setViews]=useState<number|null>(null);
- useEffect(()=>{try{if(!sessionStorage.getItem("groy-support")){setSupport(true);sessionStorage.setItem("groy-support","1");}}catch{}
+ useEffect(()=>{let supportTimer:ReturnType<typeof setTimeout>|undefined;try{if(!sessionStorage.getItem("groy-support")){supportTimer=setTimeout(()=>setSupport(true),1100);sessionStorage.setItem("groy-support","1");}}catch{}
  const key="groy-view-01",seen=sessionStorage.getItem(key);
  fetch("/api/comic-views",{method:seen?"GET":"POST"}).then(r=>r.ok?r.json():null).then(data=>{if(typeof data?.views==="number"){setViews(data.views);sessionStorage.setItem(key,"1");}}).catch(()=>{});
+ return()=>{if(supportTimer)clearTimeout(supportTimer);};
  },[]);
+ useEffect(()=>{if(matchMedia("(max-width:700px)").matches)setZoom(1);},[]);
  const supportRef=useModalFocus<HTMLElement>(support);
  const copy=async(network:string,address:string)=>{try{await navigator.clipboard.writeText(address);setCopied(network);}catch{setCopied("Select and copy the address below");}};
  const [sheet,setSheet]=useState(0),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[zoom,setZoom]=useState<number|null>(null);
@@ -48,8 +50,8 @@ export function ComicProject(){
   const pointer=(event:PointerEvent)=>{const rect=element.getBoundingClientRect();pointerX=(event.clientX-rect.left)/rect.width-.5;pointerY=(event.clientY-rect.top)/rect.height-.5;lastInput=performance.now();};
   const leave=()=>{pointerX=0;pointerY=0;};element.addEventListener("pointermove",pointer);element.addEventListener("pointerleave",leave);
   scene.add(new THREE.HemisphereLight(0xffffff,0x929292,1.5));
-  const light=new THREE.DirectionalLight(0xffffff,1.3);light.position.set(-3,5,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);light.shadow.camera.left=-4;light.shadow.camera.right=4;light.shadow.camera.top=4;light.shadow.camera.bottom=-4;light.shadow.normalBias=.015;scene.add(light);
-  const rim=new THREE.DirectionalLight(0xffffff,.3);rim.position.set(4,1,3);scene.add(rim);
+  const light=new THREE.DirectionalLight(0xfff4de,1.7);light.position.set(-3,5,7);light.castShadow=true;light.shadow.mapSize.set(2048,2048);light.shadow.camera.left=-4;light.shadow.camera.right=4;light.shadow.camera.top=4;light.shadow.camera.bottom=-4;light.shadow.normalBias=.015;scene.add(light);
+  const rim=new THREE.DirectionalLight(0xc4dcff,.65);rim.position.set(4,1,3);scene.add(rim);
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.ShadowMaterial({opacity:.22}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.22;floor.receiveShadow=true;scene.add(floor);
   const loader=new THREE.TextureLoader(),textures:THREE.Texture[]=[],materials:THREE.Material[]=[],geometries:THREE.BufferGeometry[]=[];
   let disposed=false;
@@ -58,8 +60,8 @@ export function ComicProject(){
   const paper=new THREE.MeshStandardMaterial({color:0xd9d0b9,roughness:.85});materials.push(paper);
   const leaves=Array.from({length:15},(_,i)=>{
    const cover=i===0||i===14;
-   const front=new THREE.MeshPhysicalMaterial({color:0x555555,emissive:0xffffff,emissiveIntensity:.7,roughness:.95,metalness:0,specularIntensity:.02});
-   const back=new THREE.MeshPhysicalMaterial({color:0x555555,emissive:0xffffff,emissiveIntensity:.7,roughness:.95,metalness:0,specularIntensity:.02});
+   const front=new THREE.MeshPhysicalMaterial({color:0x888888,emissive:0xffffff,emissiveIntensity:.95,roughness:.95,metalness:0,specularIntensity:.02});
+   const back=new THREE.MeshPhysicalMaterial({color:0x888888,emissive:0xffffff,emissiveIntensity:.95,roughness:.95,metalness:0,specularIntensity:.02});
    materials.push(front,back);
    const geo=new THREE.BoxGeometry(W,H,cover?.0025:.0008,40,8,1);geo.translate(W/2,0,0);geometries.push(geo);
    const original=Float32Array.from(geo.attributes.position.array);
@@ -158,6 +160,7 @@ export function ComicProject(){
   </div>}
   {support&&<div className={styles.supportOverlay} onClick={e=>{if(e.target===e.currentTarget)setSupport(false);}}>
    <section ref={supportRef} className={styles.supportCard} role="dialog" aria-modal="true" aria-label="Support the comic" onKeyDown={e=>{if(e.key==="Escape")setSupport(false);}}>
+    <div className={styles.supportCover} aria-hidden="true"><img src={image(1)} alt=""/></div>
     <button className={styles.supportClose} onClick={()=>setSupport(false)} aria-label="Close support">×</button>
     <p className={styles.eyebrow}>GROY PAYNE / INDEPENDENT COMIC</p><h2>Help write<br/>the next chapter.</h2>
     <p>Every page takes time. If you enjoyed the story, you can help me keep making it. Tips of any size are appreciated.</p>
