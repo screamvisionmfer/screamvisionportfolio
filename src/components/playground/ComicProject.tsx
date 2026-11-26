@@ -10,6 +10,7 @@ const image=(n:number,large=false)=>`/comics/groy-payne-01/${String(n).padStart(
 const W=1.414,H=2;
 export function ComicProject(){
  const host=useRef<HTMLDivElement>(null),target=useRef(0),turn=useRef(0),rotation=useRef(-.16);
+ const [lens,setLens]=useState<{x:number;y:number;px:number;py:number;width:number;height:number}|null>(null);
  const [sheet,setSheet]=useState(0),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[zoom,setZoom]=useState<number|null>(null);
  const zoomClose=useRef<HTMLButtonElement>(null),readButton=useRef<HTMLButtonElement>(null);
  const change=(delta:number)=>{setSheet(value=>{const next=Math.max(0,Math.min(15,value+delta));target.current=next;if(next!==value)haptic("tick");return next;});};
@@ -43,13 +44,17 @@ export function ComicProject(){
   });
   const resize=()=>{const width=element.clientWidth,height=element.clientHeight;renderer.setSize(width,height);camera.aspect=width/height;camera.position.set(0,.12,camera.aspect<.8?7.8:5);camera.lookAt(0,0,0);camera.updateProjectionMatrix();};
   const observer=new ResizeObserver(resize);observer.observe(element);resize();
-  let frame=0,last=0;
+  let frame=0,last=0,flipStart=0,flipFrom=0,flipTo=0;
   const animate=(time:number)=>{
    frame=requestAnimationFrame(animate);if(document.hidden)return;
    const dt=Math.min(.05,(time-last)/1000||.016);last=time;
    const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
-   turn.current=THREE.MathUtils.damp(turn.current,target.current,reduced?50:7,dt);
+   if(flipTo===flipFrom&&Math.abs(turn.current-target.current)>.001){flipFrom=turn.current;flipTo=flipFrom+Math.sign(target.current-flipFrom);flipStart=time;}
+   if(flipTo!==flipFrom){const t=Math.min(1,(time-flipStart)/(reduced?1:950));const eased=t*t*(3-2*t);turn.current=flipFrom+(flipTo-flipFrom)*eased;if(t===1)flipFrom=flipTo;}
    const value=turn.current;
+   const viewWidth=(value<.01||value>14.99)?W:W*2;
+   const fit=Math.max(H/.88,viewWidth/(camera.aspect*.9))/(2*Math.tan(THREE.MathUtils.degToRad(18)));
+   camera.position.z=THREE.MathUtils.damp(camera.position.z,fit,5,dt);
    book.position.x=THREE.MathUtils.lerp(-W/2,0,Math.min(1,value));
    if(value>14)book.position.x=THREE.MathUtils.lerp(0,W/2,value-14);
    book.rotation.y=THREE.MathUtils.damp(book.rotation.y,target.current===0?rotation.current:0,6,dt);
@@ -63,7 +68,7 @@ export function ComicProject(){
      if(back.map){back.map.dispose();back.map=null;back.needsUpdate=true;}
     }
     const t=THREE.MathUtils.clamp(value-i,0,1),angle=t*Math.PI;
-    const curve=Math.sin(t*Math.PI)*1.3;
+    const curve=Math.sin(t*Math.PI)*.75;
     const positions=geo.attributes.position;
     for(let v=0;v<positions.count;v++){
      const x=original[v*3],y=original[v*3+1],z=original[v*3+2],c=curve/W,a=angle-curve/2;
@@ -89,11 +94,21 @@ export function ComicProject(){
    <button onClick={()=>change(-1)} disabled={sheet===0} aria-label="Previous page">←</button>
    <span aria-live="polite">{sheet===0?"COVER":sheet===15?"BACK COVER":`${left} — ${right}`}</span>
    <button onClick={()=>change(1)} disabled={sheet===15} aria-label="Next page">→</button>
-   <button ref={readButton} className={styles.read} onClick={()=>setZoom(right)}>READ</button>
+   <button ref={readButton} className={styles.read} onClick={()=>{setLens(null);setZoom(right);}}>READ</button>
   </nav>
-  {zoom!==null&&<div className={styles.zoom} role="dialog" aria-modal="true" aria-label="Read comic page" onKeyDown={e=>{if(e.key==="Tab"){e.preventDefault();const items=Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>("button"));const i=items.indexOf(document.activeElement as HTMLButtonElement);items[(i+(e.shiftKey?-1:1)+items.length)%items.length].focus();}}}>
-   <div className={styles.zoomBar}><button onClick={()=>setZoom(Math.max(1,zoom-1))} disabled={zoom===1} aria-label="Previous page">←</button><span>{zoom} / 30</span><button onClick={()=>setZoom(Math.min(30,zoom+1))} disabled={zoom===30} aria-label="Next page">→</button><button ref={zoomClose} onClick={()=>{setZoom(null);readButton.current?.focus();}} aria-label="Close reading view">×</button></div>
-   <div className={styles.zoomImage} key={zoom}><img src={image(zoom,true)} alt={`Groy Payne: Honey & Blood, page ${zoom}`}/></div>
+  {zoom!==null&&<div className={styles.zoom} role="dialog" aria-modal="true" aria-label="Read comic page" onKeyDown={e=>{if(e.key==="Tab"){e.preventDefault();const items=Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"));const i=items.indexOf(document.activeElement as HTMLButtonElement);items[(i+(e.shiftKey?-1:1)+items.length)%items.length].focus();}}}>
+   <div className={styles.zoomBar}><button onClick={()=>{setLens(null);setZoom(Math.max(1,zoom-1));}} disabled={zoom===1} aria-label="Previous page">←</button><span>{zoom} / 30</span><button onClick={()=>{setLens(null);setZoom(Math.min(30,zoom+1));}} disabled={zoom===30} aria-label="Next page">→</button><button ref={zoomClose} onClick={()=>{setZoom(null);readButton.current?.focus();}} aria-label="Close reading view">×</button></div>
+   <div className={styles.zoomImage} key={zoom}>
+    <div className={styles.pageImage} onPointerLeave={()=>setLens(null)} onPointerMove={event=>{
+     if(event.pointerType!=="mouse")return;
+     const rect=event.currentTarget.getBoundingClientRect();
+     const x=event.clientX-rect.left,y=event.clientY-rect.top;
+     setLens({x,y,px:x/rect.width,py:y/rect.height,width:rect.width,height:rect.height});
+    }}>
+     <img src={image(zoom,true)} alt={`Groy Payne: Honey & Blood, page ${zoom}`} draggable={false}/>
+     {lens&&<span className={styles.lens} aria-hidden="true" style={{left:lens.x,top:lens.y,backgroundImage:`url("${image(zoom,true)}")`,backgroundSize:`${lens.width*2.5}px ${lens.height*2.5}px`,backgroundPosition:`${100-lens.x*2.5}px ${100-lens.y*2.5}px`}}/>}
+    </div>
+   </div>
   </div>}
  </main>;
 }

@@ -6,3 +6,14 @@
 .loading{position:absolute;top:50%;left:0;right:0;text-align:center;font:12px monospace;pointer-events:none}.fallback{position:absolute;inset:260px 20px 100px;display:flex;justify-content:center;pointer-events:none}.fallback img{height:100%;max-width:100%;object-fit:contain}
 .zoom{position:fixed;inset:0;z-index:10000;background:#080a09;color:#c9ba90;display:flex;flex-direction:column}.zoomBar{display:flex;justify-content:center;align-items:center;gap:20px;padding:10px 15px;background:#10120f}.zoomBar span{font:12px monospace}.zoomBar button:last-child{position:absolute;right:15px}.zoomImage{overflow:auto;flex:1;min-height:0;overscroll-behavior:contain;text-align:center}.zoomImage img{display:block;width:min(100%,1100px);height:auto;margin:auto}.controls button:focus-visible,.zoomBar button:focus-visible{outline:1px solid #c9ba90}
 @media(max-width:700px){.back{top:102px;left:24px;font-size:9px}.heading{padding-top:150px}.stage{height:52svh;min-height:330px}.controls{gap:12px}.controls span{min-width:82px}.controls .read{margin-left:4px}.heading h1{font-size:30px}.zoomImage img{max-width:none;width:100%;min-width:0}.zoomImage{text-align:left}}
+
+/* Keep the whole page visible; magnify only the region under the pointer. */
+.page{height:100dvh;min-height:600px;display:flex;flex-direction:column}
+.heading{padding-top:115px}.heading h1{font-size:30px}.heading p{margin-top:8px}
+.stage{flex:1;min-height:0;height:auto}
+.controls{padding-bottom:18px;flex-shrink:0}
+.zoomImage{display:flex;align-items:center;justify-content:center;overflow:hidden;padding:14px}
+.pageImage{position:relative;height:100%;max-width:100%;aspect-ratio:2480/3508;cursor:none}
+.zoomImage .pageImage img{width:100%;height:100%;object-fit:contain;max-width:100%;user-select:none}
+.lens{position:absolute;width:200px;height:200px;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;background-repeat:no-repeat;box-shadow:0 12px 45px #000b,0 0 0 1px #d9ceaa88;z-index:2}
+@media(max-width:700px){.page{min-height:540px}.heading{padding-top:145px}.heading h1{font-size:26px}.stage{height:auto;min-height:0}.controls{padding-bottom:20px}.zoomImage{padding:8px}.pageImage{height:auto;width:100%;max-height:100%;cursor:auto}.lens{display:none}}
